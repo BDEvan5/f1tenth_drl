@@ -1,0 +1,28 @@
+
+# planner_type: "agent_on"
+planner_type: "agent_off"
+
+state_vector: "end_to_end"
+# input_vector: "path_follower"
+# input_vector: "hybrid_all"
+
+n_repeats: 3
+set_n: 1
+
+random_seed: 0
+max_speed: 5
+
+
+n_train_steps: 100000
+n_test_laps: 20
+# map_name: "esp"
+
+algorithm: "DQN"
+algorithm: "PPO"
+algorithm: "SAC"
+algorithm: "TD3"
+
+runs:
+  - map_name: "esp"
+
+
