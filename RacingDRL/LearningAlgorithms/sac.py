@@ -2,7 +2,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from utils import soft_update
 
 torch.autograd.set_detect_anomaly(True)
 
@@ -13,8 +12,9 @@ BATCH_SIZE = 100
 LR = 1e-3
 
    
-from Components.ReplayBuffers import OffPolicyBuffer
-from Components.Networks import PolicyNetworkSAC, DoubleQNet
+from RacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet
+from RacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
+from RacingDRL.Utils.utils import soft_update
 
 
 class SAC(object):

@@ -1,7 +1,6 @@
-from Components.Networks import DoublePolicyNet, DoubleQNet
-from Components.ReplayBuffers import OffPolicyBuffer
-from Components.Noises import OrnsteinUhlenbeckNoise
-from utils import soft_update
+from RacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet
+from RacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
+from RacingDRL.Utils.utils import soft_update
 
 import torch.optim as optim
 import numpy as np
@@ -15,6 +14,18 @@ gamma        = 0.99
 BATCH_SIZE   = 32
 tau          = 0.005 # for target network soft update
 
+
+class OrnsteinUhlenbeckNoise:
+    def __init__(self, mu):
+        self.theta, self.dt, self.sigma = 0.1, 0.01, 0.1
+        self.mu = mu
+        self.x_prev = np.zeros_like(self.mu)
+
+    def __call__(self):
+        x = self.x_prev + self.theta * (self.mu - self.x_prev) * self.dt + \
+                self.sigma * np.sqrt(self.dt) * np.random.normal(size=self.mu.shape)
+        self.x_prev = x
+        return x
   
 class DDPG:
     def __init__(self, state_dim, action_dim, action_scale):

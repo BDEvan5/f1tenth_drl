@@ -1,8 +1,8 @@
 import torch
 import torch.optim as optim
 
-from Components.Networks import SingleActor, SingleVNet
-from Components.ReplayBuffers import OnPolicyBuffer
+from RacingDRL.Utils.Networks import SingleActor, SingleVNet
+from RacingDRL.Utils.ReplayBuffers import OnPolicyBuffer
 
 lr          = 3e-4
 gamma=0.99

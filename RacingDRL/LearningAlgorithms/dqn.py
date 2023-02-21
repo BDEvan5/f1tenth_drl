@@ -2,8 +2,8 @@ import torch
 import torch.optim as optim
 import random
 
-from Components.Networks import QNetworkDQN
-from Components.ReplayBuffers import OffPolicyBuffer
+from RacingDRL.Utils.Networks import QNetworkDQN
+from RacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
 
 GAMMA = 0.94
 LEARNING_RATE = 0.001

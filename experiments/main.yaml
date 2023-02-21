@@ -17,9 +17,9 @@ n_train_steps: 100000
 n_test_laps: 20
 # map_name: "esp"
 
-algorithm: "DQN"
-algorithm: "PPO"
-algorithm: "SAC"
+# algorithm: "DQN"
+# algorithm: "PPO"
+# algorithm: "SAC"
 algorithm: "TD3"
 
 runs:

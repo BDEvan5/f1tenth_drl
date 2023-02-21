@@ -1,7 +1,8 @@
 from RacingDRL.Utils.utils import init_file_struct
 from RacingDRL.LearningAlgorithms.create_agent import create_agent
 import numpy as np
-from RacingDRL.Planners.TransformObs import end_to_end_obs
+from RacingDRL.Planners.Architectures import ArchEndToEnd, ArchHybrid, ArchPathFollower
+from RacingDRL.Utils.HistoryStructs import TrainHistory
 
 
 class AgentTrainer: 
@@ -20,23 +21,22 @@ class AgentTrainer:
 
         self.agent = create_agent(run)
         if run.state_vector == "end_to_end":
-            self.transform_obs = end_to_end_obs
+            self.architecture = ArchEndToEnd(run, conf)
 
-        # self.t_his = TrainHistory(run, conf)
+        self.t_his = TrainHistory(run, conf)
 
-    def plan(self, obs, add_mem_entry=True):
+    def plan(self, obs):
         nn_state = self.architecture.transform_obs(obs)
-        if add_mem_entry:
-            self.add_memory_entry(obs, nn_state)
+        self.add_memory_entry(obs, nn_state)
             
         if obs['state'][3] < self.v_min_plan:
-            self.action = np.array([0, 7])
+            self.action = np.array([0, 2])
             return self.action
 
-        self.nn_state = nn_state # after to prevent call before check for v_min_plan
+        self.nn_state = nn_state 
         self.nn_act = self.agent.act(self.nn_state)
 
-        self.architecture.transform_obs(obs) # to ensure correct PP actions
+        # self.architecture.transform_obs(obs) #! to ensure correct PP actions
         self.action = self.architecture.transform_action(self.nn_act)
 
         return self.action 

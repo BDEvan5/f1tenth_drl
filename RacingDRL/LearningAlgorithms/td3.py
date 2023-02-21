@@ -2,9 +2,9 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from Components.Networks import DoublePolicyNet, DoubleQNet
-from Components.ReplayBuffers import OffPolicyBuffer
-from utils import soft_update
+from RacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet
+from RacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
+from RacingDRL.Utils.utils import soft_update
 
 # hyper parameters
 BATCH_SIZE = 100

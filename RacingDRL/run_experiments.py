@@ -3,6 +3,7 @@ from argparse import Namespace
 import os 
 
 from RacingDRL.f1tenth_gym import F110Env
+from RacingDRL.Planners.AgentTrainer import AgentTrainer
 
 def generate_test_name(file_name):
     n = 1
@@ -46,9 +47,9 @@ def create_planner(run_dict):
     
     return planner
 
-SHOW_TRAIN = False
+RENDER_ENV = False
 
-def run_training_loop(env, planner, run_dict):
+def run_simulation_loop(env, planner, run_dict):
     observation = env.reset()
     
     for i in range(run_dict.training_steps):
@@ -59,20 +60,8 @@ def run_training_loop(env, planner, run_dict):
             planner.done_callback(observation)
             observation = env.reset()
                   
-        if SHOW_TRAIN: env.render('human_fast')
+        if RENDER_ENV: env.render('human_fast')
         
-def run_testing_loop(env, planner, run_dict):
-    observation = env.reset()
-    
-    for i in range(run_dict.training_steps):
-        action = planner.get_action(observation)
-        observation, reward, done, info = env.step(action)
-        
-        if done:
-            planner.done_callback(observation)
-            observation = env.reset()
-                  
-        if SHOW_TRAIN: env.render('human_fast')
     
 def run_training_batch(experiment):
     run_list = setup_run_list(experiment)
@@ -84,10 +73,10 @@ def run_training_batch(experiment):
         env = F110Env(map=run_dict.map_name)
         planner = AgentTrainer(run_dict)
         
-        run_training_loop(env, planner, run_dict)
+        run_simulation_loop(env, planner, run_dict)
         
         planner = AgentTester(run_dict)
-        run_testing(env, planner, run_dict)
+        run_simulation_loop(env, planner, run_dict)
         
         
 

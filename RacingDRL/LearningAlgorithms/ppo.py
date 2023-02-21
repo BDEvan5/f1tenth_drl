@@ -2,8 +2,8 @@ import torch
 import torch.optim as optim
 import torch.nn.functional as F
 
-from Components.Networks import SingleActor, SingleVNet
-from Components.ReplayBuffers import OnPolicyBuffer
+from RacingDRL.Utils.Networks import SingleActor, SingleVNet
+from RacingDRL.Utils.ReplayBuffers import OnPolicyBuffer
 
 
 
