@@ -32,6 +32,7 @@ class AgentTrainer:
         nn_state = self.architecture.transform_obs(obs)
         
         self.add_memory_entry(obs, nn_state)
+        self.state = obs
             
         if obs['linear_vels_x'][0] < self.v_min_plan:
             self.action = np.array([0, 2])
@@ -71,6 +72,7 @@ class AgentTrainer:
         
         self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, True)
         self.nn_state = None
+        self.state = None
 
         self.save_training_data()
 
