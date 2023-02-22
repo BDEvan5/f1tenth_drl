@@ -21,8 +21,9 @@ max_laptime: 240
 
 # PurePursuit planner values
 lookahead: 1.5
+v_min_plan: 1
 
 #save_paths
-vehicle_path: "Data/Vehicles/"
+vehicle_path: "Data/"
 
 

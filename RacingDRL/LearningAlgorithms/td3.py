@@ -18,12 +18,11 @@ POLICY_NOISE = 0.2
 
 
 class TD3(object):
-    def __init__(self, state_dim, action_dim, action_scale):
-        self.action_scale = action_scale
+    def __init__(self, state_dim, action_dim):
         self.act_dim = action_dim
         
-        self.actor = DoublePolicyNet(state_dim, action_dim, action_scale)
-        self.actor_target = DoublePolicyNet(state_dim, action_dim, action_scale)
+        self.actor = DoublePolicyNet(state_dim, action_dim)
+        self.actor_target = DoublePolicyNet(state_dim, action_dim)
         self.actor_target.load_state_dict(self.actor.state_dict())
         self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=1e-3)
 
@@ -45,7 +44,7 @@ class TD3(object):
         if noise != 0: 
             action = (action + np.random.normal(0, noise, size=self.act_dim))
             
-        return action.clip(-self.action_scale, self.action_scale)
+        return action.clip(-1, 1)
 
     def train(self, iterations=2):
         if self.replay_buffer.size() < BATCH_SIZE:
@@ -64,7 +63,7 @@ class TD3(object):
     def update_critic(self, state, action, next_state, reward, done):
         noise = torch.normal(torch.zeros(action.size()), POLICY_NOISE)
         noise = noise.clamp(-NOISE_CLIP, NOISE_CLIP)
-        next_action = (self.actor_target(next_state) + noise).clamp(-self.action_scale, self.action_scale)
+        next_action = (self.actor_target(next_state) + noise).clamp(-1, 1)
 
         target_Q1 = self.critic_target_1(next_state, next_action)
         target_Q2 = self.critic_target_2(next_state, next_action)
@@ -88,5 +87,20 @@ class TD3(object):
         self.actor_optimizer.step()
                 
 
+    def save(self, filename, directory):
+
+        torch.save(self.actor, '%s/%s_actor.pth' % (directory, filename))
+        # torch.save(self.critic, '%s/%s_critic.pth' % (directory, filename))
+        # torch.save(self.actor_target, '%s/%s_actor_target.pth' % (directory, filename))
+        # torch.save(self.critic_target, '%s/%s_critic_target.pth' % (directory, filename))
+
+    def load(self, directory):
+        filename = self.name
+        self.actor = torch.load('%s/%s_actor.pth' % (directory, filename))
+        self.critic = torch.load('%s/%s_critic.pth' % (directory, filename))
+        self.actor_target = torch.load('%s/%s_actor_target.pth' % (directory, filename))
+        self.critic_target = torch.load('%s/%s_critic_target.pth' % (directory, filename))
+
+        print("Agent Loaded")
 
         

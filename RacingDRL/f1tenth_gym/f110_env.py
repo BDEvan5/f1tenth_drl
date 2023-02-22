@@ -30,7 +30,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 # base classes
-from f110_gym.envs.base_classes import Simulator, Integrator
+from RacingDRL.f1tenth_gym.base_classes import Simulator, Integrator
 
 # others
 import numpy as np
@@ -104,8 +104,8 @@ class F110Env(gym.Env):
         except:
             self.seed = 12345
         try:
-            self.map_name = kwargs['map']
-            self.map_path = "maps/" + self.map_name + ".yaml"
+            self.map_name = "maps/" + kwargs['map']
+            self.map_path = self.map_name + ".yaml"
         except:
             raise ValueError("Map name not specified. Please specify a map name in the gym.make() call.")
 

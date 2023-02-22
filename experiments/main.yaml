@@ -11,9 +11,9 @@ set_n: 1
 
 random_seed: 0
 max_speed: 5
+n_scans: 1
 
-
-n_train_steps: 100000
+training_steps: 100000
 n_test_laps: 20
 # map_name: "esp"
 
