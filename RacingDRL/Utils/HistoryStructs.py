@@ -57,20 +57,20 @@ class TrainHistory():
         self.ptr += 1
         self.reward_list = []
 
-        if show_reward:
-            plt.figure(8)
-            plt.clf()
-            plt.plot(self.ep_rewards)
-            plt.plot(self.ep_rewards, 'x', markersize=10)
-            plt.title(f"Ep rewards: total: {self.ep_reward:.4f}")
-            plt.ylim([-1.1, 1.5])
-            plt.pause(0.0001)
+        # if show_reward:
+        #     plt.figure(8)
+        #     plt.clf()
+        #     plt.plot(self.ep_rewards)
+        #     plt.plot(self.ep_rewards, 'x', markersize=10)
+        #     plt.title(f"Ep rewards: total: {self.ep_reward:.4f}")
+        #     plt.ylim([-1.1, 1.5])
+        #     plt.pause(0.0001)
 
         self.ep_counter = 0
         self.ep_reward = 0
         self.ep_rewards = []
 
-    def print_update(self, plot_reward=True):
+    def print_update(self, plot_reward=False):
         if self.ptr < 10:
             return
         
@@ -78,9 +78,9 @@ class TrainHistory():
         mean100 = np.mean(self.rewards[max(0, self.ptr-100):self.ptr])
         # print(f"Run: {self.t_counter} --> Moving10: {mean10:.2f} --> Moving100: {mean100:.2f}  ")
         
-        if plot_reward:
-            # raise NotImplementedError
-            plot_data(self.rewards[0:self.ptr], figure_n=2)
+        # if plot_reward:
+        #     # raise NotImplementedError
+        #     plot_data(self.rewards[0:self.ptr], figure_n=2)
 
     def save_csv_data(self):
         data = []
@@ -89,14 +89,18 @@ class TrainHistory():
             data.append([i, self.rewards[i], self.lengths[i], self.progresses[i], self.laptimes[i]])
         save_csv_array(data, self.path + "/training_data_episodes.csv")
 
-        plot_data(self.rewards[0:ptr], figure_n=2)
-        plt.figure(2)
-        plt.savefig(self.path + "/training_rewards_episodes.png")
-
         t_steps = np.cumsum(self.lengths[0:ptr])/100
         plt.figure(3)
+        
         plt.clf()
+        plt.plot(t_steps, self.progresses[0:ptr], '.', color='darkblue', markersize=4)
+        plt.plot(t_steps, true_moving_average(self.progresses[0:ptr], 20), linewidth='4', color='r')
+        plt.ylabel("Average Progress")
+        plt.xlabel("Training Steps (x100)")
+        plt.ylim([0, 100])
+        plt.savefig(self.path + "/training_progresses_steps.png")
 
+        plt.clf()
         plt.plot(t_steps, self.rewards[0:ptr], '.', color='darkblue', markersize=4)
         plt.plot(t_steps, true_moving_average(self.rewards[0:ptr], 20), linewidth='4', color='r')
 

@@ -49,6 +49,7 @@ class PolicyNetworkSAC(nn.Module):
         z = mean + std * normal.sample().requires_grad_()
         action = torch.tanh(z)
         log_prob = torch.distributions.Normal(mean, std).log_prob(z) - torch.log(1 - action * action + EPSILON) 
+        log_prob = log_prob.sum(-1, keepdim=True)
             
         return action, log_prob
    

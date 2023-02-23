@@ -19,7 +19,7 @@ def create_planner(run_dict):
     return planner
 
 RENDER_ENV = False
-RENDER_ENV = True
+# RENDER_ENV = True
 
 def run_simulation_loop_steps(env, planner, steps):
     observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))

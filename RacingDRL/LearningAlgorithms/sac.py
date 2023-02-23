@@ -79,7 +79,7 @@ class TrainSAC:
 
             target_q1 = self.target_soft_q_net1(next_state, new_next_actions)
             target_q2 = self.target_soft_q_net2(next_state, new_next_actions)
-            target_q_values = torch.min(target_q1, target_q2) - alpha * new_log_pi.mean()
+            target_q_values = torch.min(target_q1, target_q2) - alpha * new_log_pi
 
             q_target = reward + done * GAMMA * target_q_values
             q_loss = self.soft_q_criterion(current_q1, q_target.detach()) + self.soft_q_criterion(current_q2, q_target.detach())

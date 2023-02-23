@@ -6,15 +6,15 @@ state_vector: "end_to_end"
 # input_vector: "path_follower"
 # input_vector: "hybrid_all"
 
-n_repeats: 1
+n_repeats: 3
 set_n: 1
 
 random_seed: 0
-max_speed: 2
+max_speed: 5
 n_scans: 1
 
-training_steps: 10000
-n_test_laps: 5
+training_steps: 50000
+n_test_laps: 10
 # map_name: "esp"
 
 # algorithm: "DQN"
@@ -22,8 +22,9 @@ n_test_laps: 5
 # algorithm: "SAC"
 # algorithm: "TD3"
 
-# map_name: "esp"
-map_name: "aut"
+map_name: "esp"
+# map_name: "aut"
+
 
 runs:
   - algorithm: "TD3"
