@@ -27,7 +27,7 @@ class OrnsteinUhlenbeckNoise:
         self.x_prev = x
         return x
   
-class DDPG:
+class TrainDDPG:
     def __init__(self, state_dim, action_dim, action_scale):
         self.action_scale = action_scale
         
@@ -70,4 +70,20 @@ class DDPG:
         soft_update(self.critic, self.critic_target, tau)
         soft_update(self.actor, self.actor_target, tau)
      
+    def save(self, filename, directory):
+        torch.save(self.actor, '%s/%s_actor.pth' % (directory, filename))
+
+    
+     
+     
+class TestDDPG:
+    def __init__(self, filename, directory):
+        self.actor = torch.load('%s/%s_actor.pth' % (directory, filename))
+
+    def act(self, state):
+        state = torch.FloatTensor(state)
+        action = self.actor(state).data.numpy().flatten()
+        
+        return action
+      
         

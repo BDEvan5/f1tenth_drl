@@ -32,12 +32,13 @@ def generate_test_name(file_name):
     os.mkdir(f"Data/{file_name}_{n}")
     return file_name + f"_{n}"
 
-def setup_run_list(experiment_file):
+def setup_run_list(experiment_file, new_run=True):
     full_path =  "experiments/" + experiment_file + '.yaml'
     with open(full_path) as file:
         experiment_dict = yaml.load(file, Loader=yaml.FullLoader)
         
     test_name = generate_test_name(experiment_file)
+    if not new_run: test_name = test_name.split("_")[:-1].join("_") + (test_name.split("_")[-1]) - 1
 
     run_list = []
     for rep in range(experiment_dict['n_repeats']):

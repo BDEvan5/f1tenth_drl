@@ -41,9 +41,11 @@ class TrainHistory():
         # espisode data
         self.ep_counter = 0 # ep steps
         self.ep_reward = 0
+        self.reward_list = []
 
     def add_step_data(self, new_r):
         self.ep_reward += new_r
+        self.reward_list.append(new_r)
         self.ep_counter += 1
         self.t_counter += 1 
 
@@ -53,6 +55,7 @@ class TrainHistory():
         self.rewards[self.ptr] = self.ep_reward
         self.progresses[self.ptr] = progress
         self.ptr += 1
+        self.reward_list = []
 
         if show_reward:
             plt.figure(8)
@@ -120,139 +123,5 @@ class TrainHistory():
 
 
 
-class VehicleStateHistory:
-    def __init__(self, run, folder):
-        self.vehicle_name = run.run_name
-        self.path = "Data/Vehicles/" + run.path + run.run_name + "/" + folder
-        os.mkdir(self.path)
-        self.states = []
-        self.actions = []
-    
-
-    def add_state(self, state):
-        self.states.append(state)
-    
-    def add_action(self, action):
-        self.actions.append(action)
-    
-    def save_history(self, lap_n=0, test_map=None):
-        states = np.array(self.states)
-        self.actions.append(np.array([0, 0])) # last action to equal lengths
-        actions = np.array(self.actions)
-
-        lap_history = np.concatenate((states, actions), axis=1)
-
-        if test_map is None:
-            np.save(self.path + f"Lap_{lap_n}_history_{self.vehicle_name}.npy", lap_history)
-        else:
-            np.save(self.path + f"Lap_{lap_n}_history_{self.vehicle_name}_{test_map}.npy", lap_history)
-
-        self.states = []
-        self.actions = []
-    
-    def save_history(self, lap_n=0, test_map=None):
-        states = np.array(self.states)
-        self.actions.append(np.array([0, 0])) # last action to equal lengths
-        actions = np.array(self.actions)
-
-        lap_history = np.concatenate((states, actions), axis=1)
-
-        if test_map is None:
-            np.save(self.path + f"Lap_{lap_n}_history_{self.vehicle_name}.npy", lap_history)
-        else:
-            np.save(self.path + f"Lap_{lap_n}_history_{self.vehicle_name}_{test_map}.npy", lap_history)
-
-        self.states = []
-        self.actions = []
 
 
-
-class SafetyHistory:
-    def __init__(self, run):
-        self.vehicle_name = run.run_name
-        self.path = "Data/Vehicles/" + run.path + self.vehicle_name + "/SafeHistory/"
-        os.mkdir(self.path)
-
-        self.planned_actions = []
-        self.safe_actions = []
-        self.interventions = []
-        self.lap_n = 0
-
-        self.interval_counter = 0
-        self.inter_intervals = []
-        self.ep_interventions = 0
-        self.intervention_list = []
-
-    def add_actions(self, planned_action, safe_action=None):
-        self.planned_actions.append(planned_action)
-        if safe_action is None:
-            self.safe_actions.append(planned_action)
-            self.interventions.append(False)
-        else:
-            self.safe_actions.append(safe_action)
-            self.interventions.append(True)
-
-    def add_planned_action(self, planned_action):
-        self.planned_actions.append(planned_action)
-        self.safe_actions.append(planned_action)
-        self.interventions.append(False)
-        self.interval_counter += 1
-
-    def add_intervention(self, planned_action, safe_action):
-        self.planned_actions.append(planned_action)
-        self.safe_actions.append(safe_action)
-        self.interventions.append(True)
-        self.inter_intervals.append(self.interval_counter)
-        self.interval_counter = 0
-        self.ep_interventions += 1
-
-    def train_lap_complete(self):
-        self.intervention_list.append(self.ep_interventions)
-
-        print(f"Interventions: {self.ep_interventions} --> {self.inter_intervals}")
-
-        self.ep_interventions = 0
-        self.inter_intervals = []
-
-    def plot_safe_history(self):
-        planned = np.array(self.planned_actions)
-        safe = np.array(self.safe_actions)
-        plt.figure(5)
-        plt.clf()
-        plt.title("Safe History: steering")
-        plt.plot(planned[:, 0], color='blue')
-        plt.plot(safe[:, 0], '-x', color='red')
-        plt.legend(['Planned Actions', 'Safe Actions'])
-        plt.ylim([-0.5, 0.5])
-        # plt.show()
-        plt.pause(0.0001)
-
-        plt.figure(6)
-        plt.clf()
-        plt.title("Safe History: velocity")
-        plt.plot(planned[:, 1], color='blue')
-        plt.plot(safe[:, 1], '-x', color='red')
-        plt.legend(['Planned Actions', 'Safe Actions'])
-        plt.ylim([-0.5, 0.5])
-        # plt.show()
-        plt.pause(0.0001)
-
-        self.planned_actions = []
-        self.safe_actions = []
-
-    def save_safe_history(self, training=False):
-        planned_actions = np.array(self.planned_actions)
-        safe_actions = np.array(self.safe_actions)
-        interventions = np.array(self.interventions)
-        data = np.concatenate((planned_actions, safe_actions, interventions[:, None]), axis=1)
-
-        if training:
-            np.save(self.path + f"Training_safeHistory_{self.vehicle_name}.npy", data)
-        else:
-            np.save(self.path + f"Lap_{self.lap_n}_safeHistory_{self.vehicle_name}.npy", data)
-
-        self.lap_n += 1
-
-        self.planned_actions = []
-        self.safe_actions = []
-        self.interventions = []

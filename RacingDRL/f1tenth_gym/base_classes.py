@@ -90,7 +90,8 @@ class RaceCar(object):
         self.fov = fov
         self.integrator = integrator
         if self.integrator is Integrator.RK4:
-            warnings.warn(f"Chosen integrator is RK4. This is different from previous versions of the gym.")
+            # warnings.warn(f"Chosen integrator is RK4. This is different from previous versions of the gym.")
+            warnings.warn(f"Chosen integrator is RK4. This takes a lot more compuation time.... Start waiting now...")
 
         # state is [x, y, steer_angle, vel, yaw_angle, yaw_rate, slip_angle]
         self.state = np.zeros((7, ))

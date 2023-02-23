@@ -12,12 +12,12 @@ BATCH_SIZE = 100
 LR = 1e-3
 
    
-from RacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet
+from RacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet, PolicyNetworkSAC
 from RacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
 from RacingDRL.Utils.utils import soft_update
 
 
-class SAC(object):
+class TrainSAC:
     def __init__(self, state_dim, action_dim):
         self.replay_buffer = OffPolicyBuffer(state_dim, action_dim)
 
@@ -28,11 +28,11 @@ class SAC(object):
         self.target_soft_q_net1.load_state_dict(self.soft_q_net1.state_dict())
         self.target_soft_q_net2.load_state_dict(self.soft_q_net2.state_dict())
         
-        self.policy_net = PolicyNetworkSAC(state_dim, action_dim)
+        self.actor = PolicyNetworkSAC(state_dim, action_dim)
         
         self.soft_q_criterion = nn.MSELoss()
         self.q_optimiser = optim.Adam(list(self.soft_q_net1.parameters()) + list(self.soft_q_net2.parameters()), lr=LR)
-        self.policy_optimizer = optim.Adam(self.policy_net.parameters(), lr=LR)
+        self.policy_optimizer = optim.Adam(self.actor.parameters(), lr=LR)
         
         self.target_entropy = -np.prod(action_dim).item()
         self.log_alpha = torch.zeros(1, requires_grad=True)
@@ -40,7 +40,7 @@ class SAC(object):
         
     def act(self, state):
         state = torch.FloatTensor(state).unsqueeze(0)
-        action, _ =  self.policy_net(state)
+        action, _ =  self.actor(state)
         return action.detach()[0].numpy()
                
     def train(self, iterations=2):
@@ -56,7 +56,7 @@ class SAC(object):
             soft_update(self.soft_q_net2, self.target_soft_q_net2, TAU)
         
     def update_policy(self, state, alpha):
-        new_actions, log_pi = self.policy_net(state)
+        new_actions, log_pi = self.actor(state)
 
         q1 = self.soft_q_net1(state, new_actions)
         q2 = self.soft_q_net2(state, new_actions)
@@ -73,7 +73,7 @@ class SAC(object):
             current_q1 = self.soft_q_net1(state, action)
             current_q2 = self.soft_q_net2(state, action)
 
-            new_next_actions, new_log_pi= self.policy_net(next_state)
+            new_next_actions, new_log_pi= self.actor(next_state)
 
             target_q1 = self.target_soft_q_net1(next_state, new_next_actions)
             target_q2 = self.target_soft_q_net2(next_state, new_next_actions)
@@ -87,13 +87,28 @@ class SAC(object):
             self.q_optimiser.step()
            
     def update_alpha(self, state):
-        new_actions, log_pi = self.policy_net(state)
+        new_actions, log_pi = self.actor(state)
         alpha_loss = -self.log_alpha * (log_pi + self.target_entropy).detach().mean()
         
         self.alpha_optimizer.zero_grad()
         alpha_loss.backward()
         self.alpha_optimizer.step()
                 
+    def save(self, filename, directory):
+        torch.save(self.actor, '%s/%s_actor.pth' % (directory, filename))
+
     
      
+class TestSAC:
+    def __init__(self, filename, directory):
+        self.actor = torch.load('%s/%s_actor.pth' % (directory, filename))
+
+    def act(self, state):
+        state = torch.FloatTensor(state)
+        action = self.actor(state).data.numpy().flatten()
+        
+        return action
+      
+        
+
      

@@ -17,7 +17,7 @@ POLICY_FREQUENCY = 2
 POLICY_NOISE = 0.2
 
 
-class TD3(object):
+class TrainTD3:
     def __init__(self, state_dim, action_dim):
         self.act_dim = action_dim
         
@@ -88,19 +88,19 @@ class TD3(object):
                 
 
     def save(self, filename, directory):
+        torch.save(self.actor, directory + f'{filename}_actor.pth')
 
-        torch.save(self.actor, '%s/%s_actor.pth' % (directory, filename))
-        # torch.save(self.critic, '%s/%s_critic.pth' % (directory, filename))
-        # torch.save(self.actor_target, '%s/%s_actor_target.pth' % (directory, filename))
-        # torch.save(self.critic_target, '%s/%s_critic_target.pth' % (directory, filename))
+    
 
-    def load(self, directory):
-        filename = self.name
-        self.actor = torch.load('%s/%s_actor.pth' % (directory, filename))
-        self.critic = torch.load('%s/%s_critic.pth' % (directory, filename))
-        self.actor_target = torch.load('%s/%s_actor_target.pth' % (directory, filename))
-        self.critic_target = torch.load('%s/%s_critic_target.pth' % (directory, filename))
 
-        print("Agent Loaded")
+class TestTD3:
+    def __init__(self, filename, directory):
+        self.actor = torch.load(directory + f'{filename}_actor.pth')
+
+    def act(self, state):
+        state = torch.FloatTensor(state.reshape(1, -1))
+        action = self.actor(state).data.numpy().flatten()
+        
+        return action
 
         

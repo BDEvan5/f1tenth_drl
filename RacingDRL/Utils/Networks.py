@@ -3,8 +3,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-NN_LAYER_1 = 400
-NN_LAYER_2 = 300
+NN_LAYER_1 = 100
+NN_LAYER_2 = 100
+# NN_LAYER_1 = 400
+# NN_LAYER_2 = 300
 
 class DoublePolicyNet(nn.Module):
     def __init__(self, state_dim, act_dim):

@@ -1,5 +1,5 @@
 from RacingDRL.Utils.utils import init_file_struct
-from RacingDRL.LearningAlgorithms.create_agent import create_agent
+from RacingDRL.LearningAlgorithms.create_agent import create_train_agent
 import numpy as np
 from RacingDRL.Planners.Architectures import ArchEndToEnd, ArchHybrid, ArchPathFollower
 from RacingDRL.Utils.HistoryStructs import TrainHistory
@@ -25,7 +25,7 @@ class AgentTrainer:
         if run.state_vector == "end_to_end":
             self.architecture = ArchEndToEnd(run, conf)
 
-        self.agent = create_agent(run, self.architecture.state_space)
+        self.agent = create_train_agent(run, self.architecture.state_space)
         self.t_his = TrainHistory(run, conf)
 
     def plan(self, obs):
@@ -40,8 +40,6 @@ class AgentTrainer:
 
         self.nn_state = nn_state 
         self.nn_act = self.agent.act(self.nn_state)
-
-        # self.architecture.transform_obs(obs) #! to ensure correct PP actions
         self.action = self.architecture.transform_action(self.nn_act)
         
         self.agent.train()
@@ -61,11 +59,12 @@ class AgentTrainer:
         """
         nn_s_prime = self.architecture.transform_obs(s_prime)
         reward = self.reward_generator(s_prime, self.state)
-        progress = self.std_track.calculate_progress_percent([s_prime['poses_x'][0], s_prime['poses_y'][0]])
+        progress = self.std_track.calculate_progress_percent([s_prime['poses_x'][0], s_prime['poses_y'][0]]) * 100
         
-        print(f"Lap complete: {progress:.2f}%, Step: {self.t_his.t_counter}, Episode: {self.t_his.ptr}")
-
+        # print(self.t_his.reward_list)
         self.t_his.lap_done(reward, progress, False)
+        print(f"Episode: {self.t_his.ptr}, Step: {self.t_his.t_counter}, Lap p: {progress:.1f}%, Reward: {self.t_his.rewards[self.t_his.ptr-1]:.2f}")
+
         if self.nn_state is None:
             print(f"Crashed on first step: RETURNING")
             return

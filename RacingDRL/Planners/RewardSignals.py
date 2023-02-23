@@ -26,6 +26,7 @@ class ProgressReward:
         if abs(reward) > 0.5: # happens at end of eps
             return 0.001 # assume positive progress near end
 
+        reward *= 100
 
         return reward 
     

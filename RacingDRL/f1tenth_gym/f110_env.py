@@ -140,7 +140,8 @@ class F110Env(gym.Env):
         try:
             self.integrator = kwargs['integrator']
         except:
-            self.integrator = Integrator.RK4
+            self.integrator = Integrator.Euler
+            # self.integrator = Integrator.RK4
 
         # radius to consider done
         self.start_thresh = 0.5  # 10cm
@@ -229,6 +230,14 @@ class F110Env(gym.Env):
         
         return bool(done), self.toggle_list >= 4
 
+    def check_location(self):
+        location = np.array([self.poses_x[0], self.poses_y[0]])
+        p_done = self.sim.agents[0].scan_simulator.check_location(location)
+        if not p_done:
+            return False
+        print(f"Personl done called: {location}")
+        return True
+
     def _update_state(self, obs_dict):
         """
         Update the env's states according to observations
@@ -283,6 +292,9 @@ class F110Env(gym.Env):
 
         # check done
         done, toggle_list = self._check_done()
+        if self.check_location():
+            obs['collisions'][0] = True
+            done = True
         info = {'checkpoint_done': toggle_list}
 
         return obs, reward, done, info

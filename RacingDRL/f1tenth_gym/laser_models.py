@@ -456,6 +456,31 @@ class ScanSimulator2D(object):
     def get_increment(self):
         return self.angle_increment
 
+    def check_location(self, pose):
+        if check_bounds(pose[0], pose[1], self.orig_x, self.orig_y, self.orig_c, self.orig_s, self.map_height, self.map_width, self.map_resolution):
+            return True
+        d = distance_transform(pose[0], pose[1], self.orig_x, self.orig_y, self.orig_c, self.orig_s, self.map_height, self.map_width, self.map_resolution, self.dt)
+        if d < 0.001: #1mm
+            return True
+        return False
+
+
+@njit(cache=True)
+def check_bounds(x, y, orig_x, orig_y, orig_c, orig_s, height, width, resolution):
+
+    # translation
+    x_trans = x - orig_x
+    y_trans = y - orig_y
+
+    # rotation
+    x_rot = x_trans * orig_c + y_trans * orig_s
+    y_rot = -x_trans * orig_s + y_trans * orig_c
+
+    # clip the state to be a cell
+    if x_rot < 0 or x_rot >= width * resolution or y_rot < 0 or y_rot >= height * resolution:
+        return True
+    return False
+
 
 """
 Unit tests for the 2D scan simulator class
