@@ -226,9 +226,9 @@ class F110Env(gym.Env):
             if self.toggle_list[i] < 4:
                 self.lap_times[i] = self.current_time
         
-        done = (self.collisions[self.ego_idx]) or np.all(self.toggle_list >= 4)
+        done = (self.collisions[self.ego_idx]) or np.all(self.toggle_list >= 2) # signle lap
         
-        return bool(done), self.toggle_list >= 4
+        return bool(done), self.toggle_list >= 2
 
     def check_location(self):
         location = np.array([self.poses_x[0], self.poses_y[0]])

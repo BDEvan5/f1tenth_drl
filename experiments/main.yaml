@@ -10,7 +10,7 @@ n_repeats: 1
 set_n: 1
 
 random_seed: 0
-max_speed: 3
+max_speed: 2
 n_scans: 1
 
 training_steps: 10000
@@ -20,13 +20,14 @@ n_test_laps: 5
 # algorithm: "DQN"
 # algorithm: "PPO"
 # algorithm: "SAC"
-algorithm: "TD3"
+# algorithm: "TD3"
 
-map_name: "esp"
+# map_name: "esp"
+map_name: "aut"
 
 runs:
   - algorithm: "TD3"
-  # - algorithm: "DDPG"
-  # - algorithm: "SAC"
+  - algorithm: "DDPG"
+  - algorithm: "SAC"
 
 

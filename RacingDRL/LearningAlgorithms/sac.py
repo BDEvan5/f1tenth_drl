@@ -44,6 +44,8 @@ class TrainSAC:
         return action.detach()[0].numpy()
                
     def train(self, iterations=2):
+        if self.replay_buffer.size() < BATCH_SIZE: return 
+        
         for _ in range(0, iterations):
             state, action, next_state, reward, done = self.replay_buffer.sample(BATCH_SIZE)
             alpha = self.log_alpha.exp()
@@ -77,7 +79,7 @@ class TrainSAC:
 
             target_q1 = self.target_soft_q_net1(next_state, new_next_actions)
             target_q2 = self.target_soft_q_net2(next_state, new_next_actions)
-            target_q_values = torch.min(target_q1, target_q2) - alpha * new_log_pi
+            target_q_values = torch.min(target_q1, target_q2) - alpha * new_log_pi.mean()
 
             q_target = reward + done * GAMMA * target_q_values
             q_loss = self.soft_q_criterion(current_q1, q_target.detach()) + self.soft_q_criterion(current_q2, q_target.detach())
@@ -105,9 +107,9 @@ class TestSAC:
 
     def act(self, state):
         state = torch.FloatTensor(state)
-        action = self.actor(state).data.numpy().flatten()
+        action, log_prob = self.actor(state)
         
-        return action
+        return action.detach().numpy()
       
         
 

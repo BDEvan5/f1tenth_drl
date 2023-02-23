@@ -28,17 +28,15 @@ class OrnsteinUhlenbeckNoise:
         return x
   
 class TrainDDPG:
-    def __init__(self, state_dim, action_dim, action_scale):
-        self.action_scale = action_scale
-        
+    def __init__(self, state_dim, action_dim):
         self.replay_buffer = OffPolicyBuffer(state_dim, action_dim)
 
         self.critic = DoubleQNet(state_dim, action_dim)
         self.critic_target = DoubleQNet(state_dim, action_dim)
         self.critic_target.load_state_dict(self.critic.state_dict())
         
-        self.actor = DoublePolicyNet(state_dim, action_dim, action_scale)
-        self.actor_target = DoublePolicyNet(state_dim, action_dim, action_scale)
+        self.actor = DoublePolicyNet(state_dim, action_dim)
+        self.actor_target = DoublePolicyNet(state_dim, action_dim)
         self.actor_target.load_state_dict(self.actor.state_dict())
 
         self.mu_optimizer = optim.Adam(self.actor.parameters(), lr=lr_mu)
@@ -46,7 +44,7 @@ class TrainDDPG:
         self.ou_noise = OrnsteinUhlenbeckNoise(mu=np.zeros(1))
 
     def act(self, state):
-        action = self.actor(torch.from_numpy(state).float()) * self.action_scale
+        action = self.actor(torch.from_numpy(state).float()) 
         action = action.detach().numpy() + self.ou_noise()
         
         return action
@@ -62,7 +60,7 @@ class TrainDDPG:
         q_loss.backward()
         self.q_optimizer.step()
         
-        mu_loss = -self.critic(states,self.actor(states)).mean() 
+        mu_loss = -self.critic(states, self.actor(states)).mean() 
         self.mu_optimizer.zero_grad()
         mu_loss.backward()
         self.mu_optimizer.step()
@@ -72,8 +70,6 @@ class TrainDDPG:
      
     def save(self, filename, directory):
         torch.save(self.actor, '%s/%s_actor.pth' % (directory, filename))
-
-    
      
      
 class TestDDPG:
