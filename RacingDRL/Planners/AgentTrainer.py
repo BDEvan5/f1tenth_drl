@@ -1,10 +1,12 @@
 from RacingDRL.Utils.utils import init_file_struct
 from RacingDRL.LearningAlgorithms.create_agent import create_train_agent
 import numpy as np
-from RacingDRL.Planners.Architectures import ArchEndToEnd, ArchHybrid, ArchPathFollower
+from RacingDRL.Planners.Architectures import select_architecture
 from RacingDRL.Utils.TrainHistory import TrainHistory
 from RacingDRL.Planners.RewardSignals import ProgressReward
 from RacingDRL.Planners.StdTrack import StdTrack
+
+
 
 class AgentTrainer: 
     def __init__(self, run, conf):
@@ -22,11 +24,7 @@ class AgentTrainer:
         self.std_track = StdTrack(run.map_name)
         self.reward_generator = ProgressReward(self.std_track)
 
-        if run.state_vector == "end_to_end":
-            self.architecture = ArchEndToEnd(run, conf)
-        elif run.state_vector == "path_follower":
-            self.architecture = ArchPathFollower(run, conf)
-
+        self.architecture = select_architecture(run, conf)
         self.agent = create_train_agent(run, self.architecture.state_space)
         self.t_his = TrainHistory(run, conf)
 

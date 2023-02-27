@@ -13,8 +13,8 @@ random_seed: 0
 max_speed: 5
 n_scans: 2
 
-training_steps: 50000
-n_test_laps: 10
+training_steps: 15000
+n_test_laps: 5
 # map_name: "esp"
 
 # algorithm: "DQN"
@@ -27,8 +27,8 @@ map_name: "esp"
 
 
 runs:
-  # - algorithm: "TD3"
-  # - algorithm: "DDPG"
   - algorithm: "SAC"
+  - algorithm: "TD3"
+  - algorithm: "DDPG"
 
 

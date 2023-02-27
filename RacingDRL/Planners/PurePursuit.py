@@ -16,6 +16,7 @@ from numba import njit
 import csv
 import os
 from matplotlib import pyplot as plt
+from RacingDRL.Planners.TrackLine import TrackLine
 
 @njit(fastmath=True, cache=True)
 def add_locations(x1, x2, dx=1):
@@ -255,20 +256,14 @@ class Trajectory:
         #TODO: for compuational efficiency, pass the l2s and the diffs to the functions so that they don't have to be recalculated
         wpts = np.vstack((self.waypoints[:, 0], self.waypoints[:, 1])).T
         nearest_point, nearest_dist, t, i = nearest_point_on_trajectory_py2(position, wpts)
-        if nearest_dist < lookahead_distance:
-            lookahead_point, i2, t2 = first_point_on_trajectory_intersecting_circle(position, lookahead_distance, wpts, i+t, wrap=True)
-            if i2 == None:
-                return None
-            current_waypoint = np.empty((3, ))
-            # x, y
-            current_waypoint[0:2] = wpts[i2, :]
-            # speed
-            current_waypoint[2] = self.vs[i]
-            return current_waypoint
-        elif nearest_dist < self.max_reacquire:
-            return np.append(wpts[i, :], self.vs[i])
-        else:
-            raise Exception("Waypoint not found")
+
+        lookahead_point, i2, t2 = first_point_on_trajectory_intersecting_circle(position, lookahead_distance, wpts, i+t, wrap=True)
+        if i2 == None: return None
+        current_waypoint = np.empty((3, ))
+        current_waypoint[0:2] = wpts[i2, :]
+        current_waypoint[2] = self.vs[i]
+        
+        return current_waypoint
 
     def show_pts(self):
         from matplotlib import pyplot as plt
@@ -293,33 +288,32 @@ def get_actuation(pose_theta, lookahead_point, position, lookahead_distance, whe
 class PurePursuit:
     def __init__(self, conf, run, init=True):
         self.name = run.run_name
-        path = os.getcwd() + f"/Data/Vehicles/" + run.path  + self.name
+        path = os.getcwd() + f"/Data/" + run.path  + self.name + "/"
         if init: init_file_struct(path)
         self.conf = conf
         self.run = run
 
-        self.raceline = run.raceline
+        self.racing_line = run.racing_line
         self.speed_mode = run.pp_speed_mode
         self.max_speed = run.max_speed
-        self.trajectory = Trajectory(run.map_name, run.raceline)
+        # self.trajectory = Trajectory(run.map_name, run.raceline)
         # self.trajectory.show_pts()
+        self.track_line = TrackLine(run.map_name, run.racing_line, True)
 
         self.lookahead = conf.lookahead 
         self.v_min_plan = conf.v_min_plan
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
 
-
     def plan(self, obs):
-        state = obs['state']
-        position = state[0:2]
-        theta = state[2]
+        position = np.array([obs['poses_x'][0], obs['poses_y'][0]])
+        theta = obs['poses_theta'][0]
         # lookahead = 1.8
         lookahead = 1.2
         # lookahead = 1 + 0.6* state[3] /  8
-        lookahead_point = self.trajectory.get_current_waypoint(position, lookahead)
+        lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
-        if state[3] < self.v_min_plan:
+        if obs['linear_vels_x'][0] < self.v_min_plan:
             return np.array([0.0, 4])
 
         speed_raceline, steering_angle = get_actuation(theta, lookahead_point, position, self.lookahead, self.wheelbase)
@@ -328,7 +322,7 @@ class PurePursuit:
             speed = 2
         elif self.speed_mode == 'link':
             speed = calculate_speed(steering_angle, 0.8, 7)
-        elif self.speed_mode == 'raceline':
+        elif self.speed_mode == 'racing_line':
             speed = speed_raceline
         else:
             raise Exception(f"Invalid speed mode: {self.speed_mode}")
@@ -339,5 +333,8 @@ class PurePursuit:
 
         return action
 
-    def lap_complete(self):
-        pass
+    def done_callback(self, final_obs):
+        
+        progress = self.track_line.calculate_progress_percent([final_obs['poses_x'][0], final_obs['poses_y'][0]]) * 100
+        
+        print(f"Test lap complete --> Time: {final_obs['lap_times'][0]:.2f}, Colission: {bool(final_obs['collisions'][0])}, Lap p: {progress:.1f}%")

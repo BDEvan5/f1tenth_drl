@@ -1,9 +1,9 @@
 from RacingDRL.Utils.utils import init_file_struct
 from RacingDRL.LearningAlgorithms.create_agent import create_test_agent
 import numpy as np
-from RacingDRL.Planners.Architectures import ArchEndToEnd, ArchHybrid, ArchPathFollower
+from RacingDRL.Planners.Architectures import select_architecture
 from RacingDRL.Planners.StdTrack import StdTrack
-
+from RacingDRL.Planners.VehicleStateHistory import VehicleStateHistory
 
 
 class AgentTester: 
@@ -15,11 +15,11 @@ class AgentTester:
         self.v_min_plan =  conf.v_min_plan
 
         self.std_track = StdTrack(run.map_name)
-
-        if run.state_vector == "end_to_end":
-            self.architecture = ArchEndToEnd(run, conf)
+        self.architecture = select_architecture(run, conf)
 
         self.agent = create_test_agent(self.name, self.path, run)
+        
+        # self.vehicle_state_history = VehicleStateHistory(run, "Testing/")
 
     def plan(self, obs):
         nn_state = self.architecture.transform_obs(obs)
@@ -29,6 +29,8 @@ class AgentTester:
 
         self.nn_act = self.agent.act(nn_state)
         self.action = self.architecture.transform_action(self.nn_act)
+        
+        # self.vehicle_state_history.add_memory_entry(obs, self.action)
         
         return self.action 
 

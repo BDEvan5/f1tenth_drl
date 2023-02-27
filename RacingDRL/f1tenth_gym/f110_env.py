@@ -97,7 +97,7 @@ class F110Env(gym.Env):
     current_obs = None
     render_callbacks = []
 
-    def __init__(self, **kwargs):        
+    def __init__(self, **kwargs):
         # kwargs extraction
         try:
             self.seed = kwargs['seed']
@@ -379,6 +379,15 @@ class F110Env(gym.Env):
         """
 
         F110Env.render_callbacks.append(callback_func)
+        
+    def update_rendering_map(self):
+        """To be called if different map is loaded without deleting env.
+        """
+        F110Env.renderer.update_map(self.map_name, self.map_ext)
+        F110Env.renderer.update_obs(self.render_obs)
+        F110Env.renderer.dispatch_events()
+        F110Env.renderer.on_draw()
+        F110Env.renderer.flip()
 
     def render(self, mode='human'):
         """

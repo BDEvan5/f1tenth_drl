@@ -2,6 +2,16 @@ import numpy as np
 from RacingDRL.Planners.StdTrack import StdTrack
 from matplotlib import pyplot as plt
 
+def select_architecture(run, conf):
+    if run.state_vector == "end_to_end":
+        architecture = ArchEndToEnd(run, conf)
+    elif run.state_vector == "path_follower":
+        architecture = ArchPathFollower(run, conf)
+    else:
+        raise ValueError("Unknown state vector type: " + run.state_vector)
+            
+    return architecture
+
 class ArchEndToEnd:
     def __init__(self, run, conf):
         self.state_space = conf.n_beams 

@@ -1,0 +1,35 @@
+
+# planner_type: "agent_on"
+# planner_type: "agent_off"
+
+planner_type: "pure_pursuit"
+algorithm: "PP"
+racing_line: True
+pp_speed_mode: "constant"
+# pp_speed_mode: "racing_line"
+
+# state_vector: "end_to_end"
+state_vector: "path_follower"
+# state_vector: "hybrid_all"
+
+n_repeats: 1
+set_n: 1
+
+random_seed: 0
+max_speed: 5
+n_scans: 2
+
+training_steps: 15000
+n_test_laps: 1
+# map_name: "esp"
+
+# map_name: "aut"
+
+
+runs:
+  - map_name: "esp"
+  - map_name: "mco"
+  - map_name: "gbr"
+  - map_name: "aut"
+
+
