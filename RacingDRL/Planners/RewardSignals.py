@@ -1,12 +1,12 @@
 import numpy as np
 
-from RacingDRL.Planners.StdTrack import StdTrack
+from RacingDRL.Planners.TrackLine import TrackLine
 
 
 
 # rewards functions
 class ProgressReward:
-    def __init__(self, track: StdTrack) -> None:
+    def __init__(self, track: TrackLine) -> None:
         self.track = track
 
     def __call__(self, observation, prev_obs):
@@ -20,9 +20,9 @@ class ProgressReward:
         position = np.array([observation['poses_x'][0], observation['poses_y'][0]])
         prev_position = np.array([prev_obs['poses_x'][0], prev_obs['poses_y'][0]])
 
-        s = self.track.calculate_progress(prev_position)
-        ss = self.track.calculate_progress(position)
-        reward = (ss - s) / self.track.total_s
+        s = self.track.calculate_progress_percent(prev_position)
+        ss = self.track.calculate_progress_percent(position)
+        reward = ss - s
         if abs(reward) > 0.5: # happens at end of eps
             return 0.001 # assume positive progress near end
 

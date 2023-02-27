@@ -5,8 +5,8 @@
 planner_type: "PurePursuit"
 algorithm: "PP"
 racing_line: True
-pp_speed_mode: "constant"
-# pp_speed_mode: "racing_line"
+# pp_speed_mode: "constant"
+pp_speed_mode: "racing_line"
 
 # state_vector: "endToEnd"
 state_vector: "pathFollower"
@@ -16,7 +16,7 @@ n_repeats: 1
 set_n: 1
 
 random_seed: 0
-max_speed: 5
+max_speed: 8
 n_scans: 2
 
 training_steps: 15000

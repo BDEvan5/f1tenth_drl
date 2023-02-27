@@ -4,7 +4,7 @@ import numpy as np
 from RacingDRL.Planners.Architectures import select_architecture
 from RacingDRL.Utils.TrainHistory import TrainHistory
 from RacingDRL.Planners.RewardSignals import ProgressReward
-from RacingDRL.Planners.StdTrack import StdTrack
+from RacingDRL.Planners.TrackLine import TrackLine
 
 
 
@@ -21,7 +21,7 @@ class AgentTrainer:
         self.nn_state = None
         self.nn_act = None
         self.action = None
-        self.std_track = StdTrack(run.map_name)
+        self.std_track = TrackLine(run.map_name, False)
         self.reward_generator = ProgressReward(self.std_track)
 
         self.architecture = select_architecture(run, conf)

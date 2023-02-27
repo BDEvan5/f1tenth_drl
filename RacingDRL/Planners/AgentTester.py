@@ -2,7 +2,7 @@ from RacingDRL.Utils.utils import init_file_struct
 from RacingDRL.LearningAlgorithms.create_agent import create_test_agent
 import numpy as np
 from RacingDRL.Planners.Architectures import select_architecture
-from RacingDRL.Planners.StdTrack import StdTrack
+from RacingDRL.Planners.TrackLine import TrackLine
 from RacingDRL.Planners.VehicleStateHistory import VehicleStateHistory
 
 
@@ -14,7 +14,7 @@ class AgentTester:
 
         self.v_min_plan =  conf.v_min_plan
 
-        self.std_track = StdTrack(run.map_name)
+        self.std_track = TrackLine(run.map_name, False)
         self.architecture = select_architecture(run, conf)
 
         self.agent = create_test_agent(self.name, self.path, run)

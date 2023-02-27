@@ -1,5 +1,5 @@
 import numpy as np
-from RacingDRL.Planners.StdTrack import StdTrack
+from RacingDRL.Planners.TrackLine import TrackLine
 from matplotlib import pyplot as plt
 
 def select_architecture(run, conf):
@@ -74,7 +74,7 @@ class ArchPathFollower:
 
         # self.n_stacked_states = run.n_stacked_states
 
-        self.track = StdTrack(run.map_name)
+        self.track = TrackLine(run.map_name, False)
         self.previous_action = np.zeros(2)
     
     def transform_obs(self, obs):

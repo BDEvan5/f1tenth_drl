@@ -32,7 +32,8 @@ class PurePursuit:
         self.racing_line = run.racing_line
         self.speed_mode = run.pp_speed_mode
         self.max_speed = run.max_speed
-        self.track_line = TrackLine(run.map_name, run.racing_line, True)
+        self.track_line = TrackLine(run.map_name, run.racing_line, False)
+        # self.track_line = TrackLine(run.map_name, run.racing_line, True)
 
         self.lookahead = conf.lookahead 
         self.v_min_plan = conf.v_min_plan
@@ -45,8 +46,8 @@ class PurePursuit:
         position = np.array([obs['poses_x'][0], obs['poses_y'][0]])
         theta = obs['poses_theta'][0]
         # lookahead = 1.8
-        lookahead = 1.2
-        # lookahead = 1 + 0.6* state[3] /  8
+        # lookahead = 1.2
+        lookahead = 1 + 0.6* obs['linear_vels_x'][0] /  6
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
         if obs['linear_vels_x'][0] < self.v_min_plan:
