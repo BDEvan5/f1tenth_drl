@@ -158,6 +158,7 @@ def get_distance(x1=[0, 0], x2=[0, 0]):
         d[i] = x1[i] - x2[i]
     return np.linalg.norm(d)
 
+
 class Trajectory:
     def __init__(self, map_name, speed=True):
         self.map_name = map_name

@@ -2,16 +2,16 @@
 # planner_type: "agent_on"
 planner_type: "agent_off"
 
-state_vector: "end_to_end"
-# input_vector: "path_follower"
-# input_vector: "hybrid_all"
+# state_vector: "end_to_end"
+state_vector: "path_follower"
+# state_vector: "hybrid_all"
 
 n_repeats: 3
 set_n: 1
 
 random_seed: 0
 max_speed: 5
-n_scans: 1
+n_scans: 2
 
 training_steps: 50000
 n_test_laps: 10
@@ -27,8 +27,8 @@ map_name: "esp"
 
 
 runs:
-  - algorithm: "TD3"
-  - algorithm: "DDPG"
+  # - algorithm: "TD3"
+  # - algorithm: "DDPG"
   - algorithm: "SAC"
 
 

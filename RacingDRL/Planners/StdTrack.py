@@ -41,6 +41,7 @@ class StdTrack:
         self.ss = np.insert(self.ss, 0, 0)
 
         self.total_s = self.ss[-1]
+        self.N = len(self.wpts)
 
     def plot_wpts(self):
         plt.figure(1)

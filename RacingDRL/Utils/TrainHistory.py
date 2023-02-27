@@ -98,18 +98,19 @@ class TrainHistory():
         plt.ylabel("Average Progress")
         plt.xlabel("Training Steps (x100)")
         plt.ylim([0, 100])
+        plt.grid(True)
         plt.savefig(self.path + "/training_progresses_steps.png")
 
         plt.clf()
         plt.plot(t_steps, self.rewards[0:ptr], '.', color='darkblue', markersize=4)
         plt.plot(t_steps, true_moving_average(self.rewards[0:ptr], 20), linewidth='4', color='r')
-
         plt.xlabel("Training Steps (x100)")
         plt.ylabel("Reward per Episode")
-
         plt.tight_layout()
-        plt.grid()
+        plt.grid(True)
         plt.savefig(self.path + "/training_rewards_steps.png")
+        
+        plt.close(3)
 
         # plt.figure(4)
         # plt.clf()
