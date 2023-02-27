@@ -73,7 +73,8 @@ class ArchPathFollower:
         upcomings_inds = np.arange(idx, idx+self.n_wpts)
         if idx + self.n_wpts >= self.track.N:
             n_start_pts = idx + self.n_wpts - self.track.N
-            upcomings_inds[n_start_pts:] = np.arange(0, n_start_pts)
+            upcomings_inds[self.n_wpts - n_start_pts:] = np.arange(0, n_start_pts)
+            
         upcoming_pts = self.track.wpts[upcomings_inds]
         
         relative_pts = transform_waypoints(upcoming_pts, np.array([obs['poses_x'][0], obs['poses_y'][0]]), obs['poses_theta'][0])
@@ -83,7 +84,6 @@ class ArchPathFollower:
         
         # print(relative_pts)
         # print(f"Speed: {speed}, anglular_vel: {anglular_vel}, prev action: {self.previous_action}")
-        
         
         state = np.concatenate((relative_pts.flatten(), np.array([speed, anglular_vel, self.previous_action[0], self.previous_action[1]])))
         
