@@ -11,13 +11,13 @@ from RacingDRL.Planners.PurePursuit import PurePursuit
 
 
 RENDER_ENV = False
-RENDER_ENV = True
+# RENDER_ENV = True
 
         
 def select_test_agent(conf, run_dict):
     if run_dict.planner_type == "Agent":
         planner = AgentTester(run_dict, conf)
-    elif run_dict.planner_type == "pure_pursuit":
+    elif run_dict.planner_type == "PurePursuit":
         planner = PurePursuit(conf, run_dict)
     else:
         raise ValueError(f"Planner type not recognised: {run_dict.planner_type}")    
@@ -103,7 +103,7 @@ from pstats import SortKey
     
 def main():
     experiment = "main"
-    experiment = "test_pp"
+    experiment = "testPP"
     # run_training_batch(experiment)
     run_testing_batch(experiment)
     
