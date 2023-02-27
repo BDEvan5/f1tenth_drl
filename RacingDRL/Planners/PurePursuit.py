@@ -45,9 +45,9 @@ class PurePursuit:
     def plan(self, obs):
         position = np.array([obs['poses_x'][0], obs['poses_y'][0]])
         theta = obs['poses_theta'][0]
-        # lookahead = 1.8
+        # lookahead = 1.9
         # lookahead = 1.2
-        lookahead = 1 + 0.6* obs['linear_vels_x'][0] /  6
+        lookahead = 0.8 + 0.6* obs['linear_vels_x'][0] /  8
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
         if obs['linear_vels_x'][0] < self.v_min_plan:

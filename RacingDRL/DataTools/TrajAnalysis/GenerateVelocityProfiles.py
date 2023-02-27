@@ -57,8 +57,8 @@ class AnalyseTestLapData:
         print(f"Vehicle name: {self.vehicle_name}")
         self.map_name = self.vehicle_name.split("_")[3]
         self.map_data = MapData(self.map_name)
-        self.std_track = self.TrackLine(self.map_name, False)
-        self.racing_track = self.TrackLine(self.map_name, True)
+        self.std_track = TrackLine(self.map_name, False)
+        self.racing_track = TrackLine(self.map_name, True)
 
         if not os.path.exists(self.path + "TestingVelocities/"): 
             os.mkdir(self.path + "TestingVelocities/")    
@@ -129,7 +129,7 @@ def analyse_folder():
 
     p = "Data/"
 
-    path = p + "testPP_9/"
+    path = p + "testPP_12/"
     # path = p + "main_22"
     
     TestData = AnalyseTestLapData()
