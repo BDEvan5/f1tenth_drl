@@ -83,6 +83,7 @@ def run_training_batch(experiment):
         
     
 def run_testing_batch(experiment):
+    # run_list = setup_run_list(experiment, new_run=True)
     run_list = setup_run_list(experiment, new_run=False)
     conf = load_conf("config_file")
     

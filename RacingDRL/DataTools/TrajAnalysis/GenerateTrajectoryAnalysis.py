@@ -4,6 +4,7 @@ plt.rcParams['pdf.use14corefonts'] = True
 import numpy as np
 import glob
 import os
+import math, cmath
 
 import glob
 from matplotlib.ticker import PercentFormatter
@@ -35,6 +36,8 @@ class AnalyseTestLapData:
         self.std_track = None
         self.summary_path = None
         self.lap_n = 0
+        
+        self.track_progresses = None
 
     def explore_folder(self, path):
         vehicle_folders = glob.glob(f"{path}*/")
@@ -57,12 +60,14 @@ class AnalyseTestLapData:
         self.std_track = TrackLine(self.map_name, False)
         self.racing_track = TrackLine(self.map_name, True)
 
-        if not os.path.exists(self.path + "TestingVelocities/"): 
-            os.mkdir(self.path + "TestingVelocities/")    
+        if not os.path.exists(self.path + "TrajectoryAnalysis/"): 
+            os.mkdir(self.path + "TrajectoryAnalysis/")    
         for self.lap_n in range(5):
             if not self.load_lap_data(): break # no more laps
+            self.calculate_state_progress()
+            
             self.plot_velocity_heat_map()
-
+            self.plot_tracking_accuracy()
 
     def load_lap_data(self):
         try:
@@ -75,10 +80,51 @@ class AnalyseTestLapData:
         self.actions = data[:, 7:]
 
         return 1 # to say success
+    
+    def calculate_state_progress(self):
+        progresses = []
+        for i in range(len(self.states)):
+            p = self.std_track.calculate_progress_percent(self.states[i, 0:2])
+            progresses.append(p)
+            
+        self.track_progresses = np.array(progresses)
 
+    def plot_tracking_accuracy(self):
+        pts = self.states[:, 0:2]
+        thetas = self.states[:, 4]
+        racing_cross_track = []
+        racing_heading_error = []
+        for i in range(len(pts)):
+            track_heading, deviation = self.racing_track.get_cross_track_heading(pts[i])
+            racing_cross_track.append(deviation)
+            heading_error = sub_angles_complex(track_heading, thetas[i])
+            print(f"Track heading: {track_heading}, Vehicle heading: {thetas[i]}, Heading error: {heading_error}")
+            racing_heading_error.append(heading_error)
+            
+        plt.figure(1, figsize=(10, 5))
+        plt.clf()
+        plt.plot(self.track_progresses, racing_cross_track)
+        
+        plt.title("Tracking Accuracy (m)")
+        plt.xlabel("Track Progress (%)")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_cross_tracking_accuracy_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)
+        
+        plt.figure(1, figsize=(10, 5))
+        plt.clf()
+        plt.plot(self.track_progresses, racing_heading_error)
+        
+        plt.title("Heading Error (rad)")
+        plt.xlabel("Track Progress (%)")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_heading_error_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)
+        
+        
     
     def plot_velocity_heat_map(self): 
-        save_path  = self.path + "TestingVelocities/"
+        save_path  = self.path + "TrajectoryAnalysis/"
         
         plt.figure(1)
         plt.clf()
@@ -111,8 +157,17 @@ class AnalyseTestLapData:
         ax.spines['left'].set_visible(False)
         
         name = save_path + f"{self.vehicle_name}_velocity_map_{self.lap_n}"
-        std_img_saving(name)
+        # std_img_saving(name)
+        plt.savefig(name + ".svg", bbox_inches='tight', pad_inches=0)
 
+def sub_angles_complex(a1, a2): 
+    real = math.cos(a1) * math.cos(a2) + math.sin(a1) * math.sin(a2)
+    im = - math.cos(a1) * math.sin(a2) + math.sin(a1) * math.cos(a2)
+
+    cpx = complex(real, im)
+    phase = cmath.phase(cpx)
+
+    return phase
 
 def esp_left_limits():
     plt.xlim(20, 620)
@@ -126,7 +181,8 @@ def analyse_folder():
 
     p = "Data/"
 
-    path = p + "testPP_12/"
+    path = p + "testPP_13/"
+    # path = p + "testPP_12/"
     # path = p + "main_22"
     
     TestData = AnalyseTestLapData()
