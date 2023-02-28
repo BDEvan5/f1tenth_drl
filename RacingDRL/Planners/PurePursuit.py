@@ -34,26 +34,30 @@ class PurePursuit:
         self.max_speed = run.max_speed
         self.track_line = TrackLine(run.map_name, run.racing_line, False)
         # self.track_line = TrackLine(run.map_name, run.racing_line, True)
+        self.lookahead = run.lookahead
 
-        self.lookahead = conf.lookahead 
+        # self.lookahead = conf.lookahead 
         self.v_min_plan = conf.v_min_plan
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
         
         self.vehicle_state_history = VehicleStateHistory(run, "Testing/")
 
+
     def plan(self, obs):
         position = np.array([obs['poses_x'][0], obs['poses_y'][0]])
         theta = obs['poses_theta'][0]
         # lookahead = 1.9
-        # lookahead = 1.2
-        lookahead = 0.8 + 0.6* obs['linear_vels_x'][0] /  8
+        # lookahead = 1.5
+        # lookahead = 0.8 + 0.6* obs['linear_vels_x'][0] /  8
+        
+        lookahead = self.lookahead
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
         if obs['linear_vels_x'][0] < self.v_min_plan:
             return np.array([0.0, 4])
 
-        speed_raceline, steering_angle = get_actuation(theta, lookahead_point, position, self.lookahead, self.wheelbase)
+        speed_raceline, steering_angle = get_actuation(theta, lookahead_point, position, lookahead, self.wheelbase)
         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
         if self.speed_mode == 'constant':
             speed = 2

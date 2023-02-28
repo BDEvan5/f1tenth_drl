@@ -109,7 +109,8 @@ class TrackLine:
         nearest_point, nearest_dist, t, i = nearest_point_on_trajectory_py2(position, wpts, self.l2s, self.diffs)
 
         lookahead_point, i2, t2 = first_point_on_trajectory_intersecting_circle(position, lookahead_distance, wpts, i+t, wrap=True)
-        if i2 == None: return None
+        if i2 == None: 
+            return None
         lookahead_point = np.empty((3, ))
         lookahead_point[0:2] = wpts[i2, :]
         lookahead_point[2] = self.vs[i]

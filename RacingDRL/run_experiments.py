@@ -49,7 +49,7 @@ def run_simulation_loop_laps(env, planner, n_laps):
         while not done:
             action = planner.plan(observation)
             
-            mini_i = 10
+            mini_i = 1
             while mini_i > 0 and not done:
                 observation, reward, done, info = env.step(action[None, :])
                 mini_i -= 1
@@ -124,8 +124,11 @@ def profile():
             ps.sort_stats('tottime')
             ps.print_stats()
     
+from RacingDRL.DataTools.TrajAnalysis.GenerateTrajectoryAnalysis import analyse_folder
+    
 if __name__ == "__main__":
     main()
+    analyse_folder()
     # profile()
 
 

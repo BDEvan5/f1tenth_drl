@@ -68,6 +68,9 @@ class AnalyseTestLapData:
             
             self.plot_velocity_heat_map()
             self.plot_tracking_accuracy()
+            self.plot_speed_graph()
+            self.plot_slip_graph()
+            self.plot_steering_graph()
 
     def load_lap_data(self):
         try:
@@ -98,7 +101,7 @@ class AnalyseTestLapData:
             track_heading, deviation = self.racing_track.get_cross_track_heading(pts[i])
             racing_cross_track.append(deviation)
             heading_error = sub_angles_complex(track_heading, thetas[i])
-            print(f"Track heading: {track_heading}, Vehicle heading: {thetas[i]}, Heading error: {heading_error}")
+            # print(f"Track heading: {track_heading}, Vehicle heading: {thetas[i]}, Heading error: {heading_error}")
             racing_heading_error.append(heading_error)
             
         plt.figure(1, figsize=(10, 5))
@@ -121,7 +124,43 @@ class AnalyseTestLapData:
         plt.tight_layout()
         plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_heading_error_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)
         
+    def plot_speed_graph(self):
+        plt.figure(1, figsize=(10, 5))
+        plt.clf()
+        plt.plot(self.track_progresses[:-1], self.states[:-1, 3], label="State")
+        plt.plot(self.track_progresses[:-1], self.actions[:-1, 1], label="Actions")
+    
+        plt.legend()
+        plt.title("Speed (m/s)")
+        plt.xlabel("Track Progress (%)")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_speed_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)  
         
+    def plot_steering_graph(self):
+        plt.figure(1, figsize=(10, 5))
+        plt.clf()
+        plt.plot(self.track_progresses[:-1], self.states[:-1, 2], label="State")
+        plt.plot(self.track_progresses[:-1], self.actions[:-1, 0], label="Actions")
+    
+        plt.legend()
+        plt.title("Steering (rad)")
+        plt.xlabel("Track Progress (%)")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_steering_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)    
+        
+    def plot_slip_graph(self):
+        plt.figure(1, figsize=(10, 5))
+        plt.clf()
+        plt.plot(self.track_progresses[:-1], self.states[:-1, 6], label="State")
+    
+        plt.legend()
+        plt.title("Slip (rad)")
+        plt.xlabel("Track Progress (%)")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_slip_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)
     
     def plot_velocity_heat_map(self): 
         save_path  = self.path + "TrajectoryAnalysis/"
