@@ -18,7 +18,7 @@ def select_test_agent(conf, run_dict):
     if run_dict.planner_type == "Agent":
         planner = AgentTester(run_dict, conf)
     elif run_dict.planner_type == "PurePursuit":
-        planner = PurePursuit(conf, run_dict)
+        planner = PurePursuit(conf, run_dict, False)
     else:
         raise ValueError(f"Planner type not recognised: {run_dict.planner_type}")    
     
@@ -49,8 +49,7 @@ def run_simulation_loop_laps(env, planner, n_laps):
         while not done:
             action = planner.plan(observation)
             
-            print(f"Action: {action}")
-            mini_i = 10
+            mini_i = 1
             while mini_i > 0 and not done:
                 observation, reward, done, info = env.step(action[None, :])
                 mini_i -= 1

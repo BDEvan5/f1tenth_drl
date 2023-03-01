@@ -54,18 +54,6 @@ class PurePursuit:
         
         lookahead = self.lookahead
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
-        
-        # plt.figure(1)
-        # plt.plot(lookahead_point[0], lookahead_point[1], 'ro')
-        # plt.plot(position[0], position[1], 'bo')
-        # # plt.plot(nearest_pt[0], nearest_pt[1], 'go')
-        # plt.pause(0.0001)
-
-        # plt.figure(2)
-        # self.counter += 1
-        # plt.plot(self.counter, lookahead_point[2], 'ro')
-        # plt.pause(0.0001)
-
 
         if obs['linear_vels_x'][0] < self.v_min_plan:
             return np.array([0.0, 4])
@@ -77,7 +65,7 @@ class PurePursuit:
         elif self.speed_mode == 'link':
             speed = calculate_speed(steering_angle, 0.8, 7)
         elif self.speed_mode == 'racing_line':
-            speed = speed_raceline *0.9
+            speed = speed_raceline 
         else:
             raise Exception(f"Invalid speed mode: {self.speed_mode}")
             
