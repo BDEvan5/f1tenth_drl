@@ -32,18 +32,18 @@ runs:
   # - map_name: "gbr"
   # - map_name: "aut"
 
-  - lookahead: 0.8
-    algorithm: "PP08"
-  - lookahead: 1.0
-    algorithm: "PP10"
+  # - lookahead: 0.8
+  #   algorithm: "PP08"
+  # - lookahead: 1.0
+  #   algorithm: "PP10"
   - lookahead: 1.2
-    algorithm: "PP12"
-  - lookahead: 1.4
-    algorithm: "PP14"
-  - lookahead: 1.6
-    algorithm: "PP16"
-  - lookahead: 1.8
-    algorithm: "PP18"
-  - lookahead: 2
-    algorithm: "PP20"
+    algorithm: "PP12R"
+  # - lookahead: 1.4
+  #   algorithm: "PP14"
+  # - lookahead: 1.6
+  #   algorithm: "PP16"
+  # - lookahead: 1.8
+  #   algorithm: "PP18"
+  # - lookahead: 2
+  #   algorithm: "PP20"
 

@@ -71,6 +71,7 @@ class AnalyseTestLapData:
             self.plot_speed_graph()
             self.plot_slip_graph()
             self.plot_steering_graph()
+            self.plot_speed_graph2()
 
     def load_lap_data(self):
         try:
@@ -81,6 +82,8 @@ class AnalyseTestLapData:
             return 0
         self.states = data[:, :7]
         self.actions = data[:, 7:]
+        
+        print(f"Last state: {self.states[-1]}")
 
         return 1 # to say success
     
@@ -129,6 +132,11 @@ class AnalyseTestLapData:
         plt.clf()
         plt.plot(self.track_progresses[:-1], self.states[:-1, 3], label="State")
         plt.plot(self.track_progresses[:-1], self.actions[:-1, 1], label="Actions")
+        
+        raceline_speeds = []
+        for i in range(len(self.track_progresses)):
+            raceline_speeds.append(self.racing_track.get_raceline_speed(self.states[i, 0:2]))
+        plt.plot(self.track_progresses, raceline_speeds, label="Raceline Speed")
     
         plt.legend()
         plt.title("Speed (m/s)")
@@ -136,6 +144,19 @@ class AnalyseTestLapData:
         plt.grid(True)
         plt.tight_layout()
         plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_speed_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)  
+        
+    def plot_speed_graph2(self):
+        plt.figure(1, figsize=(10, 5))
+        plt.clf()
+        plt.plot(self.states[:-1, 3], label="State")
+        plt.plot(self.actions[:-1, 1], label="Actions")
+    
+        plt.legend()
+        plt.title("Speed (m/s)")
+        plt.xlabel("Track Progress (%)")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_speed2_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)  
         
     def plot_steering_graph(self):
         plt.figure(1, figsize=(10, 5))
@@ -220,7 +241,7 @@ def analyse_folder():
 
     p = "Data/"
 
-    path = p + "testPP_13/"
+    path = p + "testPP_29/"
     # path = p + "testPP_12/"
     # path = p + "main_22"
     

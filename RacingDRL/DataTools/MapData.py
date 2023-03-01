@@ -102,12 +102,12 @@ class MapData:
         points = np.array([xs, ys]).T.reshape(-1, 1, 2)
         segments = np.concatenate([points[:-1], points[1:]], axis=1)
 
-        norm = plt.Normalize(self.t_vs.min(), self.t_vs.max())
+        norm = plt.Normalize(0, 8)
         lc = LineCollection(segments, cmap='jet', norm=norm)
         lc.set_array(self.t_vs)
         lc.set_linewidth(2)
         line = plt.gca().add_collection(lc)
-        plt.colorbar(line)
+        plt.colorbar(line, fraction=0.046, pad=0.04, shrink=0.99)
 
     def plot_map_img(self):
         self.map_img[self.map_img == 1] = 180
@@ -116,6 +116,26 @@ class MapData:
         self.map_img[0, 0] = 0
         plt.imshow(self.map_img, origin='lower', cmap='gray')
 
+    def plot_map_trajectory_data(self):
+        plt.figure(figsize=(10, 5))
+        plt.plot(self.t_vs)
+        
+        plt.xlabel("Track point")
+        plt.ylabel("Speed (m/s)")
+        plt.grid()
+        plt.tight_layout()
+        plt.savefig("map_data/" + self.map_name + "_speeds.svg")
+
+    def plot_map_trajectory_data(self):
+        plt.figure(figsize=(10, 5))
+        plt.plot(self.t_ks)
+        
+        plt.xlabel("Track point")
+        plt.ylabel("Speed (m/s)")
+        plt.grid()
+        plt.tight_layout()
+        plt.savefig("map_data/" + self.map_name + "_curvatures.svg")
+
     def plot_map_data(self):
         self.plot_map_img()
 
@@ -123,13 +143,15 @@ class MapData:
         
         self.plot_race_line()
 
-        plt.show()
+        plt.savefig("map_data/" + self.map_name + "_map.svg")
+        # plt.show()
 
+        self.plot_map_trajectory_data()
 
 
 
 def main():
-    map_name = "f1_gbr"
+    map_name = "esp"
 
     map_data = MapData(map_name)
     map_data.plot_map_data()

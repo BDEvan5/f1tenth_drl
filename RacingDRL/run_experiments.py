@@ -49,13 +49,18 @@ def run_simulation_loop_laps(env, planner, n_laps):
         while not done:
             action = planner.plan(observation)
             
-            mini_i = 1
+            print(f"Action: {action}")
+            mini_i = 10
             while mini_i > 0 and not done:
                 observation, reward, done, info = env.step(action[None, :])
                 mini_i -= 1
 
-            if RENDER_ENV: env.render('human_fast')
+            if RENDER_ENV: env.render('human')
+            
+            # if RENDER_ENV: env.render('human_fast')
     
+        print(f"Done: {done}")
+        print(f"Observation: {observation}")
         planner.done_callback(observation)
         observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
                   

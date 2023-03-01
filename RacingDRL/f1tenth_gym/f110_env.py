@@ -418,6 +418,7 @@ class F110Env(gym.Env):
         F110Env.renderer.on_draw()
         F110Env.renderer.flip()
         if mode == 'human':
-            time.sleep(0.005)
+            time.sleep(0.05)
+            # time.sleep(0.005)
         elif mode == 'human_fast':
             pass

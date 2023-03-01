@@ -13,9 +13,11 @@ class TrackLine:
         
         if racing_line:
             self.load_raceline()
+            # self.vs = self.vs[::-1]
         else:
             self.load_centerline()
-            
+        # self.wpts = self.wpts[::-1]
+        
         if expand:
             self._expand_wpts()
             
@@ -25,8 +27,6 @@ class TrackLine:
 
         self.max_distance = 0
         self.distance_allowance = 1
-
-        self.load_centerline()
 
     def load_centerline(self):
         filename = 'maps/' + self.map_name + '_centerline.csv'
@@ -103,6 +103,10 @@ class TrackLine:
             plt.text(pt[0], pt[1], f"{i}")
         plt.gca().set_aspect('equal', adjustable='box')
         plt.show()
+    
+    def get_raceline_speed(self, point):
+        idx, dists = self.get_trackline_segment(point)
+        return self.vs[idx]
     
     def get_lookahead_point(self, position, lookahead_distance):
         wpts = np.vstack((self.wpts[:, 0], self.wpts[:, 1])).T
