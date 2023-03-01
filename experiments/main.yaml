@@ -1,10 +1,10 @@
 
 # planner_type: "agent_on"
-planner_type: "agent_off"
+planner_type: "AgentOff"
 
-# state_vector: "end_to_end"
-state_vector: "path_follower"
-# state_vector: "hybrid_all"
+# state_vector: "endToEnd"
+state_vector: "pathFollower"
+# state_vector: "hybridAll"
 
 n_repeats: 3
 set_n: 1
@@ -22,13 +22,18 @@ n_test_laps: 5
 # algorithm: "SAC"
 # algorithm: "TD3"
 
-map_name: "esp"
+# map_name: "esp"
 # map_name: "aut"
-
+algorithm: "SAC"
 
 runs:
-  - algorithm: "SAC"
-  - algorithm: "TD3"
-  - algorithm: "DDPG"
+  - map_name: "esp"
+  - map_name: "mco"
+  - map_name: "gbr"
+  - map_name: "aut"
+
+  # - algorithm: "SAC"
+  # - algorithm: "TD3"
+  # - algorithm: "DDPG"
 
 

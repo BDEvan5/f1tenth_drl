@@ -97,13 +97,13 @@ class TrainSAC:
         self.alpha_optimizer.step()
                 
     def save(self, filename, directory):
-        torch.save(self.actor, '%s/%s_actor.pth' % (directory, filename))
+        torch.save(self.actor, directory + f'{filename}_actor.pth')
 
     
      
 class TestSAC:
     def __init__(self, filename, directory):
-        self.actor = torch.load('%s/%s_actor.pth' % (directory, filename))
+        self.actor = torch.load(directory + f'{filename}_actor.pth')
 
     def act(self, state):
         state = torch.FloatTensor(state)

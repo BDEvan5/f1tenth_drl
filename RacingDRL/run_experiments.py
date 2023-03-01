@@ -15,7 +15,7 @@ RENDER_ENV = False
 
         
 def select_test_agent(conf, run_dict):
-    if run_dict.planner_type == "Agent":
+    if run_dict.planner_type == "AgentOff":
         planner = AgentTester(run_dict, conf)
     elif run_dict.planner_type == "PurePursuit":
         planner = PurePursuit(conf, run_dict, False)
@@ -106,9 +106,9 @@ from pstats import SortKey
     
 def main():
     experiment = "main"
-    experiment = "testPP"
-    # run_training_batch(experiment)
-    run_testing_batch(experiment)
+    # experiment = "testPP"
+    run_training_batch(experiment)
+    # run_testing_batch(experiment)
     
 def profile():
     with cProfile.Profile(builtins=False) as pr:
@@ -130,7 +130,7 @@ from RacingDRL.DataTools.TrajAnalysis.GenerateTrajectoryAnalysis import analyse_
     
 if __name__ == "__main__":
     main()
-    analyse_folder()
+    # analyse_folder()
     # profile()
 
 
