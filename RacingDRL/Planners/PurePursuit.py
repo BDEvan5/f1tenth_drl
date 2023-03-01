@@ -25,7 +25,11 @@ class PurePursuit:
     def __init__(self, conf, run, init=True):
         self.name = run.run_name
         path = os.getcwd() + f"/Data/" + run.path  + self.name + "/"
-        if init: init_file_struct(path)
+        if not os.path.exists(path):
+            os.mkdir(path)
+        elif init:
+            init_file_struct(path)
+            
         self.conf = conf
         self.run = run
 

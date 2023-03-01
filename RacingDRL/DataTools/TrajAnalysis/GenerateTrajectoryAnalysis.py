@@ -83,8 +83,6 @@ class AnalyseTestLapData:
         self.states = data[:, :7]
         self.actions = data[:, 7:]
         
-        print(f"Last state: {self.states[-1]}")
-
         return 1 # to say success
     
     def calculate_state_progress(self):
@@ -241,7 +239,7 @@ def analyse_folder():
 
     p = "Data/"
 
-    path = p + "testPP_29/"
+    path = p + "testPP_1/"
     # path = p + "testPP_12/"
     # path = p + "main_22"
     

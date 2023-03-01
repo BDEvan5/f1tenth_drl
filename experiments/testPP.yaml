@@ -22,22 +22,22 @@ n_scans: 2
 training_steps: 15000
 n_test_laps: 1
 map_name: "esp"
-
+lookahead: 1.0
 # map_name: "aut"
 
 
 runs:
-  # - map_name: "esp"
-  # - map_name: "mco"
-  # - map_name: "gbr"
-  # - map_name: "aut"
+  - map_name: "esp"
+  - map_name: "mco"
+  - map_name: "gbr"
+  - map_name: "aut"
 
   # - lookahead: 0.8
   #   algorithm: "PP08"
   # - lookahead: 1.0
   #   algorithm: "PP10"
-  - lookahead: 1.2
-    algorithm: "PP12R"
+  # - lookahead: 1.2
+  #   algorithm: "PP12R"
   # - lookahead: 1.4
   #   algorithm: "PP14"
   # - lookahead: 1.6

@@ -58,8 +58,6 @@ def run_simulation_loop_laps(env, planner, n_laps):
             
             # if RENDER_ENV: env.render('human_fast')
     
-        print(f"Done: {done}")
-        print(f"Observation: {observation}")
         planner.done_callback(observation)
         observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
                   
