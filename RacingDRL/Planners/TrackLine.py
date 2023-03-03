@@ -13,10 +13,11 @@ class TrackLine:
         
         if racing_line:
             self.load_raceline()
-            # self.vs = self.vs[::-1]
         else:
             self.load_centerline()
-        # self.wpts = self.wpts[::-1]
+        
+        self.total_s = self.ss[-1]
+        self.N = len(self.wpts)
         
         if expand:
             self._expand_wpts()
@@ -54,8 +55,6 @@ class TrackLine:
         seg_lengths = np.linalg.norm(diffs, axis=1)
         self.ss = np.insert(np.cumsum(seg_lengths), 0, 0)
 
-        self.total_s = self.ss[-1]
-        self.N = len(self.wpts)
     
     def load_raceline(self):
         track = []
@@ -74,7 +73,6 @@ class TrackLine:
 
         seg_lengths = np.linalg.norm(np.diff(self.wpts, axis=0), axis=1)
         self.ss = np.insert(np.cumsum(seg_lengths), 0, 0)
-        self.total_s = self.ss[-1]
     
     def _expand_wpts(self):
         n = 5 # number of pts per orig pt 

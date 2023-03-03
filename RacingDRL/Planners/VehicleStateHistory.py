@@ -24,8 +24,6 @@ class VehicleStateHistory:
 
         lap_history = np.concatenate((states, actions), axis=1)
         
-        print(f"Last state: {states[-1]}")
-
         if test_map is None:
             np.save(self.path + f"Lap_{self.lap_n}_history_{self.vehicle_name}.npy", lap_history)
         else:

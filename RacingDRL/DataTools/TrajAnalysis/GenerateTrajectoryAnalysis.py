@@ -62,20 +62,21 @@ class AnalyseTestLapData:
 
         if not os.path.exists(self.path + "TrajectoryAnalysis/"): 
             os.mkdir(self.path + "TrajectoryAnalysis/")    
-        for self.lap_n in range(5):
+        for self.lap_n in range(1):
             if not self.load_lap_data(): break # no more laps
             self.calculate_state_progress()
             
-            self.plot_velocity_heat_map()
+            # self.plot_velocity_heat_map()
             self.plot_tracking_accuracy()
             self.plot_speed_graph()
             self.plot_slip_graph()
             self.plot_steering_graph()
             self.plot_speed_graph2()
+            self.plot_center_line_deviation()
 
     def load_lap_data(self):
         try:
-            data = np.load(self.path + f"Testing/Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
+            data = np.load(self.path + f"Testing{self.map_name}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
         except Exception as e:
             print(e)
             print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
@@ -102,7 +103,6 @@ class AnalyseTestLapData:
             track_heading, deviation = self.racing_track.get_cross_track_heading(pts[i])
             racing_cross_track.append(deviation)
             heading_error = sub_angles_complex(track_heading, thetas[i])
-            # print(f"Track heading: {track_heading}, Vehicle heading: {thetas[i]}, Heading error: {heading_error}")
             racing_heading_error.append(heading_error)
             
         plt.figure(1, figsize=(10, 5))
@@ -125,11 +125,28 @@ class AnalyseTestLapData:
         plt.tight_layout()
         plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_heading_error_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)
         
+    def plot_center_line_deviation(self):
+        pts = self.states[:, 0:2]
+        center_line_deviation = []
+        for i in range(len(pts)):
+            track_heading, deviation = self.std_track.get_cross_track_heading(pts[i])
+            center_line_deviation.append(deviation)
+            
+        plt.figure(1, figsize=(10, 5))
+        plt.clf()
+        plt.plot(self.track_progresses, center_line_deviation)
+        
+        plt.title("Centre line Deviation (m)")
+        plt.xlabel("Track Progress (%)")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(self.path + f"TrajectoryAnalysis/{self.vehicle_name}_centre_line_deviation_{self.lap_n}.svg", bbox_inches='tight', pad_inches=0)
+        
     def plot_speed_graph(self):
         plt.figure(1, figsize=(10, 5))
         plt.clf()
+        plt.plot(self.track_progresses[:-1], self.actions[:-1, 1], label="Actions", alpha=0.6)
         plt.plot(self.track_progresses[:-1], self.states[:-1, 3], label="State")
-        plt.plot(self.track_progresses[:-1], self.actions[:-1, 1], label="Actions")
         
         raceline_speeds = []
         for i in range(len(self.track_progresses)):
@@ -239,9 +256,9 @@ def analyse_folder():
 
     p = "Data/"
 
-    path = p + "testPP_1/"
+    # path = p + "testPP_1/"
     # path = p + "testPP_12/"
-    # path = p + "main_22"
+    path = p + "main_8/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)

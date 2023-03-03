@@ -19,7 +19,8 @@ class AgentTester:
 
         self.agent = create_test_agent(self.name, self.path, run)
         
-        # self.vehicle_state_history = VehicleStateHistory(run, "Testing/")
+        self.vehicle_state_history = VehicleStateHistory(run, f"Testing{run.map_name.capitalize()}/")
+#capitalise
 
     def plan(self, obs):
         nn_state = self.architecture.transform_obs(obs)
@@ -30,7 +31,7 @@ class AgentTester:
         self.nn_act = self.agent.act(nn_state)
         self.action = self.architecture.transform_action(self.nn_act)
         
-        # self.vehicle_state_history.add_memory_entry(obs, self.action)
+        self.vehicle_state_history.add_memory_entry(obs, self.action)
         
         return self.action 
 
@@ -42,7 +43,5 @@ class AgentTester:
         
         print(f"Test lap complete --> Time: {s_prime['lap_times'][0]:.2f}, Colission: {bool(s_prime['collisions'][0])}, Lap p: {progress:.1f}%")
 
-        self.save_training_data()
+        self.vehicle_state_history.save_history()
 
-    def save_training_data(self):
-        pass 

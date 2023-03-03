@@ -3,14 +3,15 @@
 planner_type: "AgentOff"
 
 # state_vector: "endToEnd"
-state_vector: "pathFollower"
-# state_vector: "hybridAll"
+# state_vector: "TrajectoryFollower"
+# state_vector: "pathFollower"
+state_vector: "Game"
 
-n_repeats: 3
+n_repeats: 1
 set_n: 1
 
 random_seed: 0
-max_speed: 5
+max_speed: 8
 n_scans: 2
 
 training_steps: 15000

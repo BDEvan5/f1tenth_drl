@@ -66,7 +66,8 @@ class AnalyseTestLapData:
 
     def load_lap_data(self):
         try:
-            data = np.load(self.path + f"Testing/Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
+            data = np.load(self.path + f"Testing{self.map_name}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
+            # data = np.load(self.path + f"Testing/Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
         except Exception as e:
             print(e)
             print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
@@ -126,8 +127,8 @@ def analyse_folder():
 
     p = "Data/"
 
-    path = p + "testPP_12/"
-    # path = p + "main_22"
+    # path = p + "testPP_12/"
+    path = p + "main_8/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
