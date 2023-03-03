@@ -1,0 +1,24 @@
+
+planner_type: "AgentOff"
+
+state_vector: "Game"
+
+n_repeats: 1
+set_n: 1
+
+random_seed: 0
+max_speed: 8
+n_scans: 2
+
+training_steps: 20000
+n_test_laps: 5
+map_name: "esp"
+algorithm: "SAC"
+
+runs:
+  - num_beams: 5
+  - num_beams: 10
+  - num_beams: 20
+  - num_beams: 30
+
+

@@ -43,9 +43,13 @@ def setup_run_list(experiment_file, new_run=True):
     with open(full_path) as file:
         experiment_dict = yaml.load(file, Loader=yaml.FullLoader)
         
-    if new_run:   
-        test_name = generate_test_name(experiment_file)
-    else: test_name = latest_test_name(experiment_file)
+    # if new_run:   
+    #     test_name = generate_test_name(experiment_file)
+    # else: test_name = latest_test_name(experiment_file)
+    test_name = experiment_file + "_1"
+    if not os.path.exists(f"Data/{test_name}"):
+        os.mkdir(f"Data/{test_name}")
+
 
     run_list = []
     for rep in range(experiment_dict['n_repeats']):

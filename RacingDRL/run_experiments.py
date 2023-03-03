@@ -49,7 +49,7 @@ def run_simulation_loop_laps(env, planner, n_laps):
         while not done:
             action = planner.plan(observation)
             
-            mini_i = 1
+            mini_i = 10
             while mini_i > 0 and not done:
                 observation, reward, done, info = env.step(action[None, :])
                 mini_i -= 1
@@ -65,7 +65,7 @@ def run_simulation_loop_laps(env, planner, n_laps):
     
 def run_training_batch(experiment):
     # run_list = setup_run_list(experiment, new_run=False)
-    run_list = setup_run_list(experiment, new_run=True)
+    run_list = setup_run_list(experiment)
     conf = load_conf("config_file")
     
     for i, run_dict in enumerate(run_list):
@@ -105,7 +105,9 @@ import io
 from pstats import SortKey
     
 def main():
-    experiment = "main"
+    # experiment = "GameAlgorithms"
+    experiment = "TrajectoryNumPoints"
+    # experiment = "main"
     # experiment = "testPP"
     run_training_batch(experiment)
     # run_testing_batch(experiment)
