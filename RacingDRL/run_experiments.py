@@ -106,8 +106,11 @@ from pstats import SortKey
     
 def main():
     # experiment = "GameAlgorithms"
-    experiment = "EndNumBeams"
+    # experiment = "EndNumBeams"
     # experiment = "TrajectoryNumPoints"
+    
+    experiment = "GameAblation"
+    
     # experiment = "main"
     # experiment = "testPP"
     run_training_batch(experiment)

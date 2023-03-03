@@ -9,6 +9,8 @@ def select_architecture(run, conf):
         architecture = ArchTrajectory(run, conf)
     elif run.state_vector == "Game":
         architecture = ArchGame(run, conf)
+    elif run.state_vector == "GameAblation":
+        architecture = ArchGameAblation(run, conf)
     else:
         raise ValueError("Unknown state vector type: " + run.state_vector)
             

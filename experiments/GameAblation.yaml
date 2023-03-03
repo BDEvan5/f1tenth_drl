@@ -17,12 +17,19 @@ algorithm: "SAC"
 
 runs:
   - game_inputs: ["state", "lidar", "waypoints"]
+    id_name: "stateLidarWaypoints"
   - game_inputs: ["state", "lidar"]
+    id_name: "stateLidar"
   - game_inputs: ["state", "waypoints"]
+    id_name: "stateWaypoints"
   - game_inputs: ["lidar", "waypoints"]
+    id_name: "lidarWaypoints"
   - game_inputs: ["lidar"]
+    id_name: "lidar"
   - game_inputs: ["waypoints"]
+    id_name: "waypoints"
   - game_inputs: ["state"]
+    id_name: "state"
 
 
 
