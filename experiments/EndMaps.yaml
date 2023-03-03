@@ -1,0 +1,24 @@
+
+planner_type: "AgentOff"
+
+state_vector: "endToEnd"
+
+n_repeats: 1
+set_n: 1
+
+random_seed: 0
+max_speed: 8
+n_scans: 2
+
+training_steps: 20000
+n_test_laps: 5
+map_name: "esp"
+algorithm: "SAC"
+
+runs:
+  - map_name: "esp"
+  - map_name: "mco"
+  - map_name: "gbr"
+  - map_name: "aut"
+
+

@@ -4,7 +4,6 @@ planner_type: "AgentOff"
 
 # state_vector: "endToEnd"
 # state_vector: "TrajectoryFollower"
-# state_vector: "pathFollower"
 state_vector: "Game"
 
 n_repeats: 1
