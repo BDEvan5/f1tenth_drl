@@ -10,6 +10,7 @@ l_r: 0.171
 l_f: 0.158
 
 # agent parameters
+range_finder_scale: 10
 
 #simulator
 sim_steps: 10              # Number of simulator steps per planning step

@@ -17,8 +17,12 @@ algorithm: "SAC"
 
 runs:
   - n_waypoints: 0
+    id_name: 0
   - n_waypoints: 5
+    id_name: 5
   - n_waypoints: 10
+    id_name: 10
   - n_waypoints: 20
+    id_name: 20
 
 

@@ -63,7 +63,7 @@ def setup_run_list(experiment_file, new_run=True):
             set_n = run['set_n']
             max_speed = run['max_speed']
             run["n"] = rep
-            run['run_name'] = f"{run['planner_type']}_{run['algorithm']}_{run['state_vector']}_{run['map_name']}_{max_speed}_{set_n}_{rep}"
+            run['run_name'] = f"{run['planner_type']}_{run['algorithm']}_{run['state_vector']}_{run['map_name']}_{run['id_name']}_{max_speed}_{set_n}_{rep}"
             run['path'] = f"{test_name}/"
 
             run_list.append(Namespace(**run))

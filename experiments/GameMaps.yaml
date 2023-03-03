@@ -16,9 +16,9 @@ map_name: "esp"
 algorithm: "SAC"
 
 runs:
-  - map_name: "esp"
   - map_name: "mco"
   - map_name: "gbr"
-  - map_name: "aut"
+  # - map_name: "esp"
+  # - map_name: "aut"
 
 
