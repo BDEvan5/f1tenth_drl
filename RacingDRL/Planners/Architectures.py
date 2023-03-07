@@ -132,12 +132,16 @@ class ArchGameAblation:
         self.track = TrackLine(run.map_name, False)
     
     def transform_obs(self, obs):
+        state = np.zeros(self.state_space)
+        ptr = 0
         if "state" in self.game_inputs:
             speed = obs['linear_vels_x'][0]
             anglular_vel = obs['ang_vels_z'][0]
             steering_angle = obs['steering_deltas'][0]
         
             state_variables = np.array([speed, anglular_vel, steering_angle])
+            state[ptr:ptr+3] = state_variables
+            ptr += 3
         
         if "waypoints" in self.game_inputs:
             idx, dists = self.track.get_trackline_segment([obs['poses_x'][0], obs['poses_y'][0]])
@@ -150,13 +154,14 @@ class ArchGameAblation:
             upcoming_pts = self.track.wpts[upcomings_inds]
             
             relative_pts = transform_waypoints(upcoming_pts, np.array([obs['poses_x'][0], obs['poses_y'][0]]), obs['poses_theta'][0])
+            state[ptr:ptr+ self.n_wpts * 2] = relative_pts.flatten()
+            ptr += self.n_wpts * 2
 
         if "lidar" in self.game_inputs:
             scan = np.array(obs['scans'][0]) 
             scaled_scan = scan/10
             scan = np.clip(scaled_scan, 0, 1)
-        
-        state = np.concatenate((scan, relative_pts.flatten(), np.array([speed, anglular_vel, steering_angle])))
+            state[ptr:ptr+self.n_beams] = scan
         
         return state
     
@@ -176,7 +181,11 @@ class ArchTrajectory:
         self.max_speed = run.max_speed
         self.max_steer = conf.max_steer
         self.n_wpts = run.n_waypoints
-        self.state_space = self.n_wpts * 2 + 3
+        self.trajectory_speeds = run.trajectory_speeds
+        if self.trajectory_speeds: 
+            self.state_space = self.n_wpts * 3 + 3
+        else:
+            self.state_space = self.n_wpts * 2 + 3
 
         self.action_space = 2
 
@@ -198,6 +207,10 @@ class ArchTrajectory:
             upcoming_pts = self.track.wpts[upcomings_inds]
             
             relative_pts = transform_waypoints(upcoming_pts, np.array([obs['poses_x'][0], obs['poses_y'][0]]), obs['poses_theta'][0])
+            if self.trajectory_speeds:
+                speeds = self.track.vs[upcomings_inds]
+                scaled_speeds = np.clip(speeds / self.max_speed, 0, 1)
+                relative_pts = np.concatenate((relative_pts, scaled_speeds[:, None]), axis=-1)
             
             state = np.concatenate((relative_pts.flatten(), np.array([speed, anglular_vel, steering_angle])))
         else:

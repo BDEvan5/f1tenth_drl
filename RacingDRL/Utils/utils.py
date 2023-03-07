@@ -46,7 +46,8 @@ def setup_run_list(experiment_file, new_run=True):
     # if new_run:   
     #     test_name = generate_test_name(experiment_file)
     # else: test_name = latest_test_name(experiment_file)
-    test_name = experiment_file + "_1"
+    set_n = experiment_dict['set_n']
+    test_name = experiment_file + f"_{set_n}"
     if not os.path.exists(f"Data/{test_name}"):
         os.mkdir(f"Data/{test_name}")
 

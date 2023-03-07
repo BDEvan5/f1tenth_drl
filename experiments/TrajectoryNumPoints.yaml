@@ -4,7 +4,7 @@ planner_type: "AgentOff"
 state_vector: "TrajectoryFollower"
 
 n_repeats: 1
-set_n: 1
+set_n: 3
 
 random_seed: 0
 max_speed: 8
@@ -14,15 +14,21 @@ training_steps: 15000
 n_test_laps: 5
 map_name: "esp"
 algorithm: "SAC"
+trajectory_speeds: True
 
 runs:
-  - n_waypoints: 0
-    id_name: 0
-  - n_waypoints: 5
-    id_name: 5
+  # - n_waypoints: 0
+  #   id_name: 0
+  # - n_waypoints: 5
+  #   id_name: 5
   - n_waypoints: 10
     id_name: 10
-  - n_waypoints: 20
-    id_name: 20
+    trajectory_speeds: False
+  - n_waypoints: 10
+    id_name: 10
+    trajectory_speeds: True
+
+  # - n_waypoints: 20
+  #   id_name: 20
 
 

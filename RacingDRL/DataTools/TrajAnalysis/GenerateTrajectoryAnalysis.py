@@ -259,6 +259,7 @@ def analyse_folder():
     # path = p + "testPP_1/"
     # path = p + "testPP_12/"
     path = p + "main_8/"
+    path = p + "main_8/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)

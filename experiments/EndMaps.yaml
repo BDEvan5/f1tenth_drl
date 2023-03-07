@@ -7,13 +7,16 @@ n_repeats: 1
 set_n: 1
 
 random_seed: 0
-max_speed: 8
+# max_speed: 8
+max_speed: 5
 n_scans: 2
 
 training_steps: 20000
 n_test_laps: 5
 map_name: "esp"
 algorithm: "SAC"
+id_name: "v5"
+num_beams: 20
 
 runs:
   - map_name: "esp"
