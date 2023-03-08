@@ -3,14 +3,14 @@ planner_type: "AgentOff"
 
 state_vector: "TrajectoryFollower"
 
-n_repeats: 1
-set_n: 3
+n_repeats: 3
+set_n: 4
 
 random_seed: 0
 max_speed: 8
 n_scans: 2
 
-training_steps: 15000
+training_steps: 30000
 n_test_laps: 5
 map_name: "esp"
 algorithm: "SAC"
