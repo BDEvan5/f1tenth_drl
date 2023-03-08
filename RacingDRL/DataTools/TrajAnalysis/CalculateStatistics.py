@@ -60,9 +60,7 @@ class AnalyseTestLapData:
             file.write("Lap" + "Steering".rjust(16) + "Total Distance".rjust(16) + "Mean Curvature".rjust(16) + "Total Curvature".rjust(16) + "Mean Deviation".rjust(16) + "Total Deviation".rjust(16) + "Progress".rjust(16) + "Time".rjust(16) + "Avg Velocity".rjust(16) + "Mean R Deviation".rjust(16) + "Total R Deviation".rjust(16) + "\n")
 
         self.vehicle_name = self.path.split("/")[-2]
-        self.map_name = self.vehicle_name.split("_")[4]
-        if self.map_name == "f1":
-            self.map_name += "_" + self.vehicle_name.split("_")[5]
+        self.map_name = self.vehicle_name.split("_")[3]
         self.map_data = MapData(self.map_name)
         self.std_track = StdTrack(self.map_name)
         self.racing_track = RacingTrack(self.map_name)
@@ -75,7 +73,7 @@ class AnalyseTestLapData:
 
     def load_lap_data(self):
         try:
-            data = np.load(self.path + f"Testing/Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
+            data = np.load(self.path + f"Testing{self.map_name.capitalize()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
         except Exception as e:
             print(e)
             print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
@@ -172,10 +170,14 @@ class AnalyseTestLapData:
             file.write(f", {n_success/n_total * 100}")
             file.write("\n")
 
+def generate_folder_statistics(folder):
+    TestData = AnalyseTestLapData()
+    TestData.explore_folder(folder)
+
 
 def analyse_folder():
     # path = "Data/Vehicles/Eval_RewardsSlow/"
-    path = "Data/Vehicles/SlowOnlineVsBaseline/"
+    path = "Data/GameAblation_1/"
     
 
     TestData = AnalyseTestLapData()

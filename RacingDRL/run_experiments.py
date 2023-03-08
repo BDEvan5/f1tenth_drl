@@ -106,10 +106,10 @@ from pstats import SortKey
     
 def main():
     # experiment = "EndNumBeams"
-    # experiment = "TrajectoryNumPoints"
+    experiment = "TrajectoryNumPoints"
     # experiment = "GameAblation"
     
-    experiment = "EndMaps"
+    # experiment = "EndMaps"
     # experiment = "TrajectoryMaps"
     # experiment = "GameMaps"
     

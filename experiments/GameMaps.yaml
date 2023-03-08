@@ -3,8 +3,8 @@ planner_type: "AgentOff"
 
 state_vector: "Game"
 
-n_repeats: 1
-set_n: 1
+n_repeats: 3
+set_n: 2
 
 random_seed: 0
 max_speed: 8
@@ -17,7 +17,7 @@ algorithm: "SAC"
 id_name: "train"
 
 runs:
-  - map_name: "mco"
+  # - map_name: "mco"
   - map_name: "gbr"
   # - map_name: "esp"
   # - map_name: "aut"

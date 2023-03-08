@@ -22,10 +22,10 @@ runs:
   # - n_waypoints: 5
   #   id_name: 5
   - n_waypoints: 10
-    id_name: 10
+    id_name: positions
     trajectory_speeds: False
   - n_waypoints: 10
-    id_name: 10
+    id_name: waypoints
     trajectory_speeds: True
 
   # - n_waypoints: 20

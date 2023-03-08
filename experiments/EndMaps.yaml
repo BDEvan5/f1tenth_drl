@@ -3,25 +3,25 @@ planner_type: "AgentOff"
 
 state_vector: "endToEnd"
 
-n_repeats: 1
-set_n: 1
+n_repeats: 3
+set_n: 3
 
-random_seed: 0
+random_seed: 10
 # max_speed: 8
-max_speed: 5
+max_speed: 6
 n_scans: 2
 
-training_steps: 40000
+training_steps: 50000
 n_test_laps: 5
 map_name: "esp"
 algorithm: "SAC"
-id_name: "v5"
+id_name: "v6"
 num_beams: 20
 
 runs:
-  - map_name: "esp"
-  - map_name: "mco"
-  - map_name: "gbr"
+  # - map_name: "esp"
+  # - map_name: "mco"
+  # - map_name: "gbr"
   - map_name: "aut"
 
 

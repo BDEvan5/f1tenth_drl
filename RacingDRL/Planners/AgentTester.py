@@ -19,7 +19,7 @@ class AgentTester:
 
         self.agent = create_test_agent(self.name, self.path, run)
         
-        self.vehicle_state_history = VehicleStateHistory(run, f"Testing{run.map_name.capitalize()}/")
+        self.vehicle_state_history = VehicleStateHistory(run, f"Testing{run.map_name.upper()}/")
 #capitalise
 
     def plan(self, obs):
