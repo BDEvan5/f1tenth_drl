@@ -32,7 +32,7 @@ def make_TrainingGraph():
 
     plt.figure(2, figsize=(4.5, 2.3))
 
-    xs = np.linspace(0, 20, 300)
+    xs = np.linspace(0, 50, 300)
     for i in range(len(steps_list)):
         min, max, mean = convert_to_min_max_avg(steps_list[i], progresses_list[i], xs)
         plt.plot(xs, mean, '-', color=pp_dark[i], linewidth=2, label=id_names[i])

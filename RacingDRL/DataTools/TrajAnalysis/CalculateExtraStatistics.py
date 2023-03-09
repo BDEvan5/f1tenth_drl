@@ -37,25 +37,20 @@ class AnalyseTestLapData:
         self.lap_n = 0
 
     def explore_folder(self, path):
-        # vehicle_folders = glob.glob(f"{path}PP*/")
         vehicle_folders = glob.glob(f"{path}*/")
-        # vehicle_folders = glob.glob(f"{path}Agent*/")
         print(vehicle_folders)
         print(f"{len(vehicle_folders)} folders found")
 
         for j, folder in enumerate(vehicle_folders):
             print(f"Vehicle folder being opened: {folder}")
             
-            # if os.path.exists(folder + "Statistics.txt"):
-            #     continue
-
             self.process_folder(folder)
 
     def process_folder(self, folder):
         self.path = folder
       
 
-        with open(self.path + "Statistics.txt", "w") as file:
+        with open(self.path + "ExtraStatistics.txt", "w") as file:
             file.write(f"Name: {self.path}\n")
             file.write("Lap" + "Steering".rjust(16) + "Total Distance".rjust(16) + "Mean Curvature".rjust(16) + "Total Curvature".rjust(16) + "Mean Deviation".rjust(16) + "Total Deviation".rjust(16) + "Progress".rjust(16) + "Time".rjust(16) + "Avg Velocity".rjust(16) + "Mean R Deviation".rjust(16) + "Total R Deviation".rjust(16) + "\n")
 
@@ -73,7 +68,8 @@ class AnalyseTestLapData:
 
     def load_lap_data(self):
         try:
-            data = np.load(self.path + f"Testing{self.map_name.capitalize()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
+            data = np.load(self.path + f"Testing{self.map_name.upper()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
+            # data = np.load(self.path + f"Testing{self.map_name.capitalize()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
         except Exception as e:
             print(e)
             print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
@@ -124,7 +120,7 @@ class AnalyseTestLapData:
         if progress < 0.01 or progress > 0.99:
             progress = 1 # it is finished
 
-        with open(self.path + "Statistics.txt", "a") as file:
+        with open(self.path + "ExtraStatistics.txt", "a") as file:
             file.write(f"{self.lap_n}, {rms_steering:14.4f}, {total_distance:14.4f}, {mean_curvature:14.4f}, {total_curvature:14.4f}, {mean_deviation:14.4f}, {total_deviation:14.4f}, {progress:14.4f}, {time:14.2f}, {avg_velocity:14.4f}, {mean_race_deviation:14.2f}, {total_race_deviation:14.2f}\n")
 
     def generate_summary_stats(self):
@@ -136,7 +132,7 @@ class AnalyseTestLapData:
 
         n_success, n_total = 0, 0
         progresses = []
-        with open(self.path + "Statistics.txt", 'r') as file:
+        with open(self.path + "ExtraStatistics.txt", 'r') as file:
             lines = file.readlines()
             if len(lines) < 3: return
             
@@ -155,7 +151,7 @@ class AnalyseTestLapData:
         
         progresses = np.array(progresses)
         data = np.array(data)
-        with open(self.path + "SummaryStatistics.txt", "w") as file:
+        with open(self.path + "ExtraSummaryStatistics.txt", "w") as file:
             file.write(lines[0])
             file.write(lines[1])
             file.write("0")
@@ -177,7 +173,8 @@ def generate_folder_statistics(folder):
 
 def analyse_folder():
     # path = "Data/Vehicles/Eval_RewardsSlow/"
-    path = "Data/GameAblation_1/"
+    # path = "Data/GameAblation_1/"
+    path = "Data/EndMaps_3/"
     
 
     TestData = AnalyseTestLapData()
