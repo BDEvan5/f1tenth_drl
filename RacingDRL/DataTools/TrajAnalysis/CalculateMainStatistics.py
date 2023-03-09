@@ -152,7 +152,8 @@ def generate_folder_statistics(folder):
 def analyse_folder():
     # path = "Data/Vehicles/Eval_RewardsSlow/"
     # path = "Data/GameAblation_1/"
-    path = "Data/EndMaps_3/"
+    # path = "Data/EndMaps_3/"
+    path = "Data/TrajectoryNumPoints_4/"
     
 
     TestData = AnalyseTestLapData()

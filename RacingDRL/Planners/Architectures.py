@@ -209,7 +209,9 @@ class ArchTrajectory:
             relative_pts = transform_waypoints(upcoming_pts, np.array([obs['poses_x'][0], obs['poses_y'][0]]), obs['poses_theta'][0])
             if self.trajectory_speeds:
                 speeds = self.track.vs[upcomings_inds]
-                scaled_speeds = np.clip(speeds / self.max_speed, 0, 1)
+                # scaled_speeds = np.clip(speeds / self.max_speed, 0, 1)
+                # scaled_speeds = np.clip(speeds / self.max_speed * 2, 0, 2) - 1 # I think this can fix the problem
+                scaled_speeds = (speeds - 1) / (self.max_speed - 1) * 2 - 1
                 relative_pts = np.concatenate((relative_pts, scaled_speeds[:, None]), axis=-1)
             
             state = np.concatenate((relative_pts.flatten(), np.array([speed, anglular_vel, steering_angle])))

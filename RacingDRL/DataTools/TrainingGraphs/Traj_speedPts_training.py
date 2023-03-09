@@ -18,7 +18,7 @@ def make_TrainingGraph():
     
     id_names = ["positions", "waypoints"]
 
-    n_repeats = 1
+    n_repeats = 2
     for i, id_name in enumerate(id_names): 
         steps_list.append([])
         progresses_list.append([])

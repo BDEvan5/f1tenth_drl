@@ -4,7 +4,7 @@ planner_type: "AgentOff"
 state_vector: "TrajectoryFollower"
 
 n_repeats: 3
-set_n: 4
+set_n: 5
 
 random_seed: 0
 max_speed: 8
@@ -21,9 +21,10 @@ runs:
   #   id_name: 0
   # - n_waypoints: 5
   #   id_name: 5
-  - n_waypoints: 10
-    id_name: positions
-    trajectory_speeds: False
+  
+  # - n_waypoints: 10
+  #   id_name: positions
+  #   trajectory_speeds: False
   - n_waypoints: 10
     id_name: waypoints
     trajectory_speeds: True

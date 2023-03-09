@@ -130,14 +130,14 @@ def run_general_test_batch():
     
 def main():
     # experiment = "EndNumBeams"
-    # experiment = "TrajectoryNumPoints"
+    experiment = "TrajectoryNumPoints"
     # experiment = "GameAblation"
     
     # experiment = "EndMaps"
     # experiment = "TrajectoryMaps"
     # experiment = "GameMaps"
     
-    experiment = "main"
+    # experiment = "main"
     # experiment = "testPP"
     
     run_training_batch(experiment)
@@ -147,7 +147,7 @@ def main():
     
     
 if __name__ == "__main__":
-    # main()
-
-    run_general_test_batch()
+    main()
+# 
+    # run_general_test_batch()
 
