@@ -1,4 +1,4 @@
-from RacingDRL.Utils.utils import init_file_struct
+from RacingDRL.Utils.utils import init_file_struct, save_run_config
 from RacingDRL.LearningAlgorithms.create_agent import create_train_agent
 import numpy as np
 from RacingDRL.Planners.Architectures import select_architecture
@@ -14,6 +14,7 @@ class AgentTrainer:
         self.name = run.run_name
         self.path = conf.vehicle_path + run.path + run.run_name + "/"
         init_file_struct(self.path)
+        save_run_config(run.__dict__, self.path)
 
         self.v_min_plan =  conf.v_min_plan
 

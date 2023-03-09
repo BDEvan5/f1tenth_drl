@@ -70,3 +70,9 @@ def setup_run_list(experiment_file, new_run=True):
             run_list.append(Namespace(**run))
 
     return run_list
+
+
+def save_run_config(run_dict, path):
+    path = path +  f"/TrainingRunDict_record.yaml"
+    with open(path, 'w') as file:
+        yaml.dump(run_dict, file)
