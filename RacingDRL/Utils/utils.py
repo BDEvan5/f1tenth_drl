@@ -1,5 +1,10 @@
 import os, shutil, yaml
 from argparse import Namespace
+  
+import cProfile
+import pstats
+import io
+from pstats import SortKey
 
 def init_file_struct(path):
     if os.path.exists(path):
@@ -23,6 +28,14 @@ def load_conf(fname):
     conf = Namespace(**conf_dict)
 
     return conf 
+
+def load_run_dict(full_path):
+    with open(full_path) as file:
+        run_dict = yaml.load(file, Loader=yaml.FullLoader)
+
+    run_dict = Namespace(**run_dict)
+
+    return run_dict 
 
 
 def generate_test_name(file_name):
@@ -76,3 +89,21 @@ def save_run_config(run_dict, path):
     path = path +  f"/TrainingRunDict_record.yaml"
     with open(path, 'w') as file:
         yaml.dump(run_dict, file)
+
+
+    
+def profile_and_save(function):
+    with cProfile.Profile(builtins=False) as pr:
+        function()
+        
+        with open("Data/Profiling/main.prof", "w") as f:
+            ps = pstats.Stats(pr, stream=f)
+            ps.strip_dirs()
+            ps.sort_stats('cumtime')
+            ps.print_stats()
+            
+        with open("Data/Profiling/main_total.prof", "w") as f:
+            ps = pstats.Stats(pr, stream=f)
+            ps.strip_dirs()
+            ps.sort_stats('tottime')
+            ps.print_stats()

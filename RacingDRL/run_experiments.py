@@ -8,6 +8,9 @@ from RacingDRL.Planners.AgentTrainer import AgentTrainer
 from RacingDRL.Planners.AgentTester import AgentTester
 from RacingDRL.Utils.utils import *
 from RacingDRL.Planners.PurePursuit import PurePursuit
+import glob
+
+from RacingDRL.DataTools.TrajAnalysis.GenerateTrajectoryAnalysis import analyse_folder
 
 
 RENDER_ENV = False
@@ -98,11 +101,32 @@ def run_testing_batch(experiment):
         planner = select_test_agent(conf, run_dict)
         run_simulation_loop_laps(env, planner, run_dict.n_test_laps)
         
+
+def run_general_test_batch():
+    map_list = ["aut", "esp", "gbr", "mco"]
+    folder = "TrajectoryNumPoints_3/"
+    vehicles = glob.glob("Data/" + folder + "*/")
+    print(vehicles)
+    n_test_laps = 3
+    
+    conf = load_conf("config_file")
+    
+    for v in range(len(vehicles)):
+        print(f"Testing Vehicle: {vehicles[v]}")
+        for m in range(len(map_list)):
+            print(f"Testing on map: {map_list[m]}")
+            run_dict = load_run_dict(vehicles[v] + "TrainingConfig_record.yaml")
+            run_dict.run_name = vehicles[v].split("/")[-2]
+            run_dict.path = folder
+            run_dict.map_name = map_list[m]
+            
+            env = F110Env(map=map_list[m], num_agents=1)
+            planner = AgentTester(run_dict, conf)
+            run_simulation_loop_laps(env, planner, n_test_laps)
         
-import cProfile
-import pstats
-import io
-from pstats import SortKey
+        
+        
+      
     
 def main():
     # experiment = "EndNumBeams"
@@ -113,33 +137,17 @@ def main():
     # experiment = "TrajectoryMaps"
     # experiment = "GameMaps"
     
-    
     experiment = "main"
     # experiment = "testPP"
+    
     run_training_batch(experiment)
     # run_testing_batch(experiment)
+
+
     
-def profile():
-    with cProfile.Profile(builtins=False) as pr:
-        main()
-        
-        with open("Data/Profiling/main.prof", "w") as f:
-            ps = pstats.Stats(pr, stream=f)
-            ps.strip_dirs()
-            ps.sort_stats('cumtime')
-            ps.print_stats()
-            
-        with open("Data/Profiling/main_total.prof", "w") as f:
-            ps = pstats.Stats(pr, stream=f)
-            ps.strip_dirs()
-            ps.sort_stats('tottime')
-            ps.print_stats()
-    
-from RacingDRL.DataTools.TrajAnalysis.GenerateTrajectoryAnalysis import analyse_folder
     
 if __name__ == "__main__":
-    main()
-    # analyse_folder()
-    # profile()
+    # main()
 
+    run_general_test_batch()
 
