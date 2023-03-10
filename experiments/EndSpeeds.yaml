@@ -1,0 +1,29 @@
+
+planner_type: "AgentOff"
+
+state_vector: "endToEnd"
+
+n_repeats: 1
+set_n: 1
+
+random_seed: 0
+max_speed: 8
+n_scans: 2
+
+training_steps: 30000
+n_test_laps: 5
+map_name: "esp"
+algorithm: "SAC"
+num_beams: 20
+
+id_name: "speed"
+
+runs:
+  - max_speed: 4
+  - max_speed: 5
+  - max_speed: 6
+  - max_speed: 7
+  - max_speed: 8
+
+
+

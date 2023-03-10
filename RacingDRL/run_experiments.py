@@ -45,14 +45,14 @@ def run_simulation_loop_steps(env, planner, steps):
                   
         if RENDER_ENV: env.render('human_fast')
         
-def run_simulation_loop_laps(env, planner, n_laps):
+def run_simulation_loop_laps(env, planner, n_laps, n_sim_steps=10):
     observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
     
     for lap in range(n_laps):
         while not done:
             action = planner.plan(observation)
             
-            mini_i = 10
+            mini_i = 1
             while mini_i > 0 and not done:
                 observation, reward, done, info = env.step(action[None, :])
                 mini_i -= 1
@@ -87,7 +87,7 @@ def run_training_batch(experiment):
         env.__del__()
         
     
-def run_testing_batch(experiment):
+def run_testing_batch(experiment, n_sim_steps=10):
     # run_list = setup_run_list(experiment, new_run=True)
     run_list = setup_run_list(experiment, new_run=False)
     conf = load_conf("config_file")
@@ -99,7 +99,7 @@ def run_testing_batch(experiment):
         env = F110Env(map=run_dict.map_name, num_agents=1)
         print("Testing")
         planner = select_test_agent(conf, run_dict)
-        run_simulation_loop_laps(env, planner, run_dict.n_test_laps)
+        run_simulation_loop_laps(env, planner, run_dict.n_test_laps, n_sim_steps)
         
 
 def run_general_test_batch():
@@ -125,20 +125,23 @@ def run_general_test_batch():
             run_simulation_loop_laps(env, planner, n_test_laps)
         
         
-        
+def run_pp_tests():
+    experiment = "PurePursuitMaps"
+    run_testing_batch(experiment, n_sim_steps=1)
+     
       
     
 def main():
     # experiment = "EndNumBeams"
-    experiment = "TrajectoryNumPoints"
+    # experiment = "TrajectoryNumPoints"
     # experiment = "GameAblation"
     
     # experiment = "EndMaps"
-    # experiment = "TrajectoryMaps"
+    experiment = "TrajectoryMaps"
     # experiment = "GameMaps"
     
     # experiment = "main"
-    # experiment = "testPP"
+    # experiment = "EndSpeeds"
     
     run_training_batch(experiment)
     # run_testing_batch(experiment)
@@ -148,6 +151,7 @@ def main():
     
 if __name__ == "__main__":
     main()
-# 
+    # run_pp_tests()
+  
     # run_general_test_batch()
 

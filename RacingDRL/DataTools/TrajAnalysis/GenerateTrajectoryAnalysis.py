@@ -259,7 +259,10 @@ def analyse_folder():
     # path = p + "testPP_1/"
     # path = p + "testPP_12/"
     # path = p + "main_8/"
-    path = p + "TrajectoryNumPoints_4/"
+    # path = p + "TrajectoryMaps_3/"
+    path = p + "PurePursuitMaps_1/"
+    # path = p + "GameMaps_3/"
+    # path = p + "TrajectoryNumPoints_5/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)

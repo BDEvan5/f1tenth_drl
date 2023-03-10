@@ -86,7 +86,8 @@ class AnalyseTestLapData:
         ss = np.linalg.norm(np.diff(pts, axis=0), axis=1)
         total_distance = np.sum(ss)
 
-        time = len(pts) /10
+        time = len(pts) /100
+        # time = len(pts) /10
         vs = self.states[:, 3]
         avg_velocity = np.mean(vs)
 
@@ -150,10 +151,14 @@ def generate_folder_statistics(folder):
 
 
 def analyse_folder():
+    p = "Data/"
     # path = "Data/Vehicles/Eval_RewardsSlow/"
     # path = "Data/GameAblation_1/"
     # path = "Data/EndMaps_3/"
-    path = "Data/TrajectoryNumPoints_4/"
+    # path = "Data/TrajectoryNumPoints_4/"
+    # path = "Data/" + "GameMaps_3/"
+    
+    path = p + "PurePursuitMaps_1/"
     
 
     TestData = AnalyseTestLapData()

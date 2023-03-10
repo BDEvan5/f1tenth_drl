@@ -45,7 +45,7 @@ class PurePursuit:
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
         
-        self.vehicle_state_history = VehicleStateHistory(run, "Testing/")
+        self.vehicle_state_history = VehicleStateHistory(run, f"Testing{run.map_name.upper()}/")
 
         self.counter = 0
 
@@ -83,7 +83,7 @@ class PurePursuit:
 
     def done_callback(self, final_obs):
         self.vehicle_state_history.add_memory_entry(final_obs, np.array([0, 0]))
-        self.vehicle_state_history.save_history(self.run.map_name)
+        self.vehicle_state_history.save_history()
         
         progress = self.track_line.calculate_progress_percent([final_obs['poses_x'][0], final_obs['poses_y'][0]]) * 100
         

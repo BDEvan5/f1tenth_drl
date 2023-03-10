@@ -68,9 +68,7 @@ class VehicleData:
                     
                 file.write(f", {functions[i](progresses):14.4f} \n")
             
-        
-
-
+    
 
 
 def aggregate_runs(path, n=3):
@@ -98,4 +96,6 @@ def aggregate_runs(path, n=3):
 
 
 
-aggregate_runs("Data/TrajectoryNumPoints_4/", 2)
+# aggregate_runs("Data/TrajectoryNumPoints_4/", 2)
+# aggregate_runs("Data/GameMaps_3/", 3)
+aggregate_runs("Data/PurePursuitMaps_1/", 1)

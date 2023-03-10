@@ -16,6 +16,7 @@ n_scans: 2
 training_steps: 15000
 n_test_laps: 2
 lookahead: 1.0
+id_name: "test"
 
 runs:
   - map_name: "esp"
