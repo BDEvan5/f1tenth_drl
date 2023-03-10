@@ -51,13 +51,18 @@ def make_laptime_and_success_barplot():
     set_number = 1
     folder_pp = base_path + test_name + f"_{set_number}/"
     
+    test_name = "TrajectoryMaps" 
+    set_number = 4
+    folder_traj = base_path + test_name + f"_{set_number}/"
+    
     fig, axs = plt.subplots(1, 2, figsize=(4.5, 2.0))
     xs = np.arange(4)
     
-    barWidth = 0.4
+    barWidth = 0.26
     w = 0.05
-    br1 = xs - barWidth/2
+    br1 = xs - barWidth
     br2 = [x + barWidth for x in br1]
+    br3 = [x + barWidth * 2 for x in br1]
 
     keys = ["time", "success"]
     ylabels = "Time (s), Success (%)".split(", ")
@@ -71,9 +76,15 @@ def make_laptime_and_success_barplot():
         plt.sca(axs[z])
         plot_error_bars(br1, mins[key][0:4], maxes[key], pp_darkest[1], w)
         
+        mins, maxes, means = load_time_data(folder_traj, "train")
+        
+        axs[z].bar(br2, means[key][0:4], color=pp_light[2], width=barWidth, label="Trajectory")
+        plt.sca(axs[z])
+        plot_error_bars(br2, mins[key][0:4], maxes[key], pp_darkest[2], w)
+        
         mins, maxes, means = load_time_data(folder_pp, "")
-        axs[z].bar(br2, means[key][0:4], color=pp_light[5], width=barWidth, label="Pure Pursuit")
-        plot_error_bars(br2, mins[key][0:4], maxes[key], pp_darkest[5], w)
+        axs[z].bar(br3, means[key][0:4], color=pp_light[5], width=barWidth, label="Pure Pursuit")
+        plot_error_bars(br3, mins[key][0:4], maxes[key], pp_darkest[5], w)
             
         axs[z].xaxis.set_major_locator(MultipleLocator(1))
         axs[z].set_ylabel(ylabels[z])
@@ -81,11 +92,11 @@ def make_laptime_and_success_barplot():
         axs[z].grid(True)
         
     handles, labels = axs[0].get_legend_handles_labels()
-    fig.legend(handles, labels, ncol=2, loc="center", bbox_to_anchor=(0.55, -0.01))
+    fig.legend(handles, labels, ncol=3, loc="center", bbox_to_anchor=(0.55, -0.01))
     # axs[0].set_xlabel("Maximum speed (m/s)")
     # axs[1].set_xlabel("Maximum speed (m/s)")
         
-    name = folder_pp + f"{test_name}_Barplot"
+    name = folder_pp + f"PerformanceMaps_Barplot"
     
     std_img_saving(name)
    
