@@ -1,0 +1,22 @@
+
+planner_type: "PurePursuit"
+racing_line: True
+pp_speed_mode: "racing_line"
+lookahead: 1.4
+max_speed: 5
+
+set_n: 2
+random_seed: 0
+n_scans: 2
+n_test_laps: 1
+
+id_name: "DataGen"
+
+map_list:
+  - "esp"
+  - "mco"
+  - "gbr"
+  - "aut"
+
+
+
