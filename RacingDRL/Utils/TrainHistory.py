@@ -27,7 +27,7 @@ def plot_data(values, moving_avg_period=10, title="Results", figure_n=2):
 
 
 class TrainHistory():
-    def __init__(self, run, conf) -> None:
+    def __init__(self, path) -> None:
         self.path = conf.vehicle_path + run.path +  run.run_name 
 
         # training data
