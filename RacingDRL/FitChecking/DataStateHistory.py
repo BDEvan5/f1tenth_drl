@@ -34,7 +34,20 @@ class DataStateHistory:
         self.scans = []
         self.lap_n += 1
         
-    
+        """
+            Single Track Dynamic Vehicle Dynamics.
+
+        Args:
+            x (numpy.ndarray (3, )): vehicle state vector (x1, x2, x3, x4, x5, x6, x7)
+                x1: x position in global coordinates
+                x2: y position in global coordinates
+                x3: steering angle of front wheels
+                x4: velocity in x direction
+                x5: yaw angle
+                x6: yaw rate
+                x7: slip angle at vehicle center
+        
+        """
 
 
 if __name__ == "__main__":

@@ -32,10 +32,10 @@ class StdNetworkTwo(nn.Module):
         
         return mu, loss
     
-def load_data():
+def load_data(name):
     
-    states = np.load(folder + "DataSets/PurePursuit_endToEnd_states.npy")
-    actions = np.load(folder + "DataSets/PurePursuit_endToEnd_actions.npy")
+    states = np.load(folder + f"DataSets/PurePursuit_{name}_states.npy")
+    actions = np.load(folder + f"DataSets/PurePursuit_{name}_actions.npy")
     
     test_size = int(0.1*states.shape[0])
     test_inds = np.random.choice(states.shape[0], size=test_size, replace=False)
@@ -54,12 +54,14 @@ def load_data():
     return train_x, train_y, test_x, test_y
     
 def train_networks():
-    train_x, train_y, test_x, test_y = load_data()
+    # name = "endToEnd"
+    name = "Game"
+    train_x, train_y, test_x, test_y = load_data(name)
     
     network = StdNetworkTwo(train_x.shape[1], train_y.shape[1])
     optimizer = torch.optim.Adam(network.parameters(), lr=0.001)
     
-    train_iterations = 100
+    train_iterations = 300
     train_losses, test_losses = [], []
     
     for i in range(train_iterations):
@@ -76,7 +78,7 @@ def train_networks():
         train_losses.append(loss.item())
         test_losses.append(test_loss.item())
         
-    plot_losses(train_losses, test_losses, "endToEnd")
+    plot_losses(train_losses, test_losses, name)
     
         
 def plot_losses(train, test, name="endToEnd"):
