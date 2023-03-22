@@ -20,22 +20,23 @@ class StdNetworkTwo(nn.Module):
         self.fc2 = nn.Linear(NN_LAYER_1, NN_LAYER_2)
         self.fc_mu = nn.Linear(NN_LAYER_2, act_dim)
 
-
-    def forward(self, x, targets=None):
+    def forward_loss(self, x, targets):
+        mu = self.forward(x)
+        loss = F.mse_loss(mu, targets)
+        
+        return mu, loss
+    
+    def forward(self, x):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         mu = torch.tanh(self.fc_mu(x)) 
         
-        if targets is not None:
-            loss = F.mse_loss(mu, targets)
-        else: loss = None
-        
-        return mu, loss
+        return mu
     
 def load_data(name):
     
     states = np.load(folder + f"DataSets/PurePursuit_{name}_states.npy")
-    actions = np.load(folder + f"DataSets/PurePursuit_{name}_actions.npy")
+    actions = np.load(folder + f"DataSets/PurePursuit_actions.npy")
     
     test_size = int(0.1*states.shape[0])
     test_inds = np.random.choice(states.shape[0], size=test_size, replace=False)
@@ -51,11 +52,11 @@ def load_data(name):
     train_x = torch.FloatTensor(train_x)
     train_y = torch.FloatTensor(train_y)
     
+    print(f"Train: {train_x.shape} --> Test: {test_x.shape}")
+    
     return train_x, train_y, test_x, test_y
     
-def train_networks():
-    # name = "endToEnd"
-    name = "Game"
+def train_networks(name):
     train_x, train_y, test_x, test_y = load_data(name)
     
     network = StdNetworkTwo(train_x.shape[1], train_y.shape[1])
@@ -65,20 +66,22 @@ def train_networks():
     train_losses, test_losses = [], []
     
     for i in range(train_iterations):
-        pred_y, loss = network(train_x, train_y)
+        test_pred_y, test_loss = network.forward_loss(test_x, test_y)
+        
+        test_losses.append(test_loss.item())
+        
+        pred_y, loss = network.forward_loss(train_x, train_y)
         
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         
-        test_pred_y, test_loss = network(test_x, test_y)
-        
+        train_losses.append(loss.item())
         print(f"{i}: TrainLoss: {loss.item()} --> TestLoss: {test_loss.item()}")
         
-        train_losses.append(loss.item())
-        test_losses.append(test_loss.item())
-        
     plot_losses(train_losses, test_losses, name)
+    
+    return train_losses, test_losses
     
         
 def plot_losses(train, test, name="endToEnd"):
@@ -95,7 +98,36 @@ def plot_losses(train, test, name="endToEnd"):
     
     plt.savefig(folder + f"LossImgs/Losses_{name}.svg")
         
+def train_all_networks():
+    train_losses, test_losses = [], []    
+    
+    name_keys = ["endToEnd", "Game", "trajFollow"]
+    for key in name_keys:
+        train_loss, test_loss = train_networks(key)
+    
+        train_losses.append(train_loss)
+        test_losses.append(test_loss)
+
+    plt.figure(figsize=(10, 6))
+    for i in range(3):
+        plt.plot(train_losses[i], label=name_keys[i])
         
-train_networks()
+    plt.title("Training losses")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
     
+    plt.savefig(folder + f"LossImgs/TrainLosses.svg")
     
+    plt.clf()
+    for i in range(3):
+        plt.plot(test_losses[i], label=name_keys[i])
+        
+    plt.title("Test losses")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    
+    plt.savefig(folder + f"LossImgs/TestLosses.svg")
+    
+train_all_networks()
