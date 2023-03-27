@@ -41,26 +41,73 @@ def run_action_analysis():
     for id in ids:
         x, y = load_data(f"endToEnd_{id}")
         test_sets.append(x)
-    true_actions = y
+    true_actions = y.numpy()
 
     models = load_models(ids)
     
-    rmse = []
-    plt.figure(figsize=(10, 10))
+    data_speed = []
+    data_steer = []
+    predicted_action_list = []
+    plt.figure(figsize=(15, 6))
     for i in range(len(ids)):
         predicted_actions = models[i](test_sets[i]).detach().numpy()
+        predicted_action_list.append(predicted_actions)
     
-        mse_loss = mean_squared_error(true_actions, predicted_actions)
-        rmse_loss = mse_loss ** 0.5
-        print(f"{ids[i]}: {rmse_loss}")
-        rmse.append(rmse_loss)
+        abs_losses = np.abs(true_actions - predicted_actions)
+        data_speed.append(abs_losses)
+
+        plt.plot(predicted_actions[:, 1], label=ids[i])
+    plt.plot(true_actions[:, 1], label=True, linewidth=2)
+    
+    plt.xlim(0, 60)
+    plt.grid()
+    plt.tight_layout()
+    plt.legend(ncol=len(ids))
+    plt.savefig(folder + "Figures/SpeedError.svg")
+    
+    plt.clf()
+    for i in range(len(ids)):
+        predicted_actions = models[i](test_sets[i]).detach().numpy()
+        predicted_action_list.append(predicted_actions)
+    
+        abs_losses = np.abs(true_actions - predicted_actions)
+        data_steer.append(abs_losses)
+
+        plt.plot(predicted_actions[:, 0], label=ids[i])
+    plt.plot(true_actions[:, 0], label="True", linewidth=2)
+    
+    plt.xlim(0, 60)
+    plt.grid()
+    plt.tight_layout()
+    plt.legend(ncol=len(ids))
         
-    plt.plot(ids, rmse)
-        
+    plt.savefig(folder + "Figures/SteeringError.svg")
+
+    plt.clf()
+    data_steer = np.array(data_steer)
+    print(data_steer.shape)
+    data_speed = np.array(data_speed)
+    print(data_speed.shape)
+    # labels = ids.append("True")
+    
+    
+    plt.boxplot(data_steer[:, :, 0].T)
+    plt.xticks(np.arange(7) + 1, ids)
     plt.xlabel("Number of beams")
-    plt.ylabel("RMSE")
-        
-    plt.show()
+    plt.grid(True)
+    plt.ylabel("Steering Error")
+    plt.savefig(folder + "Figures/BoxSteeringErrors.svg")
+    
+    plt.clf()
+    plt.boxplot(data_steer[:, :, 1].T)
+    plt.xticks(np.arange(7) + 1, ids)
+    plt.xlabel("Number of beams")
+    plt.grid(True)
+    plt.ylabel("Speed Error")
+    plt.savefig(folder + "Figures/BoxSpeedErrors.svg")
+    
+    
+    
 
 run_action_analysis()
 
