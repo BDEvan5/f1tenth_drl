@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+torch.use_deterministic_algorithms(True)
+torch.manual_seed(0)
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -56,6 +58,7 @@ def load_data(name):
     states = np.load(folder + f"DataSets/PurePursuit_{name}_states.npy")
     actions = np.load(folder + f"DataSets/PurePursuit_actions.npy")
     
+    np.random.seed(0)
     test_size = 200
     # test_size = int(0.1*states.shape[0])
     # test_size = int(states.shape[0] - 200)
@@ -105,6 +108,8 @@ def train_networks(name):
             print(f"{i}: TrainLoss: {train_loss} --> TestLoss: {test_loss}")
             l_steer, l_speed = network.separate_losses(test_x, test_y)
             print(f"SteerLoss: {l_steer**0.5} --> SpeedLoss: {l_speed**0.5}")
+            
+    torch.save(network, folder + f"Models/{name}.pt")
         
     plot_losses(train_losses, test_losses, name)
     
@@ -224,6 +229,8 @@ def test_network():
     
     plt.show()
     
-train_all_networks()
+    
+if __name__ == "__main__":
+    train_all_networks()
 
-# test_network()
+    # test_network()
