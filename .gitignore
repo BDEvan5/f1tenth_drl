@@ -131,3 +131,5 @@ dmypy.json
 Data/
 
 .vscode/
+
+NetworkFitting/

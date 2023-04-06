@@ -81,7 +81,6 @@ def plot_n_beams_avg():
     # plt.plot(name_values, test_loss_mean - test_loss_std, '-', color=pp[1], linewidth=1,  alpha=0.3)
     
     
-    
     plt.xlabel("Number of beams")
     plt.ylabel("Loss (RMSE)")
     plt.ylim(0.075, 0.14)
