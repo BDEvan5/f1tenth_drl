@@ -72,7 +72,7 @@ def load_data(folder, name):
     
     return train_x, train_y, test_x, test_y
     
-def train_networks(folder, name):
+def train_networks(folder, name, seed):
     train_x, train_y, test_x, test_y = load_data(folder, name)
     
     network = StdNetworkTwo(train_x.shape[1], train_y.shape[1])
@@ -101,9 +101,9 @@ def train_networks(folder, name):
             print(f"{i}: TrainLoss: {train_loss} --> TestLoss: {test_loss}")
             l_steer, l_speed = network.separate_losses(test_x, test_y)
             print(f"SteerLoss: {l_steer**0.5} --> SpeedLoss: {l_speed**0.5}")
-            
-    # torch.save(network, folder + f"Models/{name}.pt")
-        
+         
+    if not os.path.exists(folder + "Models/"): os.mkdir(folder + "Models/")   
+    torch.save(network, folder + f"Models/{name}_{seed}.pt")
     
     return train_losses, test_losses
     
@@ -112,7 +112,7 @@ def run_seeded_test(folder, key, seeds):
     train_losses, test_losses = [], []    
     for i in range(len(seeds)):
         np.random.seed(seeds[i])
-        train_loss, test_loss = train_networks(folder, key)
+        train_loss, test_loss = train_networks(folder, key, seeds[i])
         
         train_losses.append(train_loss)
         test_losses.append(test_loss)
@@ -123,37 +123,47 @@ def run_seeded_test(folder, key, seeds):
     return train_losses, test_losses
         
     
-def run_experiment(folder, name_keys):
-    name = "endToEndState"
+def run_experiment(folder, name_keys, experiment_name):
     save_path = folder + "LossResults/"
     if not os.path.exists(save_path): os.mkdir(save_path)
-    with open(folder + f"LossResults/{name}_LossResults.txt", "w") as f:
+    with open(folder + f"LossResults/{experiment_name}_LossResults.txt", "w") as f:
         f.write(f"Name        TrainLoss mean, TrainLoss std ,   TestLoss mean, TestLoss std \n")
         
     seeds = np.arange(5)
-    # name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_20", "endToEnd_30"]
-    name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_12","endToEnd_15", "endToEnd_20", "endToEnd_30", "endToEnd_60"]
     for key in name_keys:
         train_losses, test_losses = run_seeded_test(folder, key, seeds)
         
         # Add some individual plotting here....
+        np.save(folder + f"LossResults/{experiment_name}_{key}_train_losses.npy", train_losses)
+        np.save(folder + f"LossResults/{experiment_name}_{key}_test_losses.npy", test_losses)
         
-        with open(folder + f"LossResults/{name}_LossResults.txt", "a") as f:
+        with open(folder + f"LossResults/{experiment_name}_LossResults.txt", "a") as f:
             f.write(f"{key},  {np.mean(train_losses[:, -1]):.5f},     {np.std(train_losses[:, -1]):.5f},       {np.mean(test_losses[:, -1]):.5f},       {np.std(test_losses[:, -1]):.5f} \n")
+        
         
         
 def run_nBeams_test():
     set_n = 3
-    folder = f"NetworkFitting/EndToEnd_{set_n}/"
+    name = "EndToEnd_nBeams"
+    folder = f"NetworkFitting/{name}_{set_n}/"
     name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_12","endToEnd_15", "endToEnd_20", "endToEnd_30", "endToEnd_60"]
-    run_experiment(folder, name_keys)
+    run_experiment(folder, name_keys, name)
+    
+    
+            
+def run_endStacking_test():
+    set_n = 3
+    name = "EndToEnd_stacking"
+    folder = f"NetworkFitting/{name}_{set_n}/"
+    name_keys = ["endToEnd_Single", "endToEnd_Double", "endToEnd_Triple", "endToEnd_Speed"]
+    run_experiment(folder, name_keys, name)
     
     
     
      
 if __name__ == "__main__":
-    run_nBeams_test()
-    
+    # run_nBeams_test()
+    run_endStacking_test()
     
     
     

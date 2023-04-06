@@ -7,40 +7,54 @@ from RacingDRL.Planners.TrackLine import TrackLine
 
 set_n = 3
 load_folder = f"Data/PurePursuitDataGen_{set_n}/"
-save_folder = f"NetworkFitting/EndToEnd_{set_n}/"
-
-if not os.path.exists(save_folder):
-    os.mkdir(save_folder)
 
 
 N_BEAMS = 60
     
-def generate_endToEnd_state(_state, scan, prev_scan, _track, _n_wpts, n_beams):
-    # step = round(N_BEAMS/(n_beams-1))
-    # print(f"step: {N_BEAMS/(n_beams-1)} -- {step}")
+def calculate_inds(n_beams):
     inds = np.arange(0, 60, round(60/(n_beams-1)))
     if len(inds) < n_beams:
         inds = np.append(inds, 59)
     print(f"inds: {inds} --> {n_beams} --> {len(inds)}")
+    
+    return inds
+
+def generate_single_endToEnd_state(_state, scan, prev_scans, _track, _n_wpts, n_beams):
+    inds = calculate_inds(n_beams)
+    scaled_state = scan[inds] / 10
+    scaled_state = np.clip(scaled_state, -1, 1)
+    
+    return scaled_state
+
+def generate_speed_endToEnd_state(state, scan, prev_scans, _track, _n_wpts, n_beams):
+    inds = calculate_inds(n_beams)
+    scaled_state = scan[inds] / 10
+    speed = state[3] / 8
+    full_state = np.concatenate((scaled_state, np.array([speed])))
+    full_state = np.clip(full_state, -1, 1)
+    
+    return full_state
+    
+def generate_double_endToEnd_state(_state, scan, prev_scans, _track, _n_wpts, n_beams):
+    inds = calculate_inds(n_beams)
+    prev_scan = prev_scans[0]
     scaled_state = np.concatenate((prev_scan[inds], scan[inds])) / 10
     scaled_state = np.clip(scaled_state, -1, 1)
     
-    return scaled_state
-    
-def generate_endToEndHalf_state(_state, scan, prev_scan, _track, _n_wpts):
-    scaled_state = np.concatenate((prev_scan[0:12], scan[0:12])) / 10
+    return scaled_state    
+
+def generate_tripple_endToEnd_state(_state, scan, prev_scans, _track, _n_wpts, n_beams):
+    inds = calculate_inds(n_beams)
+    prev_scan = prev_scans[0, :]
+    pp_scan = prev_scans[1, :]
+    scaled_state = np.concatenate((prev_scan[inds], pp_scan[inds], scan[inds])) / 10
     scaled_state = np.clip(scaled_state, -1, 1)
     
     return scaled_state
 
-def generate_endToEndSingle_state(_state, scan, prev_scan, _track, _n_wpts):
-    scaled_state = scan / 10
-    scaled_state = np.clip(scaled_state[0:1], -1, 1)
-    
-    return scaled_state
     
 
-def build_state_data_set(data_tag, state_gen_fcn, n_beams):
+def build_state_data_set(save_folder, data_tag, state_gen_fcn, n_beams):
     state_set = [] 
     
     for map_name in ["esp", "aut", "mco", "gbr"]:
@@ -49,11 +63,12 @@ def build_state_data_set(data_tag, state_gen_fcn, n_beams):
         states = history_data[:, :7]
 
         track = TrackLine(map_name, False)
-        prev_scan = np.zeros_like(scan_data[0])
+        prev_scans = np.zeros((2, scan_data[0].shape[0]))
         for i in range(len(states)):
-            scaled_state = state_gen_fcn(states[i], scan_data[i], prev_scan, track, 10, n_beams)
+            scaled_state = state_gen_fcn(states[i], scan_data[i], prev_scans, track, 10, n_beams)
             state_set.append(scaled_state)
-            prev_scan = scan_data[i]
+            prev_scans = np.roll(prev_scans, 1, axis=0)
+            prev_scans[0] = scan_data[i]
             
     
     state_set = np.array(state_set)
@@ -70,7 +85,7 @@ def build_state_data_set(data_tag, state_gen_fcn, n_beams):
         
     # plt.show()
 
-def build_action_data_set():
+def build_action_data_set(save_folder):
     normal_action = np.array([0.4, 8])
     
     action_set = []
@@ -90,14 +105,36 @@ def build_action_data_set():
     
 
 
-build_action_data_set()
+def build_endToEnd_nBeams():
+    save_folder = f"NetworkFitting/EndToEnd_nBeams_{set_n}/"
 
-build_state_data_set("endToEnd_5", generate_endToEnd_state, 5)
-build_state_data_set("endToEnd_10", generate_endToEnd_state, 10)
-build_state_data_set("endToEnd_12", generate_endToEnd_state, 12)
-build_state_data_set("endToEnd_15", generate_endToEnd_state, 15)
-build_state_data_set("endToEnd_20", generate_endToEnd_state, 20)
-build_state_data_set("endToEnd_30", generate_endToEnd_state, 30)
-build_state_data_set("endToEnd_60", generate_endToEnd_state, 60)
+    if not os.path.exists(save_folder):
+        os.mkdir(save_folder)
 
+    build_action_data_set(save_folder)
+
+    build_state_data_set(save_folder, "endToEnd_5", generate_double_endToEnd_state, 5)
+    build_state_data_set(save_folder, "endToEnd_12", generate_double_endToEnd_state, 12)
+    build_state_data_set(save_folder, "endToEnd_10", generate_double_endToEnd_state, 10)
+    build_state_data_set(save_folder, "endToEnd_15", generate_double_endToEnd_state, 15)
+    build_state_data_set(save_folder, "endToEnd_20", generate_double_endToEnd_state, 20)
+    build_state_data_set(save_folder, "endToEnd_30", generate_double_endToEnd_state, 30)
+    build_state_data_set(save_folder, "endToEnd_60", generate_double_endToEnd_state, 60)
+
+def build_endToEnd_stacking():
+    save_folder = f"NetworkFitting/EndToEnd_stacking_{set_n}/"
+
+    if not os.path.exists(save_folder):
+        os.mkdir(save_folder)
+
+    build_action_data_set(save_folder)
+
+    build_state_data_set(save_folder, "endToEnd_Single", generate_single_endToEnd_state, 20)
+    build_state_data_set(save_folder, "endToEnd_Double", generate_double_endToEnd_state, 20)
+    build_state_data_set(save_folder, "endToEnd_Triple", generate_tripple_endToEnd_state, 20)
+    build_state_data_set(save_folder, "endToEnd_Speed", generate_speed_endToEnd_state, 20)
+    
+if __name__ == "__main__":
+    # build_endToEnd_nBeams()
+    build_endToEnd_stacking()
 
