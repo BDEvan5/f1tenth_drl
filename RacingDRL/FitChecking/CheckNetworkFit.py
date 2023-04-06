@@ -58,10 +58,8 @@ def load_data(name):
     states = np.load(folder + f"DataSets/PurePursuit_{name}_states.npy")
     actions = np.load(folder + f"DataSets/PurePursuit_actions.npy")
     
-    np.random.seed(0)
-    test_size = 200
-    # test_size = int(0.1*states.shape[0])
-    # test_size = int(states.shape[0] - 200)
+    # test_size = 200
+    test_size = int(0.1*states.shape[0])
     test_inds = np.random.choice(states.shape[0], size=test_size, replace=False)
     
     test_x = states[test_inds]
@@ -111,7 +109,6 @@ def train_networks(name):
             
     torch.save(network, folder + f"Models/{name}.pt")
         
-    plot_losses(train_losses, test_losses, name)
     
     return train_losses, test_losses
     
@@ -131,6 +128,9 @@ def plot_losses(train, test, name="endToEnd"):
     plt.savefig(folder + f"LossImgs/Losses_{name}.svg")
         
 def train_all_networks():
+    random_seed = 0
+    np.random.seed(0)
+    
     train_losses, test_losses = [], []    
     
     # name_keys = ["Game", "trajFollow", "endToEndHalf", "endToEnd"]
@@ -139,6 +139,59 @@ def train_all_networks():
     # label_keys = ["TrajectoryFollow", "endToEnd-double"]
     name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_12","endToEnd_15", "endToEnd_20", "endToEnd_30", "endToEnd_60"]
     # name_keys = ["endToEnd", "Game", "trajFollow", "endToEndHalf", "endToEndSingle"]
+    for key in name_keys:
+        train_loss, test_loss = train_networks(key)
+        plot_losses(train_losses, test_losses, key)
+    
+        train_losses.append(train_loss)
+        test_losses.append(test_loss)
+        
+        print("----------------------------------")
+        print("")
+
+    plt.figure(figsize=(10, 6))
+    for i in range(len(name_keys)):
+        plt.plot(train_losses[i], label=name_keys[i], linewidth=2)
+        
+    plt.title("Training losses")
+    plt.legend()
+    plt.grid(True)
+    plt.ylabel("RMSE")
+    plt.xlabel("Iteration")
+    plt.tight_layout()
+    
+    plt.savefig(folder + f"LossImgs/TrainLosses.svg")
+    # plt.savefig(folder + f"LossImgs/TrainLossesSend.png")
+    
+    plt.clf()
+    for i in range(len(name_keys)):
+        plt.plot(test_losses[i], label=name_keys[i], linewidth=2)
+        
+    plt.title("Test losses")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.ylabel("RMSE")
+    plt.xlabel("Iteration")
+    
+    # plt.savefig(folder + f"LossImgs/TestLossesSend.png")
+    plt.savefig(folder + f"LossImgs/TestLosses.svg")
+    
+    with open(folder + f"LossImgs/LossResults.txt", "w") as f:
+        f.write(f"Name        TrainLoss,   TestLoss\n")
+        
+        for i in range(len(name_keys)):
+            f.write(f"{name_keys[i]},  {train_losses[i][-1]:.5f},  {test_losses[i][-1]:.5f} \n")
+    
+    
+def run_endToEnd_nBeams():
+    random_seed = 0
+    np.random.seed(random_seed)
+    
+    train_losses, test_losses = [], []    
+    
+    name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_20", "endToEnd_30"]
+    # name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_12","endToEnd_15", "endToEnd_20", "endToEnd_30", "endToEnd_60"]
     for key in name_keys:
         train_loss, test_loss = train_networks(key)
     
@@ -232,5 +285,8 @@ def test_network():
     
 if __name__ == "__main__":
     train_all_networks()
+
+    from RacingDRL.FitChecking.plot_n_beams import plot_n_beams
+    plot_n_beams()
 
     # test_network()
