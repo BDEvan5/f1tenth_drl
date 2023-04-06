@@ -1,22 +1,19 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import torch
+import torch, os
 from sklearn.metrics import mean_squared_error
-from RacingDRL.FitChecking.CheckNetworkFit import StdNetworkTwo
+from RacingDRL.FitChecking.train_networks import StdNetworkTwo
 
 torch.use_deterministic_algorithms(True)
 torch.manual_seed(0)
 
-folder  = "Data/PurePursuitDataGen_3/"
-
  
-def load_data(name):
+def load_data(folder, name):
     
     states = np.load(folder + f"DataSets/PurePursuit_{name}_states.npy")
     actions = np.load(folder + f"DataSets/PurePursuit_actions.npy")
     
-    np.random.seed(0)
-    test_size = 200
+    test_size = int(0.1*states.shape[0])
     test_inds = np.random.choice(states.shape[0], size=test_size, replace=False)
     
     test_x = torch.FloatTensor(states[test_inds])
@@ -27,87 +24,78 @@ def load_data(name):
     return test_x, test_y
     
 
-def load_models(ids):
+def load_models(folder, ids, seed):
     models = []
     for id in ids:
-        m = torch.load(folder + f"Models/endToEnd_{id}.pt")
+        m = torch.load(folder + f"Models/endToEnd_{id}_{seed}.pt")
         models.append(m)
         
     return models
 
-def run_action_analysis():
-    ids = ["5", "10", "12", "15", "20", "30", "60"]
+def run_all_seed():
+    for i in range(5):
+        run_action_analysis(i)
+
+def run_action_analysis(seed):
+    set_n = 3
+    name = f"EndToEnd_stacking_{set_n}"
+    folder = f"NetworkFitting/{name}/"
+    ids = ["Single", "Double", "Triple", "Speed"]
+    # ids = ["5", "10", "12", "15", "20", "30", "60"]
+    
+    np.random.seed(seed)
     test_sets = []
     for id in ids:
-        x, y = load_data(f"endToEnd_{id}")
+        x, y = load_data(folder, f"endToEnd_{id}")
         test_sets.append(x)
     true_actions = y.numpy()
 
-    models = load_models(ids)
+    models = load_models(folder, ids, seed)
     
-    data_speed = []
-    data_steer = []
+    result_data = []
     predicted_action_list = []
     plt.figure(figsize=(15, 6))
     for i in range(len(ids)):
         predicted_actions = models[i](test_sets[i]).detach().numpy()
         predicted_action_list.append(predicted_actions)
     
-        abs_losses = np.abs(true_actions - predicted_actions)
-        data_speed.append(abs_losses)
-
-        plt.plot(predicted_actions[:, 1], label=ids[i])
-    plt.plot(true_actions[:, 1], label=True, linewidth=2)
-    
-    plt.xlim(0, 60)
-    plt.grid()
-    plt.tight_layout()
-    plt.legend(ncol=len(ids))
-    plt.savefig(folder + "Figures/SpeedError.svg")
-    
-    plt.clf()
-    for i in range(len(ids)):
-        predicted_actions = models[i](test_sets[i]).detach().numpy()
-        predicted_action_list.append(predicted_actions)
-    
-        abs_losses = np.abs(true_actions - predicted_actions)
-        data_steer.append(abs_losses)
-
-        plt.plot(predicted_actions[:, 0], label=ids[i])
-    plt.plot(true_actions[:, 0], label="True", linewidth=2)
-    
-    plt.xlim(0, 60)
-    plt.grid()
-    plt.tight_layout()
-    plt.legend(ncol=len(ids))
-        
-    plt.savefig(folder + "Figures/SteeringError.svg")
+        # abs_losses = np.abs(true_actions - predicted_actions)
+        abs_losses = (true_actions - predicted_actions)**2
+        result_data.append(abs_losses)
+        # mse_loss = mean_squared_error(true_actions, predicted_actions)
+        # result_data.append(mse_loss)
 
     plt.clf()
-    data_steer = np.array(data_steer)
-    print(data_steer.shape)
-    data_speed = np.array(data_speed)
-    print(data_speed.shape)
-    # labels = ids.append("True")
+    result_data = np.array(result_data)
+    result_data = np.sqrt(result_data)
+    print(result_data.shape)
     
-    
-    plt.boxplot(data_steer[:, :, 0].T)
-    plt.xticks(np.arange(7) + 1, ids)
-    plt.xlabel("Number of beams")
+    plt.boxplot(result_data[:, :, 0].T)
+    plt.xticks(np.arange(len(ids)) + 1, ids)
     plt.grid(True)
-    plt.ylabel("Steering Error")
-    plt.savefig(folder + "Figures/BoxSteeringErrors.svg")
+    plt.title("Steering Error")
+    plt.savefig(folder + f"Figures/BoxSteeringErrors_{seed}.svg")
     
     plt.clf()
-    plt.boxplot(data_steer[:, :, 1].T)
-    plt.xticks(np.arange(7) + 1, ids)
-    plt.xlabel("Number of beams")
+    plt.boxplot(result_data[:, :, 1].T)
+    plt.xticks(np.arange(len(ids)) + 1, ids)
     plt.grid(True)
-    plt.ylabel("Speed Error")
-    plt.savefig(folder + "Figures/BoxSpeedErrors.svg")
+    plt.title("Speed Error")
+    plt.savefig(folder + f"Figures/BoxSpeedErrors_{seed}.svg")
+    
+    plt.clf()
+    result_data = np.power(result_data, 2)
+    total_loss = np.mean(result_data, axis=-1)
+    total_loss = np.sqrt(total_loss)
+    print(total_loss.shape)
+    plt.boxplot(total_loss.T)
+    plt.xticks(np.arange(len(ids)) + 1, ids)
+    plt.grid(True)
+    plt.title("Total Error")
+    plt.savefig(folder + f"Figures/BoxTotalErrors_{seed}.svg")
     
     
     
 
-run_action_analysis()
-
+# run_action_analysis()
+run_all_seed()
