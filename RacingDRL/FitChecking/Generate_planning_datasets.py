@@ -19,6 +19,7 @@ def calculate_inds(n_beams):
     
     return inds
 
+inds = calculate_inds(N_BEAMS)
 
 def transform_waypoints(wpts, position, orientation):
     new_pts = wpts - position
@@ -27,6 +28,31 @@ def transform_waypoints(wpts, position, orientation):
     return new_pts
     
 def generate_fullPlanning_state(state, scan, track, n_wpts):
+    relative_pts = generate_planning_waypoints(state, track, n_wpts)
+    scaled_state = generate_motion_variables(state)
+    scaled_scan = np.clip(scan[inds]/10, 0, 1)
+    
+    state = np.concatenate((scaled_scan, relative_pts, scaled_state))
+    
+    return state    
+
+def generate_fullPlanning_state_rmMotion(state, scan, track, n_wpts):
+    relative_pts = generate_planning_waypoints(state, track, n_wpts)
+    scaled_scan = np.clip(scan[inds]/10, 0, 1)
+    
+    state = np.concatenate((scaled_scan, relative_pts))
+    
+    return state
+
+def generate_fullPlanning_state_rmLidar(state, scan, track, n_wpts):
+    relative_pts = generate_planning_waypoints(state, track, n_wpts)
+    scaled_state = generate_motion_variables(state)
+    
+    state = np.concatenate((relative_pts, scaled_state))
+    
+    return state
+
+def generate_planning_waypoints(state, track, n_wpts):
     idx, dists = track.get_trackline_segment(state[0:2])
         
     upcomings_inds = np.arange(idx, idx+n_wpts)
@@ -37,17 +63,19 @@ def generate_fullPlanning_state(state, scan, track, n_wpts):
     upcoming_pts = track.wpts[upcomings_inds]
     
     relative_pts = transform_waypoints(upcoming_pts, np.array([state[0:2]]), state[4])
+    relative_pts = relative_pts / 2.5
+    relative_pts = np.clip(relative_pts, 0, 1) #? ensures correct range
     
+    return relative_pts.flatten()
+    
+def generate_motion_variables(state):
     speed = state[3] / 8
     anglular_vel = state[5] / 3.14
     steering_angle = state[2] / 0.4
     scaled_state = np.array([speed, anglular_vel, steering_angle])
+    scaled_state = np.clip(scaled_state, -1, 1)
     
-    scaled_scan = np.clip(scan/10, 0, 1)
-    
-    state = np.concatenate((scaled_scan, relative_pts.flatten(), scaled_state))
-    
-    return state
+    return scaled_state
 
 def generate_trajectoryTrack_state(state, _scan, track, n_wpts):
     idx, dists = track.get_trackline_segment(state[0:2])
@@ -136,6 +164,24 @@ def build_trajectoryTrack_nWaypoints():
         build_state_data_set(save_folder, f"trajectoryTrack_{i}", generate_trajectoryTrack_state, i, True)
 
 
+
+def build_fullPlanning_ablation():
+    experiment_name = "fullPlanning_ablation"
+    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
+
+    if not os.path.exists(save_folder):
+        os.mkdir(save_folder)
+
+    build_action_data_set(save_folder)
+
+    build_state_data_set(save_folder, f"fullPlanning_full", generate_fullPlanning_state, 10, False)
+    build_state_data_set(save_folder, f"fullPlanning_rmMotion", generate_fullPlanning_state_rmMotion, 10, False)
+    build_state_data_set(save_folder, f"fullPlanning_rmLidar", generate_fullPlanning_state_rmLidar, 10, False)
+    build_state_data_set(save_folder, f"fullPlanning_rmWaypoints", generate_fullPlanning_state, 0, False)
+    build_state_data_set(save_folder, f"fullPlanning_Motion", generate_fullPlanning_state_rmLidar, 0, False)
+
+
     
 if __name__ == "__main__":
-    build_trajectoryTrack_nWaypoints()
+    # build_trajectoryTrack_nWaypoints()
+    build_fullPlanning_ablation()

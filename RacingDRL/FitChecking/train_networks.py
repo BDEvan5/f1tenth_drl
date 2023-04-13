@@ -126,8 +126,10 @@ def run_seeded_test(folder, key, seeds):
 def run_experiment(folder, name_keys, experiment_name):
     save_path = folder + "LossResults/"
     if not os.path.exists(save_path): os.mkdir(save_path)
+    spacing = 30
     with open(folder + f"LossResults/{experiment_name}_LossResults.txt", "w") as f:
-        f.write(f"Name        TrainLoss mean, TrainLoss std ,   TestLoss mean, TestLoss std \n")
+        f.write(f"Name,".ljust(spacing))
+        f.write(f"TrainLoss mean, TrainLoss std ,   TestLoss mean, TestLoss std \n")
         
     seeds = np.arange(5)
     for key in name_keys:
@@ -138,7 +140,8 @@ def run_experiment(folder, name_keys, experiment_name):
         np.save(folder + f"LossResults/{experiment_name}_{key}_test_losses.npy", test_losses)
         
         with open(folder + f"LossResults/{experiment_name}_LossResults.txt", "a") as f:
-            f.write(f"{key},  {np.mean(train_losses[:, -1]):.5f},     {np.std(train_losses[:, -1]):.5f},       {np.mean(test_losses[:, -1]):.5f},       {np.std(test_losses[:, -1]):.5f} \n")
+            f.write(f"{key},".ljust(spacing))
+            f.write(f"{np.mean(train_losses[:, -1]):.5f},     {np.std(train_losses[:, -1]):.5f},       {np.mean(test_losses[:, -1]):.5f},       {np.std(test_losses[:, -1]):.5f} \n")
         
         
         
@@ -168,6 +171,13 @@ def run_trajectoryWaypoints_test():
     inds = [0, 1, 2, 4, 6, 8, 10, 12, 15, 20]
     name_keys = [f"trajectoryTrack_{i}" for i in inds]
     run_experiment(folder, name_keys, name)
+               
+def run_planningAblation_test():
+    set_n = 3
+    name = "fullPlanning_ablation"
+    folder = f"NetworkFitting/{name}_{set_n}/"
+    name_keys = ["fullPlanning_full", "fullPlanning_rmMotion", "fullPlanning_rmLidar", "fullPlanning_rmWaypoints", "fullPlanning_Motion"]
+    run_experiment(folder, name_keys, name)
     
     
     
@@ -176,6 +186,6 @@ if __name__ == "__main__":
     # run_nBeams_test()
     # run_endStacking_test()
     
-    run_trajectoryWaypoints_test()
-    
+    # run_trajectoryWaypoints_test()
+    run_planningAblation_test()
     

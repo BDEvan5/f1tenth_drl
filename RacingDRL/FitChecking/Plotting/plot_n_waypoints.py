@@ -43,7 +43,7 @@ def plot_n_waypoints_avg():
     plt.fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.3)
     plt.fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.3)
     
-    plt.xlabel("Number of beams")
+    plt.xlabel("Number of waypoints")
     plt.ylabel("Loss (RMSE)")
     # plt.ylim(0.075, 0.14)
     plt.legend()

@@ -94,13 +94,12 @@ def train_networks(folder, name, seed):
         loss.backward()
         optimizer.step()
         
-        # test_loss = test_loss.item() ** 0.5
         train_loss = loss.item() ** 0.5
         loss_speed = test_loss_speed.item() ** 0.5
         loss_steering = test_loss_steering.item() ** 0.5
         test_losses.append(loss_speed + loss_steering)
-        test_loss_speed_array.append(loss_speed** 0.5)
-        test_loss_steering_array.append(loss_steering ** 0.5)
+        test_loss_speed_array.append(loss_speed)
+        test_loss_steering_array.append(loss_steering)
         train_losses.append(train_loss)
         
         if i % 50 == 0:
@@ -147,7 +146,7 @@ def run_experiment(folder, name_keys, experiment_name, n_seeds=5):
     if not os.path.exists(save_path): os.mkdir(save_path)
     spacing = 18
     with open(folder + f"LossResultsSeperate/{experiment_name}_LossResultsSeperate.txt", "w") as f:
-        f.write(f"Name".ljust(spacing))
+        f.write(f"Name".ljust(30))
         f.write(f"TrainLoss mean".rjust(spacing))
         f.write(f"TrainLoss std".rjust(spacing))
         f.write(f"TestSteer mean".rjust(spacing))
@@ -166,7 +165,7 @@ def run_experiment(folder, name_keys, experiment_name, n_seeds=5):
         np.save(folder + f"LossResultsSeperate/{experiment_name}_{key}_test_losses_steering.npy", test_losses_steering)
         
         with open(folder + f"LossResultsSeperate/{experiment_name}_LossResultsSeperate.txt", "a") as f:
-            f.write(f"{key},".ljust(spacing) )
+            f.write(f"{key},".ljust(30) )
             f.write(f"{np.mean(train_losses[:, -1]):.5f},".rjust(spacing))
             f.write(f"{np.std(train_losses[:, -1]):.5f},".rjust(spacing))
             
@@ -196,12 +195,20 @@ def run_endStacking_test():
     name_keys = ["endToEnd_Single", "endToEnd_Double", "endToEnd_Triple", "endToEnd_Speed"]
     run_experiment(folder, name_keys, name, 5)
     
+def run_planningAblation_test():
+    set_n = 3
+    name = "fullPlanning_ablation"
+    folder = f"NetworkFitting/{name}_{set_n}/"
+    name_keys = ["fullPlanning_full", "fullPlanning_rmMotion", "fullPlanning_rmLidar", "fullPlanning_rmWaypoints"]
+    run_experiment(folder, name_keys, name, 5)
+    
     
     
      
 if __name__ == "__main__":
     # run_nBeams_test()
-    run_endStacking_test()
+    # run_endStacking_test()
+    run_planningAblation_test()
     
     
     
