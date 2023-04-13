@@ -158,12 +158,24 @@ def run_endStacking_test():
     name_keys = ["endToEnd_Single", "endToEnd_Double", "endToEnd_Triple", "endToEnd_Speed"]
     run_experiment(folder, name_keys, name)
     
+        
+            
+def run_trajectoryWaypoints_test():
+    set_n = 3
+    name = "trajectoryTrack_nWaypoints"
+    folder = f"NetworkFitting/{name}_{set_n}/"
+    # inds = [0, 1, 2, 5, 10]
+    inds = [0, 1, 2, 4, 6, 8, 10, 12, 15, 20]
+    name_keys = [f"trajectoryTrack_{i}" for i in inds]
+    run_experiment(folder, name_keys, name)
+    
     
     
      
 if __name__ == "__main__":
     # run_nBeams_test()
-    run_endStacking_test()
+    # run_endStacking_test()
     
+    run_trajectoryWaypoints_test()
     
     
