@@ -14,6 +14,7 @@ def load_data(folder, name):
     actions = np.load(folder + f"DataSets/PurePursuit_actions.npy")
     
     test_size = int(0.1*states.shape[0])
+    # test_size = int(states.shape[0])
     test_inds = np.random.choice(states.shape[0], size=test_size, replace=False)
     
     test_x = torch.FloatTensor(states[test_inds])
