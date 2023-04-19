@@ -134,7 +134,21 @@ def build_endToEnd_stacking():
     build_state_data_set(save_folder, "endToEnd_Triple", generate_tripple_endToEnd_state, 20)
     build_state_data_set(save_folder, "endToEnd_Speed", generate_speed_endToEnd_state, 20)
     
+    
+def build_endToEnd_comparision_set():
+    experiment_name = "comparison"
+    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
+
+    if not os.path.exists(save_folder):
+        os.mkdir(save_folder)
+
+    # build_action_data_set(save_folder)
+
+    build_state_data_set(save_folder, "endToEnd_Speed", generate_speed_endToEnd_state, 20)
+    
 if __name__ == "__main__":
     # build_endToEnd_nBeams()
-    build_endToEnd_stacking()
+    # build_endToEnd_stacking()
+    
+    build_endToEnd_comparision_set()
 

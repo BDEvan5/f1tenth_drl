@@ -180,8 +180,22 @@ def build_fullPlanning_ablation():
     build_state_data_set(save_folder, f"fullPlanning_rmWaypoints", generate_fullPlanning_state, 0, False)
     build_state_data_set(save_folder, f"fullPlanning_Motion", generate_fullPlanning_state_rmLidar, 0, False)
 
+def build_comparison_data_set():
+    experiment_name = "comparison"
+    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
 
+    if not os.path.exists(save_folder):
+        os.mkdir(save_folder)
+
+    build_action_data_set(save_folder)
+
+    build_state_data_set(save_folder, f"fullPlanning", generate_fullPlanning_state, 10, False)
+    build_state_data_set(save_folder, f"trajectoryTrack_{10}", generate_trajectoryTrack_state, 10, True)
+    
+    
     
 if __name__ == "__main__":
     # build_trajectoryTrack_nWaypoints()
-    build_fullPlanning_ablation()
+    # build_fullPlanning_ablation()
+    
+    build_comparison_data_set()
