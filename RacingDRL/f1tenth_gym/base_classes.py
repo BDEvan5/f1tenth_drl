@@ -484,7 +484,7 @@ class Simulator(object):
         # initializing agents
         for i in range(self.num_agents):
             if i == ego_idx:
-                ego_car = RaceCar(params, self.seed, num_beams=60, is_ego=True, time_step=self.time_step, integrator=integrator)
+                ego_car = RaceCar(params, self.seed, num_beams=20, is_ego=True, time_step=self.time_step, integrator=integrator)
                 self.agents.append(ego_car)
             else:
                 agent = RaceCar(params, self.seed, num_beams=20, is_ego=False, time_step=self.time_step, integrator=integrator)
@@ -492,7 +492,6 @@ class Simulator(object):
 
     def set_map(self, map_path, map_ext):
         """
-        Sets the map of the environment and sets the map for scan simulator of each agent
 
         Args:
             map_path (str): path to the map yaml file

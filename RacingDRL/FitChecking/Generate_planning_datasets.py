@@ -91,6 +91,8 @@ def generate_trajectoryTrack_state(state, _scan, track, n_wpts):
     relative_pts = relative_pts / 2.5
     relative_pts = np.clip(relative_pts, 0, 1) #? ensures correct range
     
+    #! There is no speed reference in the action....
+    
     speed = state[3] / 8
     anglular_vel = state[5] / 3.14
     steering_angle = state[2] / 0.4

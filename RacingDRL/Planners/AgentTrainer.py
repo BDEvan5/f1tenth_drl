@@ -27,7 +27,7 @@ class AgentTrainer:
 
         self.architecture = select_architecture(run, conf)
         self.agent = create_train_agent(run, self.architecture.state_space)
-        self.t_his = TrainHistory(run, conf)
+        self.t_his = TrainHistory(self.path)
 
     def plan(self, obs):
         nn_state = self.architecture.transform_obs(obs)

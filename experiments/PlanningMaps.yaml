@@ -8,17 +8,16 @@ set_n: 3
 
 random_seed: 0
 max_speed: 8
-n_scans: 2
 
-training_steps: 20000
-n_test_laps: 5
-map_name: "esp"
+training_steps: 30000
+n_test_laps: 10
+# map_name: "esp"
 algorithm: "SAC"
 id_name: "train"
 
 runs:
-  - map_name: "mco"
-  - map_name: "gbr"
+  # - map_name: "mco"
+  # - map_name: "gbr"
   - map_name: "esp"
   - map_name: "aut"
 

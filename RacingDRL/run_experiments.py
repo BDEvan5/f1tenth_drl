@@ -52,7 +52,7 @@ def run_simulation_loop_laps(env, planner, n_laps, n_sim_steps=10):
         while not done:
             action = planner.plan(observation)
             
-            mini_i = 1
+            mini_i = 10
             while mini_i > 0 and not done:
                 observation, reward, done, info = env.step(action[None, :])
                 mini_i -= 1
@@ -132,13 +132,9 @@ def run_pp_tests():
       
     
 def main():
-    # experiment = "EndNumBeams"
-    # experiment = "TrajectoryNumPoints"
-    # experiment = "GameAblation"
-    
     # experiment = "EndMaps"
     experiment = "TrajectoryMaps"
-    # experiment = "GameMaps"
+    # experiment = "PlanningMaps"
     
     # experiment = "main"
     # experiment = "EndSpeeds"

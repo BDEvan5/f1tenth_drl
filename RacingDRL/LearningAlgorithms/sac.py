@@ -43,7 +43,7 @@ class TrainSAC:
         action, _ =  self.actor(state)
         return action.detach()[0].numpy()
                
-    def train(self, iterations=2):
+    def train(self, iterations=1):
         if self.replay_buffer.size() < BATCH_SIZE: return 
         
         for _ in range(0, iterations):
