@@ -172,11 +172,20 @@ def run_trajectoryWaypoints_test():
     name_keys = [f"trajectoryTrack_{i}" for i in inds]
     run_experiment(folder, name_keys, name)
                
+               
 def run_planningAblation_test():
     set_n = 3
     name = "fullPlanning_ablation"
     folder = f"NetworkFitting/{name}_{set_n}/"
     name_keys = ["fullPlanning_full", "fullPlanning_rmMotion", "fullPlanning_rmLidar", "fullPlanning_rmWaypoints", "fullPlanning_Motion"]
+    run_experiment(folder, name_keys, name)
+    
+    
+def run_comparison_test():
+    set_n = 3
+    name = "comparison"
+    folder = f"NetworkFitting/{name}_{set_n}/"
+    name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
     run_experiment(folder, name_keys, name)
     
     
@@ -187,5 +196,7 @@ if __name__ == "__main__":
     # run_endStacking_test()
     
     # run_trajectoryWaypoints_test()
-    run_planningAblation_test()
+    # run_planningAblation_test()
+    
+    run_comparison_test()
     

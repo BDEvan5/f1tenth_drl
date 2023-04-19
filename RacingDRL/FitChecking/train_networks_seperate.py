@@ -113,6 +113,7 @@ def train_networks(folder, name, seed):
     plt.plot(test_loss_steering_array, label="Steering")
     plt.legend()
     plt.title(f"Test Losses: {name}_{seed}")
+    plt.ylim(0, 0.8)
     
     plt.savefig(folder + f"LossResultsSeperate/{name}_{seed}.svg")
     # plt.show()
@@ -202,13 +203,22 @@ def run_planningAblation_test():
     name_keys = ["fullPlanning_full", "fullPlanning_rmMotion", "fullPlanning_rmLidar", "fullPlanning_rmWaypoints"]
     run_experiment(folder, name_keys, name, 5)
     
+        
+def run_comparison_test():
+    set_n = 3
+    name = "comparison"
+    folder = f"NetworkFitting/{name}_{set_n}/"
+    name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd", "endToEnd_Single"]
+    run_experiment(folder, name_keys, name)
+    
     
     
      
 if __name__ == "__main__":
     # run_nBeams_test()
     # run_endStacking_test()
-    run_planningAblation_test()
+    # run_planningAblation_test()
     
+    run_comparison_test()
     
     

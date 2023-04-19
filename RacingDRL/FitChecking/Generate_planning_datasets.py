@@ -190,7 +190,7 @@ def build_comparison_data_set():
     build_action_data_set(save_folder)
 
     build_state_data_set(save_folder, f"fullPlanning", generate_fullPlanning_state, 10, False)
-    build_state_data_set(save_folder, f"trajectoryTrack_{10}", generate_trajectoryTrack_state, 10, True)
+    build_state_data_set(save_folder, f"trajectoryTrack", generate_trajectoryTrack_state, 10, True)
     
     
     
