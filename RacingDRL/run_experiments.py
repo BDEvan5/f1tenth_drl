@@ -46,25 +46,21 @@ def run_simulation_loop_steps(env, planner, steps):
         if RENDER_ENV: env.render('human_fast')
         
 def run_simulation_loop_laps(env, planner, n_laps, n_sim_steps=10):
-    observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
-    
     for lap in range(n_laps):
+        observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
         while not done:
             action = planner.plan(observation)
             
-            mini_i = 10
+            mini_i = n_sim_steps
             while mini_i > 0 and not done:
                 observation, reward, done, info = env.step(action[None, :])
                 mini_i -= 1
 
-            if RENDER_ENV: env.render('human')
-            
+            # if RENDER_ENV: env.render('human')
             # if RENDER_ENV: env.render('human_fast')
     
         planner.done_callback(observation)
-        observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
-                  
-        
+    
     
 def run_training_batch(experiment):
     # run_list = setup_run_list(experiment, new_run=False)
@@ -132,8 +128,8 @@ def run_pp_tests():
       
     
 def main():
-    # experiment = "EndMaps"
-    experiment = "TrajectoryMaps"
+    experiment = "EndMaps"
+    # experiment = "TrajectoryMaps"
     # experiment = "PlanningMaps"
     
     # experiment = "main"

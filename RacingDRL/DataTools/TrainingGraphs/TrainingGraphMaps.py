@@ -9,21 +9,31 @@ from RacingDRL.DataTools.plotting_utils import *
 
 def make_TrainingGraph():
     base_path = "Data/"
-    test_name = "TrajectoryNumPoints" 
-    set_number = 2
+    # test_name = "TrajectoryMaps" 
+    # architecture = "TrajectoryFollower"
+    # test_name = "PlanningMaps" 
+    # architecture = "Game"
+    # test_name = "PlanningMaps" 
+    # architecture = "Game"
+    test_name = "EndMaps"
+    architecture = "endToEnd"
+    set_number = 3
     p = base_path + test_name + f"_{set_number}/"
+    max_speed = 6
+    general_id = "v6"
 
     steps_list = []
     progresses_list = []
     
-    id_names = ["0", "5", "10", "20"]
+    map_names = ["aut", "esp"]
+    map_names = ["aut", "esp", "gbr", "mco"]
 
-    n_repeats = 1
-    for i, id_name in enumerate(id_names): 
+    n_repeats = 2
+    for i, id_name in enumerate(map_names): 
         steps_list.append([])
         progresses_list.append([])
         for j in range(n_repeats):
-            path = p + f"AgentOff_SAC_TrajectoryFollower_esp_{id_name}_8_{set_number}_{j}/"
+            path = p + f"AgentOff_SAC_{architecture}_{id_name}_{general_id}_{max_speed}_{set_number}_{j}/"
             rewards, lengths, progresses, _ = load_csv_data(path)
             steps = np.cumsum(lengths[:-1]) / 1000
             avg_progress = true_moving_average(progresses[:-1], 20)
@@ -32,10 +42,10 @@ def make_TrainingGraph():
 
     plt.figure(2, figsize=(4.5, 2.3))
 
-    xs = np.linspace(0, 20, 300)
+    xs = np.linspace(0, 30, 300)
     for i in range(len(steps_list)):
         min, max, mean = convert_to_min_max_avg(steps_list[i], progresses_list[i], xs)
-        plt.plot(xs, mean, '-', color=pp_dark[i], linewidth=2, label=id_names[i])
+        plt.plot(xs, mean, '-', color=pp_dark[i], linewidth=2, label=map_names[i])
         plt.gca().fill_between(xs, min, max, color=pp_dark[i], alpha=0.2)
 
 

@@ -36,7 +36,7 @@ class EndArchitecture:
             nn_obs: observation vector for neural network
         """
         scan = np.array(obs['scans'][0]) 
-        speed = obs['speeds'][0]/self.max_speed
+        speed = obs['linear_vels_x'][0]/self.max_speed
         scan = np.clip(scan/self.range_finder_scale, 0, 1)
         nn_obs = np.concatenate((scan, [speed]))
 
@@ -76,6 +76,7 @@ class PlanningArchitecture:
         
         relative_pts = transform_waypoints(upcoming_pts, np.array([obs['poses_x'][0], obs['poses_y'][0]]), obs['poses_theta'][0])
         relative_pts /= self.waypoint_scale
+        relative_pts = relative_pts.flatten()
         
         speed = obs['linear_vels_x'][0] / self.max_speed
         anglular_vel = obs['ang_vels_z'][0] / np.pi
@@ -84,7 +85,8 @@ class PlanningArchitecture:
         scan = np.array(obs['scans'][0]) 
         scan = np.clip(scan/10, 0, 1)
         
-        state = np.concatenate((scan, relative_pts.flatten(), np.array([speed, anglular_vel, steering_angle])))
+        motion_variables = np.array([speed, anglular_vel, steering_angle])
+        state = np.concatenate((scan, relative_pts.flatten(), motion_variables))
         
         return state
     
@@ -127,17 +129,21 @@ class TrajectoryArchitecture:
         
         relative_pts = transform_waypoints(upcoming_pts, np.array([obs['poses_x'][0], obs['poses_y'][0]]), obs['poses_theta'][0])
         relative_pts /= self.waypoint_scale
-        speeds = self.track.vs[upcomings_inds]
-        scaled_speeds = (speeds - 1) / (self.max_speed - 1) * 2 - 1
-        relative_pts = np.concatenate((relative_pts, scaled_speeds[:, None]), axis=-1)
+        
+        # speeds = self.track.vs[upcomings_inds]
+        # scaled_speeds = (speeds - 1) / (self.max_speed - 1) * 2 - 1
+        # relative_pts = np.concatenate((relative_pts, scaled_speeds[:, None]), axis=-1)
         
         # plt.figure()
+        # plt.plot(relative_pts[:, 0], relative_pts[:, 1], 'r.')
         # plt.plot(upcoming_pts[:, 0], upcoming_pts[:, 1], 'r.')
         # plt.plot(pose[0], pose[1], 'b.')
         
         # plt.show()
         
-        state = np.concatenate((relative_pts.flatten(), np.array([speed, anglular_vel, steering_angle])))
+        relative_pts = relative_pts.flatten()
+        motion_variables = np.array([speed, anglular_vel, steering_angle])
+        state = np.concatenate((relative_pts, motion_variables))
         
         return state
     
