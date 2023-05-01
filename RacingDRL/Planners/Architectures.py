@@ -36,7 +36,7 @@ class EndArchitecture:
             nn_obs: observation vector for neural network
         """
         scan = np.array(obs['scans'][0]) 
-        speed = obs['linear_vels_x'][0]/self.max_speed
+        speed = obs['linear_vels_x'][0] / self.max_speed
         scan = np.clip(scan/self.range_finder_scale, 0, 1)
         nn_obs = np.concatenate((scan, [speed]))
 

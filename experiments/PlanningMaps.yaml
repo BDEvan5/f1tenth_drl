@@ -4,10 +4,10 @@ planner_type: "AgentOff"
 state_vector: "Game"
 
 n_repeats: 3
-set_n: 5
+set_n: 8
 
 random_seed: 0
-max_speed: 5
+max_speed: 8
 
 training_steps: 30000
 n_test_laps: 10

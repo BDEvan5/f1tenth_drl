@@ -15,11 +15,11 @@ def make_TrainingGraph():
     # architecture = "Game"
     test_name = "EndMaps"
     architecture = "endToEnd"
-    set_number = 5
+    set_number = 51
     p = base_path + test_name + f"_{set_number}/"
     max_speed = 5
-    # general_id = "train"
-    general_id = "v6"
+    general_id = "train"
+    # general_id = "v6"
 
     steps_list = []
     progresses_list = []

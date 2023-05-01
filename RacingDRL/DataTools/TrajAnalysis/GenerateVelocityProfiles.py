@@ -129,8 +129,8 @@ def analyse_folder():
 
     # path = p + "PurePursuitMaps_1/"
     # path = p + "PlanningMaps_3/"
-    # path = p + "EndMaps_3/"
-    path = p + "TrajectoryMaps_1/"
+    # path = p + "EndMaps_5/"
+    path = p + "TrajectoryMaps_5/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
