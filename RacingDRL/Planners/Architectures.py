@@ -130,9 +130,10 @@ class TrajectoryArchitecture:
         relative_pts = transform_waypoints(upcoming_pts, np.array([obs['poses_x'][0], obs['poses_y'][0]]), obs['poses_theta'][0])
         relative_pts /= self.waypoint_scale
         
-        # speeds = self.track.vs[upcomings_inds]
+        speeds = self.track.vs[upcomings_inds]
+        scaled_speeds = speeds / self.max_speed
         # scaled_speeds = (speeds - 1) / (self.max_speed - 1) * 2 - 1
-        # relative_pts = np.concatenate((relative_pts, scaled_speeds[:, None]), axis=-1)
+        relative_pts = np.concatenate((relative_pts, scaled_speeds[:, None]), axis=-1)
         
         # plt.figure()
         # plt.plot(relative_pts[:, 0], relative_pts[:, 1], 'r.')

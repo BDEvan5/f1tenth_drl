@@ -103,6 +103,33 @@ def generate_trajectoryTrack_state(state, _scan, track, n_wpts):
     
     return state
 
+def generate_fullTrajectoryTrack_state(state, _scan, track, n_wpts):
+    idx, dists = track.get_trackline_segment(state[0:2])
+        
+    upcomings_inds = np.arange(idx, idx+n_wpts)
+    if idx + n_wpts >= track.N:
+        n_start_pts = idx + n_wpts - track.N
+        upcomings_inds[n_wpts - n_start_pts:] = np.arange(0, n_start_pts)
+        
+    upcoming_pts = track.wpts[upcomings_inds]
+    upcoming_speeds = track.vs[upcomings_inds] / 8
+    
+    relative_pts = transform_waypoints(upcoming_pts, np.array([state[0:2]]), state[4])
+    relative_pts = relative_pts / 2.5
+    relative_pts = np.clip(relative_pts, 0, 1) #? ensures correct range
+    
+    #! There is no speed reference in the action....
+    
+    speed = state[3] / 8
+    anglular_vel = state[5] / 3.14
+    steering_angle = state[2] / 0.4
+    scaled_state = np.array([speed, anglular_vel, steering_angle])
+    scaled_state = np.clip(scaled_state, -1, 1)
+    
+    state = np.concatenate((relative_pts.flatten(), scaled_state, upcoming_speeds))
+    
+    return state
+
     
     
 

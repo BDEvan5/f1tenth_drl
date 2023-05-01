@@ -128,8 +128,8 @@ def run_pp_tests():
       
     
 def main():
-    experiment = "EndMaps"
-    # experiment = "TrajectoryMaps"
+    # experiment = "EndMaps"
+    experiment = "TrajectoryMaps"
     # experiment = "PlanningMaps"
     
     # experiment = "main"

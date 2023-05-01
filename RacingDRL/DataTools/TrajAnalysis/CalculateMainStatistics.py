@@ -160,7 +160,7 @@ def analyse_folder():
     # path = "Data/TrajectoryNumPoints_4/"
     # path = "Data/" + "GameMaps_3/"
     
-    path = p + "TrajectoryMaps_4/"
+    path = p + "TrajectoryMaps_5/"
     # path = p + "PurePursuitMaps_1/"
     
 

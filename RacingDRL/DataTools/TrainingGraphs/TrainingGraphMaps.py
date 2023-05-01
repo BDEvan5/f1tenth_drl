@@ -13,22 +13,22 @@ def make_TrainingGraph():
     # architecture = "TrajectoryFollower"
     # test_name = "PlanningMaps" 
     # architecture = "Game"
-    # test_name = "PlanningMaps" 
-    # architecture = "Game"
     test_name = "EndMaps"
     architecture = "endToEnd"
-    set_number = 3
+    set_number = 5
     p = base_path + test_name + f"_{set_number}/"
-    max_speed = 6
+    max_speed = 5
+    # general_id = "train"
     general_id = "v6"
 
     steps_list = []
     progresses_list = []
     
-    map_names = ["aut", "esp"]
-    map_names = ["aut", "esp", "gbr", "mco"]
+    map_names = ['gbr']
+    # map_names = ["aut", "esp"]
+    # map_names = ["aut", "esp", "gbr", "mco"]
 
-    n_repeats = 2
+    n_repeats = 3
     for i, id_name in enumerate(map_names): 
         steps_list.append([])
         progresses_list.append([])

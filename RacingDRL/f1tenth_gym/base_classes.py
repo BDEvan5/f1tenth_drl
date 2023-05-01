@@ -372,10 +372,12 @@ class RaceCar(object):
             self.state = self.state + self.time_step*(1/6)*(k1 + 2*k2 + 2*k3 + k4)
         
         elif self.integrator is Integrator.Euler:
+            mu_std = 0.2
+            sample_mu = self.params['mu'] + np.random.randn() * mu_std
             f = vehicle_dynamics_st(
                 self.state,
                 np.array([sv, accl]),
-                self.params['mu'],
+                sample_mu,
                 self.params['C_Sf'],
                 self.params['C_Sr'],
                 self.params['lf'],

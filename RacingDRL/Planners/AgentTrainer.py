@@ -24,12 +24,16 @@ class AgentTrainer:
         self.action = None
         self.std_track = TrackLine(run.map_name, False)
         self.reward_generator = ProgressReward(self.std_track)
+        self.max_lap_progress = 0
 
         self.architecture = select_architecture(run, conf)
         self.agent = create_train_agent(run, self.architecture.state_space)
         self.t_his = TrainHistory(self.path)
 
     def plan(self, obs):
+        progress = self.std_track.calculate_progress_percent([obs['poses_x'][0], obs['poses_y'][0]]) * 100
+        self.max_lap_progress = max(self.max_lap_progress, progress)
+        
         nn_state = self.architecture.transform_obs(obs)
         
         self.add_memory_entry(obs, nn_state)
@@ -61,10 +65,11 @@ class AgentTrainer:
         nn_s_prime = self.architecture.transform_obs(s_prime)
         reward = self.reward_generator(s_prime, self.state)
         progress = self.std_track.calculate_progress_percent([s_prime['poses_x'][0], s_prime['poses_y'][0]]) * 100
+        self.max_lap_progress = max(self.max_lap_progress, progress)
         
         # print(self.t_his.reward_list)
-        self.t_his.lap_done(reward, progress, False)
-        print(f"Episode: {self.t_his.ptr}, Step: {self.t_his.t_counter}, Lap p: {progress:.1f}%, Reward: {self.t_his.rewards[self.t_his.ptr-1]:.2f}")
+        self.t_his.lap_done(reward, self.max_lap_progress, False)
+        print(f"Episode: {self.t_his.ptr}, Step: {self.t_his.t_counter}, Lap p: {self.max_lap_progress:.1f}%, Reward: {self.t_his.rewards[self.t_his.ptr-1]:.2f}")
 
         if self.nn_state is None:
             print(f"Crashed on first step: RETURNING")
@@ -73,6 +78,7 @@ class AgentTrainer:
         self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, True)
         self.nn_state = None
         self.state = None
+        self.max_lap_progress = 0
 
         self.save_training_data()
 
