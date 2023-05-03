@@ -38,7 +38,7 @@ class AnalyseTestLapData:
         self.lap_n = 0
 
     def explore_folder(self, path):
-        vehicle_folders = glob.glob(f"{path}*/")
+        vehicle_folders = glob.glob(f"{path}*0/")
         print(vehicle_folders)
         print(f"{len(vehicle_folders)} folders found")
 
