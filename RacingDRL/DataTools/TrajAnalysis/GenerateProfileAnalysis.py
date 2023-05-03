@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 plt.rcParams['pdf.use14corefonts'] = True
+from matplotlib.ticker import MaxNLocator, MultipleLocator
 
 import numpy as np
 import glob
@@ -15,13 +16,10 @@ from RacingDRL.Utils.utils import *
 from RacingDRL.DataTools.plotting_utils import *
 from matplotlib.ticker import MultipleLocator
 
-SAVE_PDF = False
-# SAVE_PDF = True
+# SAVE_PDF = False
+SAVE_PDF = True
 
 
-def ensure_path_exists(folder):
-    if not os.path.exists(folder):
-        os.makedirs(folder)
 
 def ensure_path_exists(path):
     if not os.path.exists(path):
@@ -121,21 +119,10 @@ class AnalyseTestLapData:
         std_img_saving(name, SAVE_PDF)
         
         mco_left_limits()
-        
-        plt.pause(1)
         cbar.remove()
         cbar = plt.colorbar(line,fraction=0.046, pad=0.04, shrink=0.6)
-        from matplotlib.ticker import MaxNLocator, MultipleLocator
         cbar.ax.get_yaxis().set_major_locator(MultipleLocator(2))
-        # cbar.ax.set_yticklabels([0, 2, 4, 6, 8])
-        # cbar.ax.set_yticklabels([0, 2, 4, 6, 8])
         cbar.ax.tick_params(labelsize=25)
-        plt.pause(1)
-        # cbar.ax.set_yscale(0.1) # set the colorbar height
-        # cbar.ax.fraction = 0.02 # set the colorbar height
-        # plt.pause(1)
-        # cbar.ax.set_ylim([0, 8]) # set the colorbar height
-        # cbar.ax.set_position([0.1, 0.1, 0.1, 0.1]) # set the colorbar position in the figure
         name = self.path + "ClippedTrajectories/" + f"LEFT_{self.vehicle_name}_velocity_map_{self.lap_n}"
         std_img_saving(name, SAVE_PDF)
 
@@ -176,21 +163,7 @@ def generate_comparative_analysis():
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
     
-    # path = p + f"TrajectoryMaps_{set_n}/"
-    # TestData = AnalyseTestLapData()
-    # TestData.explore_folder(path)
 
-    # path = p + f"PurePursuitMaps_{set_n}/"
-    # TestData = AnalyseTestLapData()
-    # TestData.explore_folder(path)
-    
-    # path = p + f"PlanningMaps_{set_n}/"
-    # TestData = AnalyseTestLapData()
-    # TestData.explore_folder(path)
-    
-    # path = p + f"EndMaps_{set_n}/"
-    # TestData = AnalyseTestLapData()
-    # TestData.explore_folder(path)
 
 
 if __name__ == '__main__':
