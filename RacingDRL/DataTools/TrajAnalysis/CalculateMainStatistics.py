@@ -154,16 +154,12 @@ def generate_folder_statistics(folder):
 
 def analyse_folder():
     p = "Data/"
-    # path = "Data/Vehicles/Eval_RewardsSlow/"
-    # path = "Data/GameAblation_1/"
-    # path = "Data/EndMaps_3/"
-    # path = "Data/TrajectoryNumPoints_4/"
-    # path = "Data/" + "GameMaps_3/"
     
-    path = p + "TrajectoryMaps_5/"
+    # path = p + "TrajectoryMaps_8/"
+    # path = p + "PlanningMaps_8/"
+    path = p + "EndMaps_8/"
     # path = p + "PurePursuitMaps_1/"
     
-
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
 
