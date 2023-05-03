@@ -4,7 +4,7 @@ planner_type: "AgentOff"
 state_vector: "TrajectoryFollower"
 
 n_repeats: 3
-start_n: 2
+start_n: 0
 set_n: 1
 
 random_seed: 0
@@ -20,8 +20,8 @@ trajectory_speeds: True
 map_name: "esp"
 
 runs:
-  # - max_speed: 4
+  - max_speed: 4
   # - max_speed: 5
   # - max_speed: 6
-  - max_speed: 7
+  # - max_speed: 7
   # - max_speed: 8

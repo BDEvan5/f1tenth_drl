@@ -19,7 +19,7 @@ from matplotlib.ticker import MultipleLocator
 # SAVE_PDF = False
 SAVE_PDF = True
 
-
+vehicle_names = ["Classic", "Full Planner", "Trajectory Follower", "End-to-End"]
 
 def ensure_path_exists(path):
     if not os.path.exists(path):
@@ -58,13 +58,18 @@ class AnalyseTestLapData:
         self.std_track = TrackLine(self.map_name, False)
         self.racing_track = TrackLine(self.map_name, True)
 
-        ensure_path_exists(self.path + "TestingVelocities")
-        ensure_path_exists(self.path + "ClippedTrajectories")
+        vehicle_data = {"Game": 1, "pathFollower": 0, "TrajectoryFollower": 2, "endToEnd": 3}
+        vehicle_make = self.vehicle_name.split("_")[2]
+        self.vehicle_number = vehicle_data[vehicle_make]
+
+        # ensure_path_exists(self.path + "TestingVelocities")
+        # ensure_path_exists(self.path + "ClippedTrajectories")
+        ensure_path_exists(self.path + "SlipDistributions")
 
         for self.lap_n in range(5):
             if not self.load_lap_data(): break # no more laps
-            self.plot_velocity_heat_map()
-
+            # self.plot_velocity_heat_map()
+            self.slip_angle_distribution()
 
     def load_lap_data(self):
         try:
@@ -126,6 +131,34 @@ class AnalyseTestLapData:
         name = self.path + "ClippedTrajectories/" + f"LEFT_{self.vehicle_name}_velocity_map_{self.lap_n}"
         std_img_saving(name, SAVE_PDF)
 
+    def slip_angle_distribution(self):
+        
+        # plt.figure(1, figsize=(2, 2))
+        plt.figure(1, figsize=(3, 2.2))
+        plt.clf()
+        # points = self.states[:, 0:2]
+        slips = self.states[:, 6]
+        slips = np.abs(slips)
+        
+        bins = np.linspace(0, 0.3, 20)
+        plt.hist(slips, bins=bins, color=pp[self.vehicle_number], label=vehicle_names[self.vehicle_number])
+        plt.xlim(-0.01, 0.3)
+        # plt.xlim(-0.3, 0.3)
+        plt.xlabel("Slip Angle (rad)")
+        plt.ylabel("Frequency")
+        
+        plt.legend(loc="upper right", fontsize=12)
+        
+        # plt.title(f"{vehicle_names[self.vehicle_number]}")
+        
+        name = self.path + "SlipDistributions/" + f"{self.vehicle_name}_slip_dist_{self.lap_n}"
+        
+        std_img_saving(name, SAVE_PDF)
+        
+        
+        
+        
+        
 
 def esp_left_limits():
     plt.xlim(20, 620)

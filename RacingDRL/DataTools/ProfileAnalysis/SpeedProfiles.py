@@ -88,7 +88,51 @@ def speed_profile_comparison():
     plt.savefig(f"Data/ComparativeAnalysis_8/_Imgs/CompareSpeed_{map_name.upper()}.pdf", bbox_inches='tight')
 
     # plt.show()
+    
+def speed_profile_deviation():
+    map_name = "mco"
+    pp_path = f"Data/ComparativeAnalysis_8/PurePursuit_PP_pathFollower_mco_test_8_8_0/"
+    planner_path = f"Data/ComparativeAnalysis_8/AgentOff_SAC_Game_mco_train_8_8_0/"
+    trajectory_path = f"Data/ComparativeAnalysis_8/AgentOff_SAC_TrajectoryFollower_mco_train_8_8_0/"
+    end_path = f"Data/ComparativeAnalysis_8/AgentOff_SAC_endToEnd_mco_train_8_8_0/"
+
+    pp_data = TestLapData(pp_path)
+    planner_data = TestLapData(planner_path, 0)
+    trajectory_data = TestLapData(trajectory_path, 0)
+    end_data = TestLapData(end_path, 0)
+
+    classic_xs = pp_data.generate_state_progress_list()
+    planner_xs = planner_data.generate_state_progress_list()
+    trajectory_xs = trajectory_data.generate_state_progress_list()
+    end_xs = end_data.generate_state_progress_list()
+
+    xs = np.linspace(0, 100, 200)
+    pp_vs = np.interp(xs, classic_xs, pp_data.states[:, 3])
+    planner_vs = np.interp(xs, planner_xs, planner_data.states[:, 3])
+    trajectory_vs = np.interp(xs, trajectory_xs, trajectory_data.states[:, 3])
+    end_vs = np.interp(xs, end_xs, end_data.states[:, 3])
+
+    plt.figure(1, figsize=(6, 1.9))
+    ax1 = plt.gca()
+    plt.plot(xs, planner_vs - pp_vs, label="Full planner", color=pp[1])
+    plt.plot(xs, trajectory_vs - pp_vs, color=pp[2], label="Trajectory follower")
+    plt.plot(xs, end_vs - pp_vs, color=pp[3], label="End-to-end")
+
+    ax1.set_ylabel("Speed \ndifference m/s", fontsize=10)
+    ax1.set_xlabel("Track progress (%)")
+    ax1.legend(ncol=4, fontsize=9, loc='lower center', bbox_to_anchor=(0.5, 0.96))
+
+    plt.grid(True)
+    plt.tight_layout()
+    plt.xlim(10, 60)
+    plt.gca().yaxis.set_major_locator(MultipleLocator(2.5))
+
+    plt.savefig(f"Data/ComparativeAnalysis_8/_Imgs/SpeedDifference_{map_name.upper()}.svg", bbox_inches='tight')
+    plt.savefig(f"Data/ComparativeAnalysis_8/_Imgs/SpeedDifference_{map_name.upper()}.pdf", bbox_inches='tight')
+
+    # plt.show()
 
 
-speed_profile_comparison()
+# speed_profile_comparison()
+speed_profile_deviation()
 
