@@ -66,7 +66,7 @@ def setup_run_list(experiment_file, new_run=True):
 
 
     run_list = []
-    for rep in range(experiment_dict['n_repeats']):
+    for rep in range(experiment_dict['start_n'], experiment_dict['n_repeats']):
         for run in experiment_dict['runs']:
             # base is to copy everything from the original
             for key in experiment_dict.keys():

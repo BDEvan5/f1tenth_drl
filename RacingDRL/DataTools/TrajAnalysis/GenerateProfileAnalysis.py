@@ -23,6 +23,9 @@ def ensure_path_exists(folder):
     if not os.path.exists(folder):
         os.makedirs(folder)
 
+def ensure_path_exists(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
 
 class AnalyseTestLapData:
     def __init__(self):
@@ -57,8 +60,9 @@ class AnalyseTestLapData:
         self.std_track = TrackLine(self.map_name, False)
         self.racing_track = TrackLine(self.map_name, True)
 
-        if not os.path.exists(self.path + "TestingVelocities/"): 
-            os.mkdir(self.path + "TestingVelocities/")    
+        ensure_path_exists(self.path + "TestingVelocities")
+        ensure_path_exists(self.path + "ClippedTrajectories")
+
         for self.lap_n in range(5):
             if not self.load_lap_data(): break # no more laps
             self.plot_velocity_heat_map()
@@ -76,10 +80,8 @@ class AnalyseTestLapData:
         self.actions = data[:, 7:]
 
         return 1 # to say success
-
     
     def plot_velocity_heat_map(self): 
-        save_path  = self.path + "TestingVelocities/"
         
         plt.figure(1)
         plt.clf()
@@ -102,17 +104,40 @@ class AnalyseTestLapData:
         cbar.ax.tick_params(labelsize=25)
         plt.gca().set_aspect('equal', adjustable='box')
 
+        plt.tight_layout()
         plt.xticks([])
         plt.yticks([])
-        plt.tight_layout()
         ax = plt.gca()
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         ax.spines['bottom'].set_visible(False)
         ax.spines['left'].set_visible(False)
         
-        name = save_path + f"{self.vehicle_name}_velocity_map_{self.lap_n}"
-        std_img_saving(name)
+        name = self.path + "TestingVelocities/" + f"{self.vehicle_name}_velocity_map_{self.lap_n}"
+        std_img_saving(name, SAVE_PDF)        
+        
+        mco_right_limits()
+        name = self.path + "ClippedTrajectories/" + f"RIGHT_{self.vehicle_name}_velocity_map_{self.lap_n}"
+        std_img_saving(name, SAVE_PDF)
+        
+        mco_left_limits()
+        
+        plt.pause(1)
+        cbar.remove()
+        cbar = plt.colorbar(line,fraction=0.046, pad=0.04, shrink=0.6)
+        from matplotlib.ticker import MaxNLocator, MultipleLocator
+        cbar.ax.get_yaxis().set_major_locator(MultipleLocator(2))
+        # cbar.ax.set_yticklabels([0, 2, 4, 6, 8])
+        # cbar.ax.set_yticklabels([0, 2, 4, 6, 8])
+        cbar.ax.tick_params(labelsize=25)
+        plt.pause(1)
+        # cbar.ax.set_yscale(0.1) # set the colorbar height
+        # cbar.ax.fraction = 0.02 # set the colorbar height
+        # plt.pause(1)
+        # cbar.ax.set_ylim([0, 8]) # set the colorbar height
+        # cbar.ax.set_position([0.1, 0.1, 0.1, 0.1]) # set the colorbar position in the figure
+        name = self.path + "ClippedTrajectories/" + f"LEFT_{self.vehicle_name}_velocity_map_{self.lap_n}"
+        std_img_saving(name, SAVE_PDF)
 
 
 def esp_left_limits():
@@ -122,6 +147,14 @@ def esp_left_limits():
 def esp_right_limits():
     plt.xlim(900, 1500)
     plt.ylim(50, 520)
+    
+def mco_left_limits():
+    plt.xlim(20, 660)
+    plt.ylim(710, 1020)
+
+def mco_right_limits():
+    plt.xlim(550, 1100)
+    plt.ylim(80, 530)
 
 def analyse_folder():
 
