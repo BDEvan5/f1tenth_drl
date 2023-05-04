@@ -104,6 +104,8 @@ class AnalyseTestLapData:
         pts = self.states[:, 0:2]
         ss = np.linalg.norm(np.diff(pts, axis=0), axis=1)
         total_distance = np.sum(ss)
+        if self.map_name == "esp":
+            breakpoint
 
         # if self.map_name == "aut" or self.map_name == "esp":
         #     time = len(pts) /100
@@ -112,8 +114,9 @@ class AnalyseTestLapData:
         vs = self.states[:, 3]
         avg_velocity = np.mean(vs)
 
-        progress = self.std_track.calculate_progress(pts[-1])/self.std_track.total_s
-        if progress < 0.01 or progress > 0.99:
+        progress_distance = self.std_track.calculate_progress(pts[-1])
+        progress = progress_distance/self.std_track.total_s
+        if progress_distance < 0.01 or progress > 0.99:
             progress = 1 # it is finished
 
         with open(self.path + f"Statistics{self.map_name[-3:].upper()}.txt", "a") as file:
@@ -138,7 +141,7 @@ class AnalyseTestLapData:
                 progress = float(line[progress_ind])
                 n_total += 1
                 progresses.append(progress)
-                if progress < 0.01 or progress > 0.99:
+                if progress < 0.005 or progress > 0.99:
                     n_success += 1
                     for i in range(n_values):
                         data[i].append(float(line[i]))
@@ -172,8 +175,8 @@ def generate_folder_statistics(folder):
 def analyse_folder():
     p = "Data/"
     
-    # path = p + "TrajectoryMaps_8/"
-    path = p + "PlanningMaps_8/"
+    path = p + "TrajectoryMaps_8/"
+    # path = p + "PlanningMaps_8/"
     # path = p + "EndMaps_8/"
     # path = p + "PurePursuitMaps_1/"
     

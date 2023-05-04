@@ -55,7 +55,6 @@ def make_laptime_and_success_barplot():
     set_number = 8
     folder_traj = base_path + test_name + f"_{set_number}/"
     
-    fig, axs = plt.subplots(1, 2, figsize=(4.5, 2.0))
     xs = np.arange(4)
     
     barWidth = 0.26
@@ -64,32 +63,43 @@ def make_laptime_and_success_barplot():
     br2 = [x + barWidth for x in br1]
     br3 = [x + barWidth * 2 for x in br1]
 
-    keys = ["time", "success"]
-    ylabels = "Time (s), Success (%)".split(", ")
+    keys = ["time", "success", "progress"]
+    ylabels = "Time (s), Success (%), Avg. Progress (%)".split(", ")
+    keys = ["time", "progress"]
+    ylabels = "Time (s), Avg. Progress (%)".split(", ")
+    # keys = ["time", "success"]
+    # ylabels = "Time (s), Success (%)".split(", ")
 
-    for z in range(2):
-        key = keys[z]
-        
-        mins, maxes, means = load_time_data(folder_games, "gbr_train")
-        axs[z].bar(br1, means[key][0:4], color=pp_light[1], width=barWidth, label="Planning")
-        plt.sca(axs[z])
-        plot_error_bars(br1, mins[key][0:4], maxes[key], pp_darkest[1], w)
-        
-        mins, maxes, means = load_time_data(folder_traj, "gbr_train")
-        axs[z].bar(br2, means[key][0:4], color=pp_light[2], width=barWidth, label="Trajectory")
-        plt.sca(axs[z])
-        plot_error_bars(br2, mins[key][0:4], maxes[key], pp_darkest[2], w)
-        
-        mins, maxes, means = load_time_data(folder_pp, "gbr_train")
-        axs[z].bar(br3, means[key][0:4], color=pp_light[5], width=barWidth, label="Pure Pursuit")
-        plot_error_bars(br3, mins[key][0:4], maxes[key], pp_darkest[5], w)
+    train_maps = ["gbr", "mco"]
+
+    fig, axs = plt.subplots(len(keys), len(train_maps), figsize=(5.5, 4.0), sharey=True)
+    # fig, axs = plt.subplots(len(keys), len(train_maps), figsize=(10, 10), sharey=True)
+    for m in range(len(train_maps)):
+        for z in range(len(keys)):
+            key = keys[z]
             
-        axs[z].xaxis.set_major_locator(MultipleLocator(1))
-        axs[z].set_ylabel(ylabels[z])
-        axs[z].set_xticks([0, 1, 2, 3], ["AUT", "ESP", "GBR", "MCO"])
-        axs[z].grid(True)
+            plt.sca(axs[z, m])
+            mins, maxes, means = load_time_data(folder_games, f"{train_maps[m]}_train")
+            plt.bar(br1, means[key][0:4], color=pp_light[1], width=barWidth, label="Planning")
+            plot_error_bars(br1, mins[key][0:4], maxes[key], pp_darkest[1], w)
+            
+            mins, maxes, means = load_time_data(folder_traj, f"{train_maps[m]}_train")
+            plt.bar(br2, means[key][0:4], color=pp_light[2], width=barWidth, label="Trajectory")
+            plot_error_bars(br2, mins[key][0:4], maxes[key], pp_darkest[2], w)
+            
+            mins, maxes, means = load_time_data(folder_pp, f"{train_maps[m]}_train")
+            plt.bar(br3, means[key][0:4], color=pp_light[5], width=barWidth, label="Pure Pursuit")
+            plot_error_bars(br3, mins[key][0:4], maxes[key], pp_darkest[5], w)
+                
+            plt.gca().xaxis.set_major_locator(MultipleLocator(1))
+            # plt.gca().set_ylabel(ylabels[z])
+            plt.gca().set_xticks([0, 1, 2, 3], ["AUT", "ESP", "GBR", "MCO"])
+            plt.grid(True)
+            
+            axs[z, 0].set_ylabel(ylabels[z])
+        axs[0, m].set_title(f"{train_maps[m].upper()}")
         
-    handles, labels = axs[0].get_legend_handles_labels()
+    handles, labels = axs[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels, ncol=3, loc="center", bbox_to_anchor=(0.55, -0.01))
     # axs[0].set_xlabel("Maximum speed (m/s)")
     # axs[1].set_xlabel("Maximum speed (m/s)")
