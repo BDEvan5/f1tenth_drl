@@ -4,6 +4,7 @@ planner_type: "AgentOff"
 state_vector: "Game"
 
 n_repeats: 3
+start_n: 0
 set_n: 8
 
 random_seed: 0
@@ -17,7 +18,7 @@ id_name: "train"
 
 runs:
   - map_name: "mco"
-  # - map_name: "gbr"
+  - map_name: "gbr"
   # - map_name: "esp"
   # - map_name: "aut"
 

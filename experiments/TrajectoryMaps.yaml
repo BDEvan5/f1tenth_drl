@@ -5,6 +5,7 @@ state_vector: "TrajectoryFollower"
 
 n_repeats: 3
 set_n: 8
+start_n: 0
 
 random_seed: 0
 max_speed: 8
@@ -19,10 +20,10 @@ n_waypoints: 10
 trajectory_speeds: True
 
 runs:
-  # - map_name: "mco"
-  # - map_name: "gbr"
+  - map_name: "mco"
+  - map_name: "gbr"
   # - map_name: "esp"
   # - map_name: "aut"
 
-runs:
-  max_speed: 8
+# runs:
+#   max_speed: 8

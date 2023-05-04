@@ -26,7 +26,6 @@ class VehicleData:
     def process_folder(self, name, n, map_name):
         folder = self.prefix + name + "_" + str(n) 
         
-        #open summary stats
         try:
             with open(f"{folder}/SummaryStatistics{map_name.upper()}.txt", 'r') as file:
                 lines = file.readlines()
@@ -52,8 +51,6 @@ class VehicleData:
         success_rates = np.array(self.success_rates)
         progresses = np.array(self.avg_progresses)
 
-
-        # with open(self.prefix + "Results_" + self.vehicle_id + ".txt", 'w') as file:
         with open(self.prefix + "Results_" + self.vehicle_id + f"_test{map_name[-3:].upper()}.txt", 'w') as file:
             file.write(f"Metric  , Time              , Success Rate     , Avg Progress    \n")
             for i in range(len(names)):
@@ -70,7 +67,6 @@ class VehicleData:
                     
                 file.write(f", {functions[i](progresses):14.4f} \n")
             
-    
 
 
 def aggregate_runs(path, n=3):
@@ -101,5 +97,6 @@ def aggregate_runs(path, n=3):
 # aggregate_runs("Data/TrajectoryNumPoints_4/", 2)
 # aggregate_runs("Data/GameMaps_3/", 3)
 # aggregate_runs("Data/PurePursuitMaps_1/", 1)
-# aggregate_runs("Data/TrajectoryMaps_4/", 3)
+aggregate_runs("Data/TrajectoryMaps_8/", 3)
 aggregate_runs("Data/EndMaps_8/", 3)
+aggregate_runs("Data/PlanningMaps_8/", 3)
