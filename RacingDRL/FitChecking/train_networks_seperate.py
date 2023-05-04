@@ -78,7 +78,8 @@ def train_networks(folder, name, seed):
     network = StdNetworkTwo(train_x.shape[1], train_y.shape[1])
     optimizer = torch.optim.Adam(network.parameters(), lr=0.001)
     
-    train_iterations = 301
+    train_iterations = 401
+    # train_iterations = 301
     train_losses, test_losses = [], []
     test_loss_steering_array, test_loss_speed_array = [], []
     

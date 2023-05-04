@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from RacingDRL.DataTools.plotting_utils import *
 
 
 def plot_training_loss_comparison():
@@ -20,15 +21,15 @@ def plot_training_loss_comparison():
         speed_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_speed.npy")
         steer_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_steering.npy")
 
-        axes[0].plot(np.mean(speed_training_loss, axis=0), label=label_names[i])
-        axes[1].plot(np.mean(steer_training_loss, axis=0))
+        axes[0].plot(np.mean(speed_training_loss, axis=0), label=label_names[i], color=pp[i+1])
+        axes[1].plot(np.mean(steer_training_loss, axis=0), color=pp[i+1])
             
     for i, name in enumerate(name_keys):
         speed_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_speed.npy")
         steer_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_steering.npy")
         
-        axes[0].fill_between(np.arange(len(speed_training_loss[0])), np.min(speed_training_loss, axis=0),  np.max(speed_training_loss, axis=0), alpha=0.2)
-        axes[1].fill_between(np.arange(len(steer_training_loss[0])), np.min(steer_training_loss, axis=0),  np.max(steer_training_loss, axis=0), alpha=0.2)
+        axes[0].fill_between(np.arange(len(speed_training_loss[0])), np.min(speed_training_loss, axis=0),  np.max(speed_training_loss, axis=0), alpha=0.2, color=pp[i+1])
+        axes[1].fill_between(np.arange(len(steer_training_loss[0])), np.min(steer_training_loss, axis=0),  np.max(steer_training_loss, axis=0), alpha=0.2, color=pp[i+1])
         
     axes[0].set_xlabel("Training Epoch")
     axes[0].set_ylabel("Speed Loss")
@@ -38,8 +39,8 @@ def plot_training_loss_comparison():
     axes[0].set_ylim(0, 0.3)
     axes[1].set_ylim(0, 0.3)
     
-    axes[0].xaxis.set_ticks(np.arange(0, 300, 80))
-    axes[1].xaxis.set_ticks(np.arange(0, 300, 80))
+    axes[0].xaxis.set_ticks(np.arange(0, 401, 80))
+    axes[1].xaxis.set_ticks(np.arange(0, 401, 80))
     
     axes[0].yaxis.set_ticks(np.arange(0, 0.3, 0.05))
     axes[1].yaxis.set_ticks(np.arange(0, 0.3, 0.05))
@@ -74,11 +75,11 @@ def plot_training__combined_loss_comparison():
     for i, name in enumerate(name_keys):
         training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_train_losses.npy")
 
-        plt.plot(np.mean(training_loss, axis=0), label=label_names[i])
+        plt.plot(np.mean(training_loss, axis=0), color=pp[i+1], label=label_names[i])
             
     for i, name in enumerate(name_keys):
         training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_train_losses.npy")
-        plt.fill_between(np.arange(len(training_loss[0])), np.min(training_loss, axis=0),  np.max(training_loss, axis=0), alpha=0.2)
+        plt.fill_between(np.arange(len(training_loss[0])), np.min(training_loss, axis=0),  np.max(training_loss, axis=0), alpha=0.2, color=pp[i+1])
         
     plt.xlabel("Training Epoch")
     plt.ylabel("Speed Loss")
@@ -100,5 +101,5 @@ def plot_training__combined_loss_comparison():
     plt.savefig(save_folder + f"LossResultsSeperate/{experiment_name}_LossResults.pdf", pad_inches=0, bbox_inches='tight')
     
     
-# plot_training_loss_comparison()
-plot_training__combined_loss_comparison()
+plot_training_loss_comparison()
+# plot_training__combined_loss_comparison()
