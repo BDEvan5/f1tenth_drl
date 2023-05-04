@@ -105,10 +105,10 @@ class AnalyseTestLapData:
         ss = np.linalg.norm(np.diff(pts, axis=0), axis=1)
         total_distance = np.sum(ss)
 
-        if self.map_name == "aut" or self.map_name == "esp":
-            time = len(pts) /100
-        else:
-            time = len(pts) /10
+        # if self.map_name == "aut" or self.map_name == "esp":
+        #     time = len(pts) /100
+        # else:
+        time = len(pts) /10
         vs = self.states[:, 3]
         avg_velocity = np.mean(vs)
 
@@ -180,7 +180,20 @@ def analyse_folder():
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
 
+def analyse_all_data():
+    p = "Data/"
+    
+    TestData = AnalyseTestLapData()
 
+    path = p + "PlanningMaps_8/"
+    TestData.explore_folder(path)
+
+    path = p + "TrajectoryMaps_8/"
+    TestData.explore_folder(path)
+
+    path = p + "EndMaps_8/"
+    TestData.explore_folder(path)
 
 if __name__ == '__main__':
-    analyse_folder()
+    # analyse_folder()
+    analyse_all_data()
