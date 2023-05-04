@@ -12,7 +12,8 @@ MAX_SPEED = 8
 PI = np.pi
 MAX_STEER = 0.4
 BEAM_LENGTH = 10
-WAYPOINT_SCALE = 2.5
+WAYPOINT_SCALE = 4
+# WAYPOINT_SCALE = 2.5
 N_BEAMS = 20
     
 def calculate_inds(n_beams):
@@ -204,7 +205,7 @@ def build_comparison_data_set():
     
     
 if __name__ == "__main__":
-    # build_trajectoryTrack_nWaypoints()
+    build_trajectoryTrack_nWaypoints()
     # build_fullPlanning_ablation()
     
-    build_comparison_data_set()
+    # build_comparison_data_set()

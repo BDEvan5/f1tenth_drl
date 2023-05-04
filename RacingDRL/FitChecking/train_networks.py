@@ -9,10 +9,10 @@ import os
 from matplotlib import pyplot as plt
 
 
-NN_LAYER_1 = 500
-NN_LAYER_2 = 500
-# NN_LAYER_1 = 100
-# NN_LAYER_2 = 100
+# NN_LAYER_1 = 500
+# NN_LAYER_2 = 500
+NN_LAYER_1 = 100
+NN_LAYER_2 = 100
 
 BATCH_SIZE = 100
 
@@ -102,7 +102,7 @@ def train_networks(folder, name, seed):
     network = StdNetworkTwo(train_x.shape[1], train_y.shape[1])
     optimizer = torch.optim.Adam(network.parameters(), lr=0.001)
     
-    train_iterations = 4000
+    train_iterations = 2000
     train_losses, test_losses = [], []
     
     for i in range(train_iterations):
@@ -113,14 +113,11 @@ def train_networks(folder, name, seed):
         loss.backward()
         optimizer.step()
         
-        
         if i % 50 == 0:
             train_loss, test_loss = estimate_losses(train_x, train_y, test_x, test_y, network)
             test_losses.append(test_loss)
             train_losses.append(train_loss)
             print(f"{i}: TrainLoss: {train_loss} --> TestLoss: {test_loss}")
-            l_steer, l_speed = network.separate_losses(test_x, test_y)
-            print(f"SteerLoss: {l_steer**0.5} --> SpeedLoss: {l_speed**0.5}")
          
     if not os.path.exists(folder + "Models/"): os.mkdir(folder + "Models/")   
     torch.save(network, folder + f"Models/{name}_{seed}.pt")
@@ -139,13 +136,16 @@ def run_seeded_test(folder, key, seeds):
         
         plt.figure(1)
         plt.clf()
-        plt.plot(train_loss, label="Train loss")
-        plt.plot(test_loss, label="Test loss")
+        xs = np.arange(len(train_loss)) * 50
+        plt.plot(xs, train_loss, label="Train loss")
+        plt.plot(xs, test_loss, label="Test loss")
         plt.grid(True)
         plt.legend()
         plt.tight_layout()
-        
         plt.savefig(folder + f"LossResults/{key}_{i}_LossResults.svg", pad_inches=0, bbox_inches='tight')
+        
+        plt.ylim(0, 0.1)
+        plt.savefig(folder + f"LossResults/{key}_{i}_LossResultsZoom.svg", pad_inches=0, bbox_inches='tight')
     
     train_losses = np.array(train_losses)
     test_losses = np.array(test_losses)
@@ -153,7 +153,7 @@ def run_seeded_test(folder, key, seeds):
     return train_losses, test_losses
         
     
-def run_experiment(folder, name_keys, experiment_name):
+def run_experiment(folder, name_keys, experiment_name, n_seeds=3):
     save_path = folder + "LossResults/"
     if not os.path.exists(save_path): os.mkdir(save_path)
     spacing = 30
@@ -161,7 +161,7 @@ def run_experiment(folder, name_keys, experiment_name):
         f.write(f"Name,".ljust(spacing))
         f.write(f"TrainLoss mean, TrainLoss std ,   TestLoss mean, TestLoss std \n")
         
-    seeds = np.arange(1)
+    seeds = np.arange(n_seeds)
     for key in name_keys:
         train_losses, test_losses = run_seeded_test(folder, key, seeds)
         
@@ -199,7 +199,7 @@ def run_trajectoryWaypoints_test():
     # inds = [0, 1, 2, 5, 10]
     inds = [0, 1, 2, 4, 6, 8, 10, 12, 15, 20]
     name_keys = [f"trajectoryTrack_{i}" for i in inds]
-    run_experiment(folder, name_keys, name)
+    run_experiment(folder, name_keys, name, 3)
                
                
 def run_planningAblation_test():
@@ -215,17 +215,17 @@ def run_comparison_test():
     name = "comparison"
     folder = f"NetworkFitting/{name}_{set_n}/"
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
-    run_experiment(folder, name_keys, name)
+    run_experiment(folder, name_keys, name, 3)
     
     
     
      
 if __name__ == "__main__":
-    # run_nBeams_test()
+    run_nBeams_test()
     # run_endStacking_test()
     
     # run_trajectoryWaypoints_test()
     # run_planningAblation_test()
     
-    run_comparison_test()
+    # run_comparison_test()
     

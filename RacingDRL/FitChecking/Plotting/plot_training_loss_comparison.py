@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from RacingDRL.DataTools.plotting_utils import *
+from matplotlib.ticker import MultipleLocator, MaxNLocator
 
 
 def plot_training_loss_comparison():
@@ -16,34 +17,32 @@ def plot_training_loss_comparison():
     fig, axes = plt.subplots(1, 2, figsize=(5, 2.2))
     
     mode = "train"
+    xs = np.arange(0, 41) * 50
     
     for i, name in enumerate(name_keys):
         speed_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_speed.npy")
         steer_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_steering.npy")
 
-        axes[0].plot(np.mean(speed_training_loss, axis=0), label=label_names[i], color=pp[i+1])
-        axes[1].plot(np.mean(steer_training_loss, axis=0), color=pp[i+1])
+        axes[0].plot(xs, np.mean(speed_training_loss, axis=0), label=label_names[i], color=pp[i+1])
+        axes[1].plot(xs, np.mean(steer_training_loss, axis=0), color=pp[i+1])
             
     for i, name in enumerate(name_keys):
         speed_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_speed.npy")
         steer_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_steering.npy")
         
-        axes[0].fill_between(np.arange(len(speed_training_loss[0])), np.min(speed_training_loss, axis=0),  np.max(speed_training_loss, axis=0), alpha=0.2, color=pp[i+1])
-        axes[1].fill_between(np.arange(len(steer_training_loss[0])), np.min(steer_training_loss, axis=0),  np.max(steer_training_loss, axis=0), alpha=0.2, color=pp[i+1])
+        axes[0].fill_between(xs, np.min(speed_training_loss, axis=0),  np.max(speed_training_loss, axis=0), alpha=0.2, color=pp[i+1])
+        axes[1].fill_between(xs, np.min(steer_training_loss, axis=0),  np.max(steer_training_loss, axis=0), alpha=0.2, color=pp[i+1])
         
     axes[0].set_xlabel("Training Epoch")
     axes[0].set_ylabel("Speed Loss")
     axes[1].set_xlabel("Training Epoch")
     axes[1].set_ylabel("Steering Loss")
     
-    axes[0].set_ylim(0, 0.3)
-    axes[1].set_ylim(0, 0.3)
+    axes[0].set_ylim(0, 0.08)
+    axes[1].set_ylim(0.02, 0.11)
     
-    axes[0].xaxis.set_ticks(np.arange(0, 401, 80))
-    axes[1].xaxis.set_ticks(np.arange(0, 401, 80))
-    
-    axes[0].yaxis.set_ticks(np.arange(0, 0.3, 0.05))
-    axes[1].yaxis.set_ticks(np.arange(0, 0.3, 0.05))
+    # axes[0].xaxis.set_major_locator(MultipleLocator(500))
+    axes[1].yaxis.set_major_locator(MultipleLocator(0.02))
     
     handles, labels = axes[0].get_legend_handles_labels()
     print(labels)

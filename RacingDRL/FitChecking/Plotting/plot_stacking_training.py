@@ -150,12 +150,12 @@ def plot_n_beams_avg_seperate_normalised():
             if i == 0: continue
             l = line.split(",")
             names.append(l[0])
-            train_loss_mean.append(float(l[1]))
-            train_loss_std.append(float(l[2]))
-            steer_loss_mean.append(float(l[3]))
-            steer_loss_std.append(float(l[4]))
-            speed_loss_mean.append(float(l[5]))
-            speed_loss_std.append(float(l[6]))
+            # train_loss_mean.append(float(l[1]))
+            # train_loss_std.append(float(l[2]))
+            steer_loss_mean.append(float(l[5]))
+            steer_loss_std.append(float(l[6]))
+            speed_loss_mean.append(float(l[7]))
+            speed_loss_std.append(float(l[8]))
             
     steer_loss_mean = np.array(steer_loss_mean)
     steer_loss_mean = steer_loss_mean / np.mean(steer_loss_mean)
@@ -192,14 +192,14 @@ def plot_n_beams_avg_seperate_normalised():
         
     # plt.xlabel("Method")
     name_values = [n.split("_")[1] for n in names]
-    plt.xticks([r  for r in range(len(train_loss_mean))], name_values)
+    plt.xticks([r  for r in range(len(name_values))], name_values)
     plt.grid(True)
         
     plt.ylabel("Normalised Loss")
-    plt.ylim(0.7, 1.15)
+    plt.ylim(0.4, 1.3)
     plt.legend(ncol=2, loc='lower center', bbox_to_anchor=(0.5, 0.95))
     
-    plt.gca().yaxis.set_major_locator(MultipleLocator(0.1))
+    plt.gca().yaxis.set_major_locator(MultipleLocator(0.2))
     
     plt.tight_layout()
     

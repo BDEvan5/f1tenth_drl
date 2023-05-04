@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from RacingDRL.DataTools.plotting_utils import *
+from matplotlib.ticker import MultipleLocator
 
 
 
@@ -46,7 +47,9 @@ def plot_n_beams_avg():
     
     plt.xlabel("Number of beams")
     plt.ylabel("Loss (RMSE)")
-    plt.ylim(0.075, 0.14)
+    plt.ylim(0.05, 0.14)
+    plt.gca().yaxis.set_major_locator(MultipleLocator(0.02))
+    # plt.ylim(0.075, 0.14)
     plt.legend()
     
     plt.grid(True)

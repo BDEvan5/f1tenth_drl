@@ -7,8 +7,8 @@ def make_comparison_table():
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-End"]
     
-    train_losses = []
-    test_losses = []
+    train_losses, train_std = [], []
+    test_losses, test_std = [], []
     
     with open(folder + f"LossResults/{name}_LossResults.txt", "r") as f:
         lines = f.readlines()
@@ -16,8 +16,9 @@ def make_comparison_table():
             if l == 0: continue
             line = line.split(",")
             train_losses.append(float(line[1]))
+            train_std.append(float(line[2]))
             test_losses.append(float(line[3]))
-            
+            test_std.append(float(line[4]))
                 
     with open(folder + f"LossResults/{name}_LossResultLatex.txt", "w") as file:
         file.write(f"\t \\toprule \n")
@@ -26,8 +27,8 @@ def make_comparison_table():
         
         for i in range(len(labels)):
             file.write(f"\t  {labels[i]} & ".ljust(30))
-            file.write(f"{train_losses[i]} & ".ljust(20))
-            file.write(f"{test_losses[i]}  ".ljust(20))
+            file.write(f"{train_losses[i]} $\pm$ {train_std[i]} & ".ljust(25))
+            file.write(f"{test_losses[i]} $\pm$ {train_std[i]} ".ljust(25))
             file.write("\\\\ \n")
         else: file.write(f"\t \\bottomrule \n")
 
