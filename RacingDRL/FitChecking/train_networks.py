@@ -72,28 +72,40 @@ def load_data(folder, name):
     
     return train_x, train_y, test_x, test_y
     
+def estimate_losses(train_x, train_y, test_x, test_y, model):
+    model.eval()
+    trains = []
+    tests = []
+    for i in range(10):
+        _, test_loss = model.forward_loss(test_x, test_y)
+        _, train_loss = model.forward_loss(train_x, train_y)
+        trains.append(train_loss.item()** 0.5)
+        tests.append(test_loss.item()** 0.5)
+        
+    trains = np.mean(trains)
+    tests = np.mean(tests)        
+        
+    model.train()
+    
+    return trains, tests
+    
 def train_networks(folder, name, seed):
     train_x, train_y, test_x, test_y = load_data(folder, name)
     
     network = StdNetworkTwo(train_x.shape[1], train_y.shape[1])
     optimizer = torch.optim.Adam(network.parameters(), lr=0.001)
     
-    train_iterations = 301
+    train_iterations = 1201
     train_losses, test_losses = [], []
     
     for i in range(train_iterations):
-        network.eval()
-        test_pred_y, test_loss = network.forward_loss(test_x, test_y)
-        network.train()
-        
         pred_y, loss = network.forward_loss(train_x, train_y)
         
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         
-        test_loss = test_loss.item() ** 0.5
-        train_loss = loss.item() ** 0.5
+        train_loss, test_loss = estimate_losses(train_x, train_y, test_x, test_y, network)
         test_losses.append(test_loss)
         train_losses.append(train_loss)
         
@@ -116,6 +128,21 @@ def run_seeded_test(folder, key, seeds):
         
         train_losses.append(train_loss)
         test_losses.append(test_loss)
+        
+        plt.figure(1)
+        plt.clf()
+        
+        plt.plot(train_loss)
+        plt.plot(test_loss)
+        
+        plt.show()
+        
+        plt.figure(1)
+        plt.clf()
+        plt.plot(train_loss)
+        plt.plot(test_loss)
+        plt.ylim(004, 0.08)
+        plt.show()
     
     train_losses = np.array(train_losses)
     test_losses = np.array(test_losses)
@@ -131,7 +158,7 @@ def run_experiment(folder, name_keys, experiment_name):
         f.write(f"Name,".ljust(spacing))
         f.write(f"TrainLoss mean, TrainLoss std ,   TestLoss mean, TestLoss std \n")
         
-    seeds = np.arange(5)
+    seeds = np.arange(1)
     for key in name_keys:
         train_losses, test_losses = run_seeded_test(folder, key, seeds)
         
