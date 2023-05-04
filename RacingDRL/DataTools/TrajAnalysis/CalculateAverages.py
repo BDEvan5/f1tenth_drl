@@ -11,23 +11,24 @@ class VehicleData:
     def __init__(self, vehicle_id, n=3, prefix="Data/Vehicles/Cth_speedMaps/"):
         self.vehicle_id = vehicle_id
         self.prefix = prefix 
+        map_names = ["aut", "esp", "gbr", "mco"]
+        # map_names = [vehicle_id.split('_')[4]]
+        for map_name in map_names:
+            self.times = []
+            self.success_rates = []
+            self.avg_progresses = []
+            
+            for i in range(n):
+                self.process_folder(vehicle_id, i, map_name)
+            
+            self.save_data(map_name)
         
-        self.times = []
-        self.success_rates = []
-        self.avg_progresses = []
-        
-        
-        for i in range(n):
-            self.process_folder(vehicle_id, i)
-        
-        self.save_data()
-        
-    def process_folder(self, name, n):
+    def process_folder(self, name, n, map_name):
         folder = self.prefix + name + "_" + str(n) 
         
         #open summary stats
         try:
-            with open(f"{folder}/SummaryStatistics.txt", 'r') as file:
+            with open(f"{folder}/SummaryStatistics{map_name.upper()}.txt", 'r') as file:
                 lines = file.readlines()
                 line = lines[4] # first lap is heading
                 line = line.split(',')
@@ -43,7 +44,7 @@ class VehicleData:
         except:
             print(f"File not opened: {folder}")
             
-    def save_data(self):
+    def save_data(self, map_name):
         functions = [np.mean, np.std, np.amin, np.amax]
         names = ["Mean", "Std", "Min", "Max"]
         
@@ -52,7 +53,8 @@ class VehicleData:
         progresses = np.array(self.avg_progresses)
 
 
-        with open(self.prefix + "Results_" + self.vehicle_id + ".txt", 'w') as file:
+        # with open(self.prefix + "Results_" + self.vehicle_id + ".txt", 'w') as file:
+        with open(self.prefix + "Results_" + self.vehicle_id + f"_test{map_name[-3:].upper()}.txt", 'w') as file:
             file.write(f"Metric  , Time              , Success Rate     , Avg Progress    \n")
             for i in range(len(names)):
                 file.write(f"{names[i]}".ljust(10))
@@ -99,4 +101,5 @@ def aggregate_runs(path, n=3):
 # aggregate_runs("Data/TrajectoryNumPoints_4/", 2)
 # aggregate_runs("Data/GameMaps_3/", 3)
 # aggregate_runs("Data/PurePursuitMaps_1/", 1)
-aggregate_runs("Data/TrajectoryMaps_4/", 3)
+# aggregate_runs("Data/TrajectoryMaps_4/", 3)
+aggregate_runs("Data/EndMaps_8/", 3)

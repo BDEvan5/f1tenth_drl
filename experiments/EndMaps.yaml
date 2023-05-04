@@ -5,6 +5,7 @@ state_vector: "endToEnd"
 
 n_repeats: 3
 set_n: 8
+start_n: 0
 
 random_seed: 0
 # max_speed: 8
@@ -22,7 +23,7 @@ num_beams: 20
 runs:
   # - map_name: "esp"
   - map_name: "mco"
-  # - map_name: "gbr"
+  - map_name: "gbr"
   # - map_name: "aut"
 
 

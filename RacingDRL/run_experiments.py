@@ -17,7 +17,7 @@ RENDER_ENV = False
 # RENDER_ENV = True
 
         
-def select_test_agent(conf, run_dict):
+def  select_test_agent(conf, run_dict):
     if run_dict.planner_type == "AgentOff":
         planner = AgentTester(run_dict, conf)
     elif run_dict.planner_type == "PurePursuit":
@@ -98,29 +98,23 @@ def run_testing_batch(experiment, n_sim_steps=10):
         run_simulation_loop_laps(env, planner, run_dict.n_test_laps, n_sim_steps)
         
 
-def run_general_test_batch():
-    map_list = ["aut", "esp", "gbr", "mco"]
-    folder = "TrajectoryNumPoints_3/"
-    vehicles = glob.glob("Data/" + folder + "*/")
-    print(vehicles)
-    n_test_laps = 3
-    
+def run_general_test_batch(experiment):
+    run_list = setup_run_list(experiment, new_run=False)
     conf = load_conf("config_file")
+    map_list = ["aut", "esp", "gbr", "mco"]
     
-    for v in range(len(vehicles)):
-        print(f"Testing Vehicle: {vehicles[v]}")
+    for i, run_dict in enumerate(run_list):
+        print(f"Running experiment: {i}")
+        print(f"RunName: {run_dict.run_name}")
         for m in range(len(map_list)):
             print(f"Testing on map: {map_list[m]}")
-            run_dict = load_run_dict(vehicles[v] + "TrainingConfig_record.yaml")
-            run_dict.run_name = vehicles[v].split("/")[-2]
-            run_dict.path = folder
             run_dict.map_name = map_list[m]
-            
-            env = F110Env(map=map_list[m], num_agents=1)
-            planner = AgentTester(run_dict, conf)
-            run_simulation_loop_laps(env, planner, n_test_laps)
+            env = F110Env(map=run_dict.map_name, num_agents=1)
+            print("Testing")
+            planner = select_test_agent(conf, run_dict)
+            run_simulation_loop_laps(env, planner, run_dict.n_test_laps, 10)
         
-        
+
 def run_pp_tests():
     experiment = "PurePursuitMaps"
     run_testing_batch(experiment, n_sim_steps=1)
@@ -128,8 +122,8 @@ def run_pp_tests():
       
     
 def main():
-    set_name = "Speeds"
-    # set_name = "Maps"
+    # set_name = "Speeds"
+    set_name = "Maps"
     
     experiment = f"End{set_name}"
     # experiment = f"Trajectory{set_name}"
@@ -138,9 +132,10 @@ def main():
     # experiment = "main"
     # experiment = "EndSpeeds"
     
-    run_training_batch(experiment)
+    # run_training_batch(experiment)
     # run_testing_batch(experiment)
 
+    run_general_test_batch(experiment)
 
     
     
