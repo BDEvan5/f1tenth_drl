@@ -9,10 +9,12 @@ import os
 from matplotlib import pyplot as plt
 
 
-NN_LAYER_1 = 100
-NN_LAYER_2 = 100
+NN_LAYER_1 = 500
+NN_LAYER_2 = 500
+# NN_LAYER_1 = 100
+# NN_LAYER_2 = 100
 
-
+BATCH_SIZE = 100
 
 class StdNetworkTwo(nn.Module):
     def __init__(self, state_dim, act_dim):
@@ -26,8 +28,6 @@ class StdNetworkTwo(nn.Module):
         mu = self.forward(x)
         l_steering = F.mse_loss(mu[:, 0], targets[:, 0])
         l_speed = F.mse_loss(mu[:, 1], targets[:, 1])
-        # l_steering = F.mse_loss(mu[:, 0], targets[:, 0], reduction='sum')
-        # l_speed = F.mse_loss(mu[:, 1], targets[:, 1], reduction='sum')
         loss = l_steering + l_speed
         
         return mu, loss
@@ -36,7 +36,6 @@ class StdNetworkTwo(nn.Module):
         mu = self.forward(x)
         l_steering = F.mse_loss(mu[:, 0], targets[:, 0])
         l_speed = F.mse_loss(mu[:, 1], targets[:, 1])
-        loss = l_steering + l_speed
         
         return l_steering, l_speed
     
@@ -53,7 +52,6 @@ def load_data(folder, name):
     states = np.load(folder + f"DataSets/PurePursuit_{name}_states.npy")
     actions = np.load(folder + f"DataSets/PurePursuit_actions.npy")
     
-    # test_size = 200
     test_size = int(0.1*states.shape[0])
     test_inds = np.random.choice(states.shape[0], size=test_size, replace=False)
     
@@ -77,8 +75,10 @@ def estimate_losses(train_x, train_y, test_x, test_y, model):
     trains = []
     tests = []
     for i in range(10):
-        _, test_loss = model.forward_loss(test_x, test_y)
-        _, train_loss = model.forward_loss(train_x, train_y)
+        x, y = make_minibatch(train_x, train_y, batch_size=BATCH_SIZE)
+        _, train_loss = model.forward_loss(x, y)
+        x, y = make_minibatch(test_x, test_y, batch_size=BATCH_SIZE)
+        _, test_loss = model.forward_loss(x, y)
         trains.append(train_loss.item()** 0.5)
         tests.append(test_loss.item()** 0.5)
         
@@ -89,27 +89,35 @@ def estimate_losses(train_x, train_y, test_x, test_y, model):
     
     return trains, tests
     
+def make_minibatch(x, y, batch_size):
+    inds = np.random.choice(x.shape[0], size=batch_size, replace=False)
+    x = x[inds]
+    y = y[inds]
+    
+    return x, y
+    
 def train_networks(folder, name, seed):
     train_x, train_y, test_x, test_y = load_data(folder, name)
     
     network = StdNetworkTwo(train_x.shape[1], train_y.shape[1])
     optimizer = torch.optim.Adam(network.parameters(), lr=0.001)
     
-    train_iterations = 1201
+    train_iterations = 4000
     train_losses, test_losses = [], []
     
     for i in range(train_iterations):
-        pred_y, loss = network.forward_loss(train_x, train_y)
+        x, y = make_minibatch(train_x, train_y, batch_size=BATCH_SIZE)
+        pred_y, loss = network.forward_loss(x, y)
         
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         
-        train_loss, test_loss = estimate_losses(train_x, train_y, test_x, test_y, network)
-        test_losses.append(test_loss)
-        train_losses.append(train_loss)
         
         if i % 50 == 0:
+            train_loss, test_loss = estimate_losses(train_x, train_y, test_x, test_y, network)
+            test_losses.append(test_loss)
+            train_losses.append(train_loss)
             print(f"{i}: TrainLoss: {train_loss} --> TestLoss: {test_loss}")
             l_steer, l_speed = network.separate_losses(test_x, test_y)
             print(f"SteerLoss: {l_steer**0.5} --> SpeedLoss: {l_speed**0.5}")
@@ -131,18 +139,13 @@ def run_seeded_test(folder, key, seeds):
         
         plt.figure(1)
         plt.clf()
+        plt.plot(train_loss, label="Train loss")
+        plt.plot(test_loss, label="Test loss")
+        plt.grid(True)
+        plt.legend()
+        plt.tight_layout()
         
-        plt.plot(train_loss)
-        plt.plot(test_loss)
-        
-        plt.show()
-        
-        plt.figure(1)
-        plt.clf()
-        plt.plot(train_loss)
-        plt.plot(test_loss)
-        plt.ylim(004, 0.08)
-        plt.show()
+        plt.savefig(folder + f"LossResults/{key}_{i}_LossResults.svg", pad_inches=0, bbox_inches='tight')
     
     train_losses = np.array(train_losses)
     test_losses = np.array(test_losses)
@@ -162,7 +165,6 @@ def run_experiment(folder, name_keys, experiment_name):
     for key in name_keys:
         train_losses, test_losses = run_seeded_test(folder, key, seeds)
         
-        # Add some individual plotting here....
         np.save(folder + f"LossResults/{experiment_name}_{key}_train_losses.npy", train_losses)
         np.save(folder + f"LossResults/{experiment_name}_{key}_test_losses.npy", test_losses)
         
