@@ -1,7 +1,7 @@
 
 planner_type: "AgentOff"
 
-state_vector: "TrajectoryFollower"
+state_vector: "endToEnd"
 
 n_repeats: 3
 start_n: 0
@@ -15,13 +15,12 @@ map_name: "esp"
 algorithm: "SAC"
 id_name: "train"
 n_waypoints: 10
+num_beams: 20
 trajectory_speeds: True
-
-map_name: "esp"
 
 runs:
   # - max_speed: 4
-  - max_speed: 5
+  # - max_speed: 5
   # - max_speed: 6
-  # - max_speed: 7
-  - max_speed: 8
+  - max_speed: 7
+  # - max_speed: 8
