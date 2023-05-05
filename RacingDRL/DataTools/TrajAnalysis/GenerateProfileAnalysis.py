@@ -62,19 +62,21 @@ class AnalyseTestLapData:
         vehicle_make = self.vehicle_name.split("_")[2]
         self.vehicle_number = vehicle_data[vehicle_make]
 
-        # ensure_path_exists(self.path + "TestingVelocities")
-        # ensure_path_exists(self.path + "ClippedTrajectories")
-        ensure_path_exists(self.path + "SlipDistributions")
+        self.testing_velocity_path = "/".join(self.path.split("/")[:-2]) + "/_Imgs/FullTrajectories/"
+        self.clipped_trajectories_path = "/".join(self.path.split("/")[:-2]) + "/_Imgs/ClippedTrajectories/"
+        self.slip_distributions_path = "/".join(self.path.split("/")[:-2]) + "/_Imgs/SlipDistributions/"
+        ensure_path_exists(self.testing_velocity_path)
+        ensure_path_exists(self.clipped_trajectories_path)
+        ensure_path_exists(self.slip_distributions_path)
 
         for self.lap_n in range(5):
             if not self.load_lap_data(): break # no more laps
-            # self.plot_velocity_heat_map()
+            self.plot_velocity_heat_map()
             self.slip_angle_distribution()
 
     def load_lap_data(self):
         try:
             data = np.load(self.path + f"Testing{self.map_name.upper()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
-            # data = np.load(self.path + f"Testing/Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
         except Exception as e:
             print(e)
             print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
@@ -116,11 +118,11 @@ class AnalyseTestLapData:
         ax.spines['bottom'].set_visible(False)
         ax.spines['left'].set_visible(False)
         
-        name = self.path + "TestingVelocities/" + f"{self.vehicle_name}_velocity_map_{self.lap_n}"
+        name = self.testing_velocity_path + f"{self.vehicle_name}_velocity_map_{self.lap_n}"
         std_img_saving(name, SAVE_PDF)        
         
         mco_right_limits()
-        name = self.path + "ClippedTrajectories/" + f"RIGHT_{self.vehicle_name}_velocity_map_{self.lap_n}"
+        name = self.clipped_trajectories_path + f"RIGHT_{self.vehicle_name}_velocity_map_{self.lap_n}"
         std_img_saving(name, SAVE_PDF)
         
         mco_left_limits()
@@ -128,7 +130,7 @@ class AnalyseTestLapData:
         cbar = plt.colorbar(line,fraction=0.046, pad=0.04, shrink=0.6)
         cbar.ax.get_yaxis().set_major_locator(MultipleLocator(2))
         cbar.ax.tick_params(labelsize=25)
-        name = self.path + "ClippedTrajectories/" + f"LEFT_{self.vehicle_name}_velocity_map_{self.lap_n}"
+        name = self.clipped_trajectories_path + f"LEFT_{self.vehicle_name}_velocity_map_{self.lap_n}"
         std_img_saving(name, SAVE_PDF)
 
     def slip_angle_distribution(self):
@@ -151,7 +153,7 @@ class AnalyseTestLapData:
         
         # plt.title(f"{vehicle_names[self.vehicle_number]}")
         
-        name = self.path + "SlipDistributions/" + f"{self.vehicle_name}_slip_dist_{self.lap_n}"
+        name = self.slip_distributions_path + f"{self.vehicle_name}_slip_dist_{self.lap_n}"
         
         std_img_saving(name, SAVE_PDF)
         
@@ -190,9 +192,10 @@ def analyse_folder():
 
 def generate_comparative_analysis():
     p = "Data/"
-    set_n = 8
+    # map_name = "MCO"
+    map_name = "GBR"
     
-    path = p + f"ComparativeAnalysis_{set_n}/"
+    path = p + f"ComparativeAnalysis_{map_name}/"
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
     
