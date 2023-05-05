@@ -186,8 +186,12 @@ def lateral_deviation():
     
     plt.figure(1, figsize=(6, 1.9))
     ax1 = plt.gca()
-    for n, name in enumerate(names):
-        ax1.plot(xs_list[n], deviation_list[n], color=pp[n], label=name)
+    for n, name in enumerate(names[1:]):
+        n1 = n + 1
+        ax1.plot(xs_list[n1], deviation_list[n1], color=pp[n1], label=name)
+
+    # for n, name in enumerate(names):
+    #     ax1.plot(xs_list[n], deviation_list[n], color=pp[n], label=name)
 
     ax1.set_ylabel("Lateral \ndeviation (cm)", fontsize=9)
     ax1.set_xlabel("Track progress (%)")
@@ -206,5 +210,5 @@ def lateral_deviation():
 
 # speed_profile_comparison()
 # speed_profile_deviation()
-# lateral_deviation()
-curvature_profile_comparison()
+lateral_deviation()
+# curvature_profile_comparison()
