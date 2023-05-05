@@ -31,35 +31,35 @@ def make_laptime_and_success_barplot():
 
     keys = ["time", "success", "progress"]
     ylabels = "Time (s), Success (%), Avg. Progress (%)".split(", ")
-    keys = ["time", "progress"]
-    ylabels = "Time (s), Avg. Progress (%)".split(", ")
+    # keys = ["time", "progress"]
+    # ylabels = "Time (s), Avg. Progress (%)".split(", ")
     # keys = ["time", "success"]
     # ylabels = "Time (s), Success (%)".split(", ")
 
     train_maps = ["gbr", "mco"]
 
-    fig, axs = plt.subplots(len(keys), len(train_maps), figsize=(5.5, 4.0), sharey=True)
-    for m in range(len(train_maps)):
-        for z in range(len(keys)):
-            key = keys[z]
-            plt.sca(axs[z, m])
-            
-            for f, folder in enumerate(folder_list):
+    fig, axs = plt.subplots(len(keys), len(folder_list), figsize=(8, 7), sharey=True)
+    # fig, axs = plt.subplots(len(keys), len(folder_list), figsize=(5.5, 4.0), sharey=True)
+    for k, key in enumerate(keys):
+        for f, folder in enumerate(folder_list):
+            for m, train_map in enumerate(train_maps):
+                plt.sca(axs[k, f])
+                
                 mins, maxes, means = load_time_data(folder, f"{train_maps[m]}_train")
-                plt.bar(brs[f], means[key][0:4], color=pp_light[f+1], width=barWidth, label=folder_labels[f])
-                plot_error_bars(brs[f], mins[key][0:4], maxes[key], pp_darkest[f+1], w)
+                plt.bar(brs[m], means[key][0:4], color=pp_light[m+1], width=barWidth, label=train_map.upper())
+                plot_error_bars(brs[m], mins[key][0:4], maxes[key], pp_darkest[m+1], w)
                 
             plt.gca().xaxis.set_major_locator(MultipleLocator(1))
             plt.gca().set_xticks([0, 1, 2, 3], ["AUT", "ESP", "GBR", "MCO"])
             plt.grid(True)
             
-            axs[z, 0].set_ylabel(ylabels[z])
-        axs[0, m].set_title(f"{train_maps[m].upper()}")
+            axs[0, f].set_title(f"{folder_labels[f]}")
+        axs[k, 0].set_ylabel(ylabels[k])
         
     handles, labels = axs[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels, ncol=3, loc="center", bbox_to_anchor=(0.55, -0.01))
         
-    name = f"Data/PerformanceMaps_Barplot"
+    name = f"Data/PerformanceTrainMaps"
     
     std_img_saving(name)
    
