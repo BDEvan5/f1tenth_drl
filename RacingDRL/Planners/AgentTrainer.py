@@ -3,7 +3,7 @@ from RacingDRL.LearningAlgorithms.create_agent import create_train_agent
 import numpy as np
 from RacingDRL.Planners.Architectures import select_architecture
 from RacingDRL.Utils.TrainHistory import TrainHistory
-from RacingDRL.Planners.RewardSignals import ProgressReward
+from RacingDRL.Planners.RewardSignals import ProgressReward, TALearningReward
 from RacingDRL.Planners.TrackLine import TrackLine
 
 
@@ -23,7 +23,8 @@ class AgentTrainer:
         self.nn_act = None
         self.action = None
         self.std_track = TrackLine(run.map_name, False)
-        self.reward_generator = ProgressReward(self.std_track)
+        # self.reward_generator = ProgressReward(self.std_track)
+        self.reward_generator = TALearningReward(conf, run)
         self.max_lap_progress = 0
 
         self.architecture = select_architecture(run, conf)
@@ -53,7 +54,7 @@ class AgentTrainer:
 
     def add_memory_entry(self, s_prime, nn_s_prime):
         if self.nn_state is not None:
-            reward = self.reward_generator(s_prime, self.state)
+            reward = self.reward_generator(s_prime, self.state, self.action)
             self.t_his.add_step_data(reward)
 
             self.agent.replay_buffer.add(self.nn_state, self.nn_act, nn_s_prime, reward, False)
@@ -63,7 +64,7 @@ class AgentTrainer:
         To be called when ep is done.
         """
         nn_s_prime = self.architecture.transform_obs(s_prime)
-        reward = self.reward_generator(s_prime, self.state)
+        reward = self.reward_generator(s_prime, self.state, self.action)
         progress = self.std_track.calculate_progress_percent([s_prime['poses_x'][0], s_prime['poses_y'][0]]) * 100
         self.max_lap_progress = max(self.max_lap_progress, progress)
         

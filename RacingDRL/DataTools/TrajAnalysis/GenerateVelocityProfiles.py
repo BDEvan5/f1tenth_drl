@@ -128,9 +128,10 @@ def analyse_folder():
     p = "Data/"
 
     # path = p + "PurePursuitMaps_1/"
-    # path = p + "PlanningMaps_3/"
-    # path = p + "EndMaps_5/"
-    path = p + "TrajectoryMaps_5/"
+    path = p + "PlanningMaps_2/"
+    # path = p + "EndMaps_2/"
+    # path = p + "EndMaps_2/"
+    # path = p + "TrajectoryMaps_5/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
@@ -138,6 +139,8 @@ def analyse_folder():
 def generate_comparative_analysis():
     p = "Data/"
     set_n = 8
+    set_n = "GBR"
+    # set_n = "MCO"
     
     path = p + f"ComparativeAnalysis_{set_n}/"
     TestData = AnalyseTestLapData()
@@ -161,6 +164,6 @@ def generate_comparative_analysis():
 
 
 if __name__ == '__main__':
-    # analyse_folder()
-    generate_comparative_analysis()
+    analyse_folder()
+    # generate_comparative_analysis()
     

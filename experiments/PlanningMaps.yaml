@@ -5,16 +5,17 @@ state_vector: "Game"
 
 n_repeats: 3
 start_n: 0
-set_n: 8
+set_n: 2
 
 random_seed: 0
 max_speed: 8
 
-training_steps: 30000
+training_steps: 80000
 n_test_laps: 10
 # map_name: "esp"
 algorithm: "SAC"
-id_name: "train"
+id_name: "TAL"
+# id_name: "train"
 
 runs:
   - map_name: "mco"

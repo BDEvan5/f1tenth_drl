@@ -9,6 +9,7 @@ from RacingDRL.Planners.AgentTester import AgentTester
 from RacingDRL.Utils.utils import *
 from RacingDRL.Planners.PurePursuit import PurePursuit
 import glob
+import torch
 
 from RacingDRL.DataTools.TrajAnalysis.GenerateTrajectoryAnalysis import analyse_folder
 
@@ -68,6 +69,10 @@ def run_training_batch(experiment):
     conf = load_conf("config_file")
     
     for i, run_dict in enumerate(run_list):
+        np.random.seed(run_dict.random_seed)
+        torch.use_deterministic_algorithms(True)
+        torch.manual_seed(run_dict.random_seed)
+        
         print(f"Running experiment: {i}")
         print(f"RunName: {run_dict.run_name}")
 
@@ -132,10 +137,10 @@ def main():
     # experiment = "main"
     # experiment = "EndSpeeds"
     
-    # run_training_batch(experiment)
+    run_training_batch(experiment)
     # run_testing_batch(experiment)
 
-    run_general_test_batch(experiment)
+    # run_general_test_batch(experiment)
 
     
     

@@ -1,7 +1,7 @@
 import numpy as np
 
 from RacingDRL.Planners.TrackLine import TrackLine
-
+from RacingDRL.Planners.PurePursuit import PurePursuit
 
 
 # rewards functions
@@ -30,3 +30,41 @@ class ProgressReward:
 
         return reward 
     
+
+class TALearningReward:
+    def __init__(self, conf, run):
+        run.pp_speed_mode = "racing_line"
+        run.racing_line = True
+        # self.lookahead = 1.5
+        self.pp = PurePursuit(conf, run, False) 
+
+        self.beta_c = 0.4
+        self.beta_steer_weight = 0.4
+        self.beta_velocity_weight = 0.4
+
+        self.max_steer_diff = 0.8
+        self.max_velocity_diff = 2.0
+        
+    def __call__(self, observation, prev_obs, action):
+        if prev_obs is None: return 0
+
+        if observation['lap_counts'][0]:
+            return 1  # complete
+        if observation['collisions'][0]:
+            return -1 # crash
+        
+        pp_act = self.pp.plan(prev_obs)
+
+        steer_reward =  (abs(pp_act[0] - action[0]) / self.max_steer_diff)  * self.beta_steer_weight
+
+        throttle_reward =   (abs(pp_act[1] - action[1]) / self.max_velocity_diff) * self.beta_velocity_weight
+
+        reward = self.beta_c - steer_reward - throttle_reward
+        reward = max(reward, 0) # limit at 0
+
+        reward *= 0.5
+
+        return reward
+
+
+

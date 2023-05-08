@@ -38,7 +38,7 @@ class PurePursuit:
         self.max_speed = run.max_speed
         self.track_line = TrackLine(run.map_name, run.racing_line, False)
         # self.track_line = TrackLine(run.map_name, run.racing_line, True)
-        self.lookahead = run.lookahead
+        # self.lookahead = run.lookahead
 
         # self.lookahead = conf.lookahead 
         self.v_min_plan = conf.v_min_plan
@@ -55,8 +55,8 @@ class PurePursuit:
         # lookahead = 1.9
         # lookahead = 1.5
         # lookahead = 0.8 + 0.6* obs['linear_vels_x'][0] /  8
-        
-        lookahead = self.lookahead
+        lookahead = 1 + 0.6 * obs['linear_vels_x'][0] / 8
+        # lookahead = self.lookahead
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
         if obs['linear_vels_x'][0] < self.v_min_plan:

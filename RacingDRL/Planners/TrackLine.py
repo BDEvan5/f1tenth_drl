@@ -112,7 +112,11 @@ class TrackLine:
 
         lookahead_point, i2, t2 = first_point_on_trajectory_intersecting_circle(position, lookahead_distance, wpts, i+t, wrap=True)
         if i2 == None: 
-            return None
+            print(f"Could not find correct lookahead point")
+            returned_point = np.append(wpts[i, :], self.vs[i])
+            print(f"Nearest point: {nearest_point} --> Returned point: {returned_point}")
+            return returned_point
+            # return None
         lookahead_point = np.empty((3, ))
         lookahead_point[0:2] = wpts[i2, :]
         lookahead_point[2] = self.vs[i]
