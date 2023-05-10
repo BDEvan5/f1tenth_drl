@@ -1,9 +1,10 @@
 
 planner_type: "AgentOff"
 
+# state_vector: "FastEnd"
 state_vector: "endToEnd"
 
-set_n: 2
+set_n: 5
 start_n: 0
 n_repeats: 3
 
@@ -12,12 +13,12 @@ random_seed: 0
 max_speed: 8
 # n_scans: 2
 
-training_steps: 80000
-n_test_laps: 10
+training_steps: 60000
+n_test_laps: 20
 # map_name: "esp"
 # algorithm: "TD3"
 algorithm: "SAC"
-id_name: "TAL3"
+id_name: "TAL"
 # id_name: "train"
 num_beams: 20
 

@@ -84,7 +84,7 @@ def aggregate_runs(path, n=3):
         vehicle_id = vehicle_name[:-2]
         print(vehicle_id)
         
-        if not vehicle_id in id_list:
+        if not vehicle_id in id_list and vehicle_id != "_Im":
             id_list.append(vehicle_id)
         
     for i in range(len(id_list)):
@@ -97,6 +97,8 @@ def aggregate_runs(path, n=3):
 # aggregate_runs("Data/TrajectoryNumPoints_4/", 2)
 # aggregate_runs("Data/GameMaps_3/", 3)
 # aggregate_runs("Data/PurePursuitMaps_1/", 1)
-aggregate_runs("Data/TrajectoryMaps_8/", 3)
-aggregate_runs("Data/EndMaps_8/", 3)
-aggregate_runs("Data/PlanningMaps_8/", 3)
+
+set_n = 5
+aggregate_runs(f"Data/TrajectoryMaps_{set_n}/", 3)
+aggregate_runs(f"Data/EndMaps_{set_n}/", 3)
+aggregate_runs(f"Data/PlanningMaps_{set_n}/", 3)

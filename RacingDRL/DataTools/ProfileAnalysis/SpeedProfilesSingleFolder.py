@@ -7,6 +7,9 @@ from RacingDRL.Planners.TrackLine import TrackLine
 
 from RacingDRL.DataTools.plotting_utils import *
 
+set_number = 5
+id_name = "TAL"
+
 class TestLapData:
     def __init__(self, path, lap_n=0):
         self.path = path
@@ -29,7 +32,7 @@ class TestLapData:
             data = np.load(self.path + f"Testing{self.map_name.upper()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
         except Exception as e:
             print(e)
-            print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
+            print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
             return 0
         self.states = data[:, :7]
         self.actions = data[:, 7:]
@@ -71,12 +74,13 @@ def speed_profile_comparison():
     # map_name = "mco"
     base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
     names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_8_0/",
-                 f"AgentOff_SAC_Game_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_train_8_8_0/"]
+    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
+                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
     
-    data_list = [TestLapData(base + p, 0) for p in sub_paths]
+    lap_list = [0, 3, 3, 5]
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     xs_list = [d.generate_state_progress_list() for d in data_list]
     xs = np.linspace(0, 100, 200)
     speed_list = [np.interp(xs, xs_list[i], data_list[i].states[:, 3]) for i in range(len(data_list))]
@@ -102,12 +106,13 @@ def curvature_profile_comparison():
     # map_name = "mco"
     base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
     names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_8_0/",
-                 f"AgentOff_SAC_Game_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_train_8_8_0/"]
+    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
+                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
     
-    data_list = [TestLapData(base + p, 0) for p in sub_paths]
+    lap_list = [0, 3, 3, 5]
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     
     xs = np.linspace(0, 100, 200)
     curve_list = [d.calculate_curvature(200) for d in data_list]
@@ -140,12 +145,13 @@ def speed_profile_deviation():
     # map_name = "mco"
     base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
     names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_8_0/",
-                 f"AgentOff_SAC_Game_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_train_8_8_0/"]
+    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
+                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
     
-    data_list = [TestLapData(base + p, 0) for p in sub_paths]
+    lap_list = [0, 3, 3, 5]
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     xs_list = [d.generate_state_progress_list() for d in data_list]
     xs = np.linspace(0, 100, 200)
     speed_list = [np.interp(xs, xs_list[i], data_list[i].states[:, 3]) for i in range(len(data_list))]
@@ -175,12 +181,13 @@ def lateral_deviation():
     # map_name = "mco"
     base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
     names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_8_0/",
-                 f"AgentOff_SAC_Game_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_train_8_8_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_train_8_8_0/"]
+    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
+                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
+                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
     
-    data_list = [TestLapData(base + p, 0) for p in sub_paths]
+    lap_list = [0, 3, 3, 5]
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     xs_list = [d.generate_state_progress_list() for d in data_list]
     deviation_list = [d.calculate_deviations() * 100 for d in data_list]
     
@@ -210,5 +217,5 @@ def lateral_deviation():
 
 # speed_profile_comparison()
 # speed_profile_deviation()
-lateral_deviation()
-# curvature_profile_comparison()
+# lateral_deviation()
+curvature_profile_comparison()

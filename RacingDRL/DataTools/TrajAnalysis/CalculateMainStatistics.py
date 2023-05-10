@@ -185,16 +185,17 @@ def analyse_folder():
 
 def analyse_all_data():
     p = "Data/"
+    set_n = 5
     
     TestData = AnalyseTestLapData()
 
-    path = p + "PlanningMaps_8/"
+    path = p + f"PlanningMaps_{set_n}/"
     TestData.explore_folder(path)
 
-    path = p + "TrajectoryMaps_8/"
+    path = p + f"TrajectoryMaps_{set_n}/"
     TestData.explore_folder(path)
 
-    path = p + "EndMaps_8/"
+    path = p + f"EndMaps_{set_n}/"
     TestData.explore_folder(path)
 
 if __name__ == '__main__':

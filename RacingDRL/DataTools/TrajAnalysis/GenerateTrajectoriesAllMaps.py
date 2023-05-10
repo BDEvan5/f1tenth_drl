@@ -41,6 +41,7 @@ class AnalyseTestLapData:
 
     def explore_folder(self, path):
         vehicle_folders = glob.glob(f"{path}*0/")
+        # vehicle_folders = glob.glob(f"{path}*/*0/")
         print(vehicle_folders)
         print(f"{len(vehicle_folders)} folders found")
 
@@ -65,6 +66,7 @@ class AnalyseTestLapData:
             vehicle_make = self.vehicle_name.split("_")[2]
             self.vehicle_number = vehicle_data[vehicle_make]
 
+            ensure_path_exists("/".join(self.path.split("/")[:-2])+  f"/_Imgs/")
             self.testing_velocity_path = "/".join(self.path.split("/")[:-2]) + f"/_Imgs/FullTrajectories{self.map_name.upper()}/"
             self.clipped_trajectories_path = "/".join(self.path.split("/")[:-2]) + f"/_Imgs/ClippedTrajectories{self.map_name.upper()}/"
             self.slip_distributions_path = "/".join(self.path.split("/")[:-2]) + f"/_Imgs/SlipDistributions{self.map_name.upper()}/"
@@ -186,9 +188,9 @@ def analyse_folder():
     p = "Data/"
 
     # path = p + "PurePursuitMaps_1/"
-    # path = p + "PlanningMaps_3/"
-    # path = p + "EndMaps_5/"
-    path = p + "TrajectoryMaps_5/"
+    # path = p + "PlanningMaps_2/"
+    path = p + "EndMaps_2/"
+    # path = p + "TrajectoryMaps_2/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)

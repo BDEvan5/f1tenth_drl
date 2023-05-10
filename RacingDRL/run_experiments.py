@@ -62,6 +62,11 @@ def run_simulation_loop_laps(env, planner, n_laps, n_sim_steps=10):
     
         planner.done_callback(observation)
     
+def seed_randomness(run_dict):
+    random_seed = run_dict.random_seed + 10 * run_dict.n
+    np.random.seed(random_seed)
+    torch.use_deterministic_algorithms(True)
+    torch.manual_seed(random_seed)
     
 def run_training_batch(experiment):
     # run_list = setup_run_list(experiment, new_run=False)
@@ -69,10 +74,7 @@ def run_training_batch(experiment):
     conf = load_conf("config_file")
     
     for i, run_dict in enumerate(run_list):
-        np.random.seed(run_dict.random_seed)
-        torch.use_deterministic_algorithms(True)
-        torch.manual_seed(run_dict.random_seed)
-        
+        seed_randomness(run_dict)
         print(f"Running experiment: {i}")
         print(f"RunName: {run_dict.run_name}")
 
@@ -131,16 +133,16 @@ def main():
     set_name = "Maps"
     
     # experiment = f"End{set_name}"
-    # experiment = f"Trajectory{set_name}"
-    experiment = f"Planning{set_name}"
+    experiment = f"Trajectory{set_name}"
+    # experiment = f"Planning{set_name}"
     
     # experiment = "main"
     # experiment = "EndSpeeds"
     
-    run_training_batch(experiment)
+    # run_training_batch(experiment)
     # run_testing_batch(experiment)
 
-    # run_general_test_batch(experiment)
+    run_general_test_batch(experiment)
 
     
     
