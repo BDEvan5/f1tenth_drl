@@ -21,8 +21,8 @@ n_waypoints: 20
 trajectory_speeds: True
 
 runs:
-  # - map_name: "mco"
-  - map_name: "gbr"
+  - map_name: "mco"
+  # - map_name: "gbr"
   # - map_name: "esp"
   # - map_name: "aut"
 

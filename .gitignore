@@ -130,6 +130,7 @@ dmypy.json
 
 Data/
 Data2/
+Data*/
 
 Data_old/
 .vscode/

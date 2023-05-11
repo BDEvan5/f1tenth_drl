@@ -24,8 +24,8 @@ num_beams: 20
 
 runs:
   # - map_name: "esp"
-  # - map_name: "mco"
-  - map_name: "gbr"
+  - map_name: "mco"
+  # - map_name: "gbr"
   # - map_name: "aut"
 
 

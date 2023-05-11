@@ -133,8 +133,8 @@ def main():
     set_name = "Maps"
     
     # experiment = f"End{set_name}"
-    experiment = f"Trajectory{set_name}"
-    # experiment = f"Planning{set_name}"
+    # experiment = f"Trajectory{set_name}"
+    experiment = f"Planning{set_name}"
     
     # experiment = "main"
     # experiment = "EndSpeeds"

@@ -18,8 +18,8 @@ id_name: "TAL"
 # id_name: "train"
 
 runs:
-  # - map_name: "mco"
-  - map_name: "gbr"
+  - map_name: "mco"
+  # - map_name: "gbr"
   # - map_name: "esp"
   # - map_name: "aut"
 

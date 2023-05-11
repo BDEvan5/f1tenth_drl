@@ -25,8 +25,8 @@ def make_TrainingGraph():
     steps_list = []
     progresses_list = []
     
-    map_names = ['gbr']
-    # map_names = ['gbr', "mco"]
+    # map_names = ['gbr']
+    map_names = ['gbr', "mco"]
     # map_names = ["aut", "esp"]
     # map_names = ["aut", "esp", "gbr", "mco"]
 
@@ -67,12 +67,12 @@ def make_TrainingGraph():
     std_img_saving(name)
 
 
-def make_TrainingGraph():
+def make_TrainingGraphReward():
     base_path = "Data/"
-    test_name = "TrajectoryMaps" 
-    architecture = "TrajectoryFollower"
-    # test_name = "PlanningMaps" 
-    # architecture = "Game"
+    # test_name = "TrajectoryMaps" 
+    # architecture = "TrajectoryFollower"
+    test_name = "PlanningMaps" 
+    architecture = "Game"
     # test_name = "EndMaps"
     # architecture = "endToEnd"
     set_number = 5
@@ -85,8 +85,8 @@ def make_TrainingGraph():
     steps_list = []
     progresses_list = []
     
-    map_names = ['gbr']
-    # map_names = ['gbr', "mco"]
+    # map_names = ['gbr']
+    map_names = ['gbr', "mco"]
     # map_names = ["aut", "esp"]
     # map_names = ["aut", "esp", "gbr", "mco"]
 
@@ -103,6 +103,7 @@ def make_TrainingGraph():
             progresses_list[i].append(avg_progress)
 
     plt.figure(2, figsize=(4.5, 2.3))
+    plt.clf()
 
     # xs = np.linspace(0, 80, 300)
     xs = np.linspace(0, 60, 300)
@@ -113,7 +114,7 @@ def make_TrainingGraph():
         plt.gca().fill_between(xs, min, max, color=pp_dark[i], alpha=0.2)
 
 
-    plt.gca().get_yaxis().set_major_locator(MultipleLocator(25))
+    # plt.gca().get_yaxis().set_major_locator(MultipleLocator(25))
 
     plt.xlabel("Training Steps (x1000)")
     plt.ylabel("Ep. Reward")
@@ -128,5 +129,6 @@ def make_TrainingGraph():
 
 
 make_TrainingGraph()
+make_TrainingGraphReward()
 
 
