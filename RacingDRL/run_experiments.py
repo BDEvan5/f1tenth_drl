@@ -139,10 +139,10 @@ def main():
     # experiment = "main"
     # experiment = "EndSpeeds"
     
-    # run_training_batch(experiment)
+    run_training_batch(experiment)
     # run_testing_batch(experiment)
 
-    run_general_test_batch(experiment)
+    # run_general_test_batch(experiment)
 
     
     

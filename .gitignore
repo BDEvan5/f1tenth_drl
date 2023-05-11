@@ -129,10 +129,8 @@ dmypy.json
 .pyre/
 
 Data/
-Data2/
-Data*/
+Data__*/
 
-Data_old/
 .vscode/
 
 NetworkFitting/
