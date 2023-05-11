@@ -37,15 +37,15 @@ def make_laptime_and_success_barplot():
     # keys = ["time", "success"]
     # ylabels = "Time (s), Success (%)".split(", ")
 
-    train_maps = ["gbr"]
-    # train_maps = ["gbr", "mco"]
+    # train_maps = ["gbr"]
+    train_maps = ["gbr", "mco"]
 
     fig, axs = plt.subplots(len(keys), len(train_maps), figsize=(5.5, 5.0), sharey=True)
     for m in range(len(train_maps)):
         for z in range(len(keys)):
             key = keys[z]
-            plt.sca(axs[z])
-            # plt.sca(axs[z, m])
+            # plt.sca(axs[z])
+            plt.sca(axs[z, m])
             
             for f, folder in enumerate(folder_list):
                 # mins, maxes, means = load_time_data(folder, f"{train_maps[m]}_train")
@@ -57,9 +57,9 @@ def make_laptime_and_success_barplot():
             plt.gca().set_xticks([0, 1, 2, 3], ["AUT", "ESP", "GBR", "MCO"])
             plt.grid(True)
             
-            axs[z].set_ylabel(ylabels[z])
-            # axs[z, 0].set_ylabel(ylabels[z])
-        # axs[0, m].set_title(f"{train_maps[m].upper()}")
+            # axs[z].set_ylabel(ylabels[z])
+            axs[z, 0].set_ylabel(ylabels[z])
+        axs[0, m].set_title(f"{train_maps[m].upper()}")
         
     # handles, labels = axs[0, 0].get_legend_handles_labels()
     # fig.legend(handles, labels, ncol=3, loc="center", bbox_to_anchor=(0.55, -0.01))

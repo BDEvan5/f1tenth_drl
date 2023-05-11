@@ -40,9 +40,11 @@ class AnalyseTestLapData:
         self.lap_n = 0
 
     def explore_folder(self, path):
+        print(path)
         vehicle_folders = glob.glob(f"{path}*0/")
+        # vehicle_folders = glob.glob(f"{path}*0/")
         # vehicle_folders = glob.glob(f"{path}*/*0/")
-        print(vehicle_folders)
+        # print(vehicle_folders)
         print(f"{len(vehicle_folders)} folders found")
 
         set = 1
@@ -186,11 +188,12 @@ def mco_right_limits():
 def analyse_folder():
 
     p = "Data/"
+    set_n = 5
 
     # path = p + "PurePursuitMaps_1/"
-    # path = p + "PlanningMaps_2/"
-    path = p + "EndMaps_2/"
-    # path = p + "TrajectoryMaps_2/"
+    path = p + f"PlanningMaps_{set_n}/"
+    # path = p + f"EndMaps_{set_n}/"
+    # path = p + f"TrajectoryMaps_{set_n}/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
@@ -208,6 +211,6 @@ def generate_comparative_analysis():
 
 
 if __name__ == '__main__':
-    # analyse_folder()
-    generate_comparative_analysis()
+    analyse_folder()
+    # generate_comparative_analysis()
     
