@@ -126,15 +126,58 @@ plot_green = "#2ECC71"
 plot_red = "#E74C3C"
 plot_blue = "#3498DB"
 
-def plot_error_bars(x_base, mins, maxes, dark_color, w):
+def plot_error_bars(x_base, mins, maxes, dark_color, w, tails=True):
     for i in range(len(x_base)):
         xs = [x_base[i], x_base[i]]
         ys = [mins[i], maxes[i]]
         plt.plot(xs, ys, color=dark_color, linewidth=2)
-        xs = [x_base[i]-w, x_base[i]+w]
-        y1 = [mins[i], mins[i]]
-        y2 = [maxes[i], maxes[i]]
-        plt.plot(xs, y1, color=dark_color, linewidth=2)
-        plt.plot(xs, y2, color=dark_color, linewidth=2)
+        if tails:
+            xs = [x_base[i]-w, x_base[i]+w]
+            y1 = [mins[i], mins[i]]
+            y2 = [maxes[i], maxes[i]]
+            plt.plot(xs, y1, color=dark_color, linewidth=2)
+            plt.plot(xs, y2, color=dark_color, linewidth=2)
 
 
+
+def plot_color_pallet(pp, name="None"):
+    plt.figure(figsize=(10, 1))
+    plt.axis('off')
+    for i in range(len(pp)):
+        plt.plot([i, i], [0, 1], color=pp[i], linewidth=50)
+        
+    plt.tight_layout
+    plt.savefig(f"Data/Imgs/Pallets/color_pallet_{name}.svg", bbox_inches='tight', pad_inches=0)
+    # plt.show()
+    
+science_pallet = ['#0C5DA5', '#FF2C00', '#00B945', '#FF9500', '#845B97', '#474747', '#9e9e9e']
+# science_pallet = ['#0C5DA5', '#00B945', '#FF9500', '#FF2C00', '#845B97', '#474747', '#9e9e9e']
+color_blind_pallet = ["#c1272d", "#0000a7", "#eecc16", "#008176", "#b3b3b3"]
+    
+science_bright = ['EE7733', '0077BB', '33BBEE', 'EE3377', 'CC3311', '009988', 'BBBBBB']
+science_bright = [f"#{c}" for c in science_bright]
+science_vibrant = ['4477AA', 'EE6677', '228833', 'CCBB44', '66CCEE', 'AA3377', 'BBBBBB']
+science_vibrant = [f"#{c}" for c in science_vibrant]
+
+science_high_vis = ["0d49fb", "e6091c", "26eb47", "8936df", "fec32d", "25d7fd"]
+science_high_vis = [f"#{c}" for c in science_high_vis]
+
+google = ["#008744", "#0057e7", "#d62d20", "#ffa700"]
+
+color_pallet = science_pallet
+
+if __name__ == '__main__':
+    plot_color_pallet(pp, "std")
+    plot_color_pallet(pp_dark, "dard")
+    plot_color_pallet(pp_light, "pp_light")
+    plot_color_pallet(pp_darkest,"darkest")
+    
+    plot_color_pallet(science_pallet, "science")
+    plot_color_pallet(color_blind_pallet, "color_blind")
+    
+    plot_color_pallet(science_bright, "science_bright")
+    plot_color_pallet(science_vibrant, "science_vibrant")
+    
+    plot_color_pallet(science_high_vis, "science_high_vis")
+    plot_color_pallet(google, "google")
+    
