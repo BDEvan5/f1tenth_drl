@@ -57,6 +57,22 @@ def load_data_mean_std(folder, map_name=""):
 
     return means, stds
 
+def load_detail_mean_std(folder, map_name=""):
+    file = folder + f"DetailSummaryStatistics{map_name.upper()}.txt"
+    keys = ["time", "progress", "distance", "avg_speed", "std_speed", "avg_lateral", "std_lateral", "avg_speedD", "std_speedD", "avg_curvature", "std_curvature"]
+    means, stds = {}, {}
+    for key in keys:
+        means[key] = []
+        stds[key] = []
+    
+    with open(file, 'r') as file:
+        lines = file.readlines()
+        for j in range(len(keys)):
+            means[keys[j]].append(float(lines[1].split(",")[1+j]))
+            stds[keys[j]].append(float(lines[2].split(",")[1+j]))
+
+    return means, stds
+
 
 def load_csv_data(path):
     """loads data from a csv training file

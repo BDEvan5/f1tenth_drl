@@ -117,12 +117,15 @@ class AnalyseTestLapData:
         
         hs = []
         speed_deviations = []
+        raceline_speeds = []
         for i, point in enumerate(pts):
             idx, dists = self.racing_track.get_trackline_segment(point)
             x, h = self.racing_track.interp_pts(idx, dists)
             hs.append(h)
-            speed = self.racing_track.get_raceline_speed(x)
-            speed_deviations.append(speed - vs[i])
+            speed = self.racing_track.get_raceline_speed(point)
+            deviation = np.abs(speed - vs[i])
+            raceline_speeds.append(speed)
+            speed_deviations.append(deviation)
 
         hs = np.array(hs)
         avg_race_deviation = np.mean(hs)
@@ -130,11 +133,21 @@ class AnalyseTestLapData:
         avg_speed_deviation = np.mean(speed_deviations)
         std_speed_deviation = np.std(speed_deviations)
         
+        # plt.figure()
+        # plt.clf()
+        # plt.plot(vs, label="Vehicle Speed")
+        # plt.plot(raceline_speeds, label="Raceline Speed")
+        # plt.plot(speed_deviations, label="Speed Deviation")
+        # plt.legend()
+        # plt.title(f"{self.vehicle_name} --> {self.lap_n}")
+        # plt.show()
+        
         new_xs = np.arange(0, total_distance, 0.2) # 20cm between pts
         cs = np.cumsum(ss)
         cs = np.insert(cs, 0, 0)
         normal_pts = interp_2d_points(new_xs, cs, pts)
         ths, ks = tph.calc_head_curv_num.calc_head_curv_num(normal_pts, new_xs[1:], False)
+        ks *= 1000 # to make it per cm
         # ths, ks = tph.calc_head_curv_num.calc_head_curv_num(pts, ss, False)
         mean_curvature = np.mean(np.abs(ks))
         std_curvature = np.std(np.abs(ks))
