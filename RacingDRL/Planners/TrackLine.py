@@ -104,7 +104,18 @@ class TrackLine:
     
     def get_raceline_speed(self, point):
         idx, dists = self.get_trackline_segment(point)
-        return self.vs[idx]
+        d1 = dists[idx]
+        d2 = dists[idx+1]
+        d_total = d1 + d2
+        speed = self.vs[idx] * d1/d_total + self.vs[idx+1] *d2 / d_total
+        return speed
+    
+    def interp_speed(self, idx, dists):
+        d1 = dists[idx]
+        d2 = dists[idx+1]
+        d_total = d1 + d2
+        speed = self.vs[idx] * d1/d_total + self.vs[idx+1] *d2 / d_total
+        return speed
     
     def get_lookahead_point(self, position, lookahead_distance):
         wpts = np.vstack((self.wpts[:, 0], self.wpts[:, 1])).T
@@ -123,12 +134,17 @@ class TrackLine:
         
         return lookahead_point
 
-    def calculate_progress_percent(self, point):
+    def calculate_progress(self, point):
         idx, dists = self.get_trackline_segment(point)
 
         x, h = self.interp_pts(idx, dists)
 
         s = self.ss[idx] + x
+        
+        return s
+
+    def calculate_progress_percent(self, point):
+        s = self.calculate_progress(point)
         s_percent = s/self.total_s
         
         return s_percent
