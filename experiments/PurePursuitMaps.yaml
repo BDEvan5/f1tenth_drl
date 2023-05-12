@@ -7,14 +7,15 @@ pp_speed_mode: "racing_line"
 state_vector: "pathFollower"
 
 n_repeats: 1
-set_n: 8
+start_n: 0
+set_n: 5
 
 random_seed: 0
 max_speed: 8
 n_scans: 2
 
 training_steps: 15000
-n_test_laps: 2
+n_test_laps: 20
 lookahead: 1.0
 id_name: "test"
 
