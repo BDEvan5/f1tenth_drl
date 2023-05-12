@@ -20,10 +20,10 @@ lookahead: 1.0
 id_name: "TAL"
 
 runs:
-  - map_name: "esp"
+  # - map_name: "esp"
   - map_name: "mco"
-  - map_name: "gbr"
-  - map_name: "aut"
+  # - map_name: "gbr"
+  # - map_name: "aut"
 
 
 

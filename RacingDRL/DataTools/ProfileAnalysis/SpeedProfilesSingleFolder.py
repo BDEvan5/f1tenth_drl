@@ -9,6 +9,15 @@ from RacingDRL.DataTools.plotting_utils import *
 
 set_number = 5
 id_name = "TAL"
+map_name = "mco"
+base = f"Data/LapWise_5/"
+names = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
+sub_paths = [f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
+                f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
+                f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/", 
+                f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/"]
+lap_list = [0, 0, 0, 0]
+
 
 class TestLapData:
     def __init__(self, path, lap_n=0):
@@ -70,16 +79,7 @@ class TestLapData:
     
 
 def speed_profile_comparison():
-    map_name = "gbr"
-    # map_name = "mco"
-    base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
-    names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
-                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
     
-    lap_list = [0, 3, 3, 5]
     data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     xs_list = [d.generate_state_progress_list() for d in data_list]
     xs = np.linspace(0, 100, 200)
@@ -88,7 +88,7 @@ def speed_profile_comparison():
     plt.figure(1, figsize=(6, 1.9))
     ax1 = plt.gca()
     for n, name in enumerate(names):
-        ax1.plot(xs, speed_list[n], color=pp[n], label=name)
+        ax1.plot(xs, speed_list[n], color=color_pallet[n], label=name)
 
     ax1.set_ylabel("Speed m/s")
     ax1.set_xlabel("Track progress (%)")
@@ -102,16 +102,6 @@ def speed_profile_comparison():
     plt.savefig(f"{base}_Imgs/CompareSpeed_{map_name.upper()}.pdf", bbox_inches='tight')
 
 def curvature_profile_comparison():
-    map_name = "gbr"
-    # map_name = "mco"
-    base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
-    names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
-                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
-    
-    lap_list = [0, 3, 3, 5]
     data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     
     xs = np.linspace(0, 100, 200)
@@ -120,7 +110,7 @@ def curvature_profile_comparison():
     plt.figure(1, figsize=(6, 1.9))
     ax1 = plt.gca()
     for n, name in enumerate(names):
-        ax1.plot(xs[:-1], np.abs(curve_list[n]), color=pp[n], label=name)
+        ax1.plot(xs[:-1], np.abs(curve_list[n]), color=color_pallet[n], label=name)
     
     ax1.set_ylabel("Curvature (rad/m)")
     ax1.set_xlabel("Track progress (%)")
@@ -141,16 +131,7 @@ def curvature_profile_comparison():
     # plt.show()
     
 def speed_profile_deviation():
-    map_name = "gbr"
-    # map_name = "mco"
-    base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
-    names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
-                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
-    
-    lap_list = [0, 3, 3, 5]
+
     data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     xs_list = [d.generate_state_progress_list() for d in data_list]
     xs = np.linspace(0, 100, 200)
@@ -159,7 +140,7 @@ def speed_profile_deviation():
     plt.figure(1, figsize=(6, 1.9))
     ax1 = plt.gca()
     for n, name in enumerate(names[1:]):
-        ax1.plot(xs, speed_list[n+1] - speed_list[0], color=pp[n+1], label=name)
+        ax1.plot(xs, speed_list[n+1] - speed_list[0], color=color_pallet[n], label=name)
 
     ax1.set_ylabel("Speed \ndifference m/s", fontsize=10)
     ax1.set_xlabel("Track progress (%)")
@@ -177,16 +158,6 @@ def speed_profile_deviation():
     
 
 def lateral_deviation():
-    map_name = "gbr"
-    # map_name = "mco"
-    base = f"Data/ComparativeAnalysis_{map_name.upper()}/"
-    names = ["Classic", "Full planning", "Trajectory tracking", "End-to-end"]
-    sub_paths = [f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/",
-                 f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
-                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/"]
-    
-    lap_list = [0, 3, 3, 5]
     data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     xs_list = [d.generate_state_progress_list() for d in data_list]
     deviation_list = [d.calculate_deviations() * 100 for d in data_list]
@@ -194,11 +165,11 @@ def lateral_deviation():
     plt.figure(1, figsize=(6, 1.9))
     ax1 = plt.gca()
     for n, name in enumerate(names[1:]):
-        n1 = n + 1
-        ax1.plot(xs_list[n1], deviation_list[n1], color=pp[n1], label=name)
+        n1 = n+1
+        ax1.plot(xs_list[n1], deviation_list[n1], color=color_pallet[n], label=name)
 
     # for n, name in enumerate(names):
-    #     ax1.plot(xs_list[n], deviation_list[n], color=pp[n], label=name)
+    #     ax1.plot(xs_list[n], deviation_list[n], color=color_pallet[n], label=name)
 
     ax1.set_ylabel("Lateral \ndeviation (cm)", fontsize=9)
     ax1.set_xlabel("Track progress (%)")

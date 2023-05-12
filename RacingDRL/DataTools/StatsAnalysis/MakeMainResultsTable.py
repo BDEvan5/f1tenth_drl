@@ -4,27 +4,14 @@ from RacingDRL.DataTools.plotting_utils import *
 
 
 def make_main_results_table():
-    map_names = ["aut", "esp", "gbr", "mco"]
     train_map = "mco"
     base_path = "Data/"
     set_number = 5
-    folder_keys = ["PlanningMaps", "TrajectoryMaps", "EndMaps"]
-    vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
-    labels = ["Full planning", "Trajectory tracking", "End-to-end"]
+    folder_keys = ["PlanningMaps", "TrajectoryMaps", "EndMaps", "PurePursuitMaps"]
 
-    base_path = "Data/"
-    set_number = 5
-    test_name = "PlanningMaps" 
-    folder_games = base_path + test_name + f"_{set_number}/"
+    folder_list = [base_path + folder_keys[i] + f"_{set_number}/" for i in range(4)]
     
-    test_name = "TrajectoryMaps" 
-    folder_traj = base_path + test_name + f"_{set_number}/"
-    
-    test_name = "EndMaps" 
-    folder_pp = base_path + test_name + f"_{set_number}/"
-    
-    folder_list = [folder_games, folder_traj, folder_pp]
-    folder_labels = ["Full planning", "Trajectory tracking", "End-to-end"]
+    folder_labels = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
 
     file_name = base_path + f"Imgs/main_results_table_{train_map.upper()}.txt"
     spacing = 30
@@ -39,9 +26,16 @@ def make_main_results_table():
     keys = ["time", "success", "progress"]
     
     for f, folder in enumerate(folder_list):
-        means, stds = load_data_mean_std(folder, f"{train_map}_TAL_8_5_testMCO")
+        if f < 3:
+            means, stds = load_data_mean_std(folder, f"{train_map}_TAL_8_5_testMCO")
+        else:
+            means, stds = load_data_mean_std(folder, f"{train_map}_test_8_5")
 
         with open(file_name, 'a') as file:
+            
+            if f == 3:
+                file.write("\t  \midrule  \n")
+                
             file.write(f"\t {folder_labels[f]} ".ljust(30))
             for k in keys:
                 file.write(f" & {float(means[k][0]):.1f} $\pm$ {float(stds[k][0]):.1f} ".ljust(30))

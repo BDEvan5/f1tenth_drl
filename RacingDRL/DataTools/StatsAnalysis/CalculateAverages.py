@@ -11,8 +11,8 @@ class VehicleData:
     def __init__(self, vehicle_id, n=3, prefix="Data/Vehicles/Cth_speedMaps/"):
         self.vehicle_id = vehicle_id
         self.prefix = prefix 
-        map_names = ["aut", "esp", "gbr", "mco"]
-        # map_names = [vehicle_id.split('_')[4]]
+        # map_names = ["aut", "esp", "gbr", "mco"]
+        map_names = [vehicle_id.split('_')[3]]
         for map_name in map_names:
             self.times = []
             self.success_rates = []
@@ -99,6 +99,7 @@ def aggregate_runs(path, n=3):
 # aggregate_runs("Data/PurePursuitMaps_1/", 1)
 
 set_n = 5
-aggregate_runs(f"Data/TrajectoryMaps_{set_n}/", 3)
-aggregate_runs(f"Data/EndMaps_{set_n}/", 3)
-aggregate_runs(f"Data/PlanningMaps_{set_n}/", 3)
+# aggregate_runs(f"Data/TrajectoryMaps_{set_n}/", 3)
+# aggregate_runs(f"Data/EndMaps_{set_n}/", 3)
+# aggregate_runs(f"Data/PlanningMaps_{set_n}/", 3)
+aggregate_runs(f"Data/PurePursuitMaps_{set_n}/", 1)

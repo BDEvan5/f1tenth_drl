@@ -130,7 +130,8 @@ def analyse_folder():
     # path = p + "PurePursuitMaps_1/"
     # path = p + "PlanningMaps_4/"
     # path = p + "EndMaps_2/"
-    path = p + "EndMaps_5/"
+    path = p + "LapWise_5/"
+    # path = p + "EndMaps_5/"
     # path = p + "TrajectoryMaps_4/"
     
     TestData = AnalyseTestLapData()
@@ -164,6 +165,6 @@ def generate_comparative_analysis():
 
 
 if __name__ == '__main__':
-    # analyse_folder()
-    generate_comparative_analysis()
+    analyse_folder()
+    # generate_comparative_analysis()
     
