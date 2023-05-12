@@ -38,6 +38,25 @@ def load_time_data(folder, map_name=""):
 
     return mins, maxes, means
 
+def load_data_mean_std(folder, map_name=""):
+    files = glob.glob(folder + f"Results_*{map_name}*.txt")
+    files.sort()
+    print(files)
+    keys = ["time", "success", "progress"]
+    means, stds = {}, {}
+    for key in keys:
+        means[key] = []
+        stds[key] = []
+    
+    for i in range(len(files)):
+        with open(files[i], 'r') as file:
+            lines = file.readlines()
+            for j in range(len(keys)):
+                means[keys[j]].append(float(lines[1].split(",")[1+j]))
+                stds[keys[j]].append(float(lines[2].split(",")[1+j]))
+
+    return means, stds
+
 
 def load_csv_data(path):
     """loads data from a csv training file

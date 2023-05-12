@@ -203,6 +203,6 @@ def generate_comparative_analysis():
 
 
 if __name__ == '__main__':
-    # analyse_folder()
-    generate_comparative_analysis()
+    analyse_folder()
+    # generate_comparative_analysis()
     

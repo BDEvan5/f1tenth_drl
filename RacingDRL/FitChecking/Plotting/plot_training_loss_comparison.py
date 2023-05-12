@@ -23,15 +23,15 @@ def plot_training_loss_comparison():
         speed_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_speed.npy")
         steer_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_steering.npy")
 
-        axes[0].plot(xs, np.mean(speed_training_loss, axis=0), label=label_names[i], color=pp[i+1])
-        axes[1].plot(xs, np.mean(steer_training_loss, axis=0), color=pp[i+1])
+        axes[0].plot(xs, np.mean(speed_training_loss, axis=0), label=label_names[i], color=color_pallet[i], alpha=0.9)
+        axes[1].plot(xs, np.mean(steer_training_loss, axis=0), color=color_pallet[i], alpha=0.8)
             
     for i, name in enumerate(name_keys):
         speed_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_speed.npy")
         steer_training_loss = np.load(save_folder + f"LossResultsSeperate/{experiment_name}_{name}_test_losses_steering.npy")
         
-        axes[0].fill_between(xs, np.min(speed_training_loss, axis=0),  np.max(speed_training_loss, axis=0), alpha=0.2, color=pp[i+1])
-        axes[1].fill_between(xs, np.min(steer_training_loss, axis=0),  np.max(steer_training_loss, axis=0), alpha=0.2, color=pp[i+1])
+        axes[0].fill_between(xs, np.min(speed_training_loss, axis=0),  np.max(speed_training_loss, axis=0), alpha=0.2, color=color_pallet[i])
+        axes[1].fill_between(xs, np.min(steer_training_loss, axis=0),  np.max(steer_training_loss, axis=0), alpha=0.2, color=color_pallet[i])
         
     axes[0].set_xlabel("Training Epoch")
     axes[0].set_ylabel("Speed Loss")
