@@ -175,9 +175,9 @@ def generate_folder_statistics(folder):
 def analyse_folder():
     p = "Data/"
     
-    path = p + "TrajectoryMaps_8/"
+    # path = p + "TrajectoryMaps_8/"
     # path = p + "PlanningMaps_8/"
-    # path = p + "EndMaps_8/"
+    path = p + "EndMaps_5/"
     # path = p + "PurePursuitMaps_1/"
     
     TestData = AnalyseTestLapData()
@@ -199,5 +199,5 @@ def analyse_all_data():
     TestData.explore_folder(path)
 
 if __name__ == '__main__':
-    # analyse_folder()
-    analyse_all_data()
+    analyse_folder()
+    # analyse_all_data()

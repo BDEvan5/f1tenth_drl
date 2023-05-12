@@ -147,8 +147,8 @@ def main():
     
     
 if __name__ == "__main__":
-    # main()
-    run_pp_tests()
+    main()
+    # run_pp_tests()
   
     # run_general_test_batch()
 

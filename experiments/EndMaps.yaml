@@ -5,8 +5,8 @@ planner_type: "AgentOff"
 state_vector: "endToEnd"
 
 set_n: 5
-start_n: 3
-n_repeats: 4
+start_n: 1
+n_repeats: 2
 
 random_seed: 0
 # max_speed: 8
