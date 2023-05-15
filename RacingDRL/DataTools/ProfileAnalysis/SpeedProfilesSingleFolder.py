@@ -15,8 +15,11 @@ names = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
 sub_paths = [f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/", 
-                f"PurePursuit_PP_pathFollower_{map_name}_test_8_{set_number}_0/"]
-lap_list = [0, 0, 0, 0]
+                f"PurePursuit_PP_pathFollower_{map_name}_TAL_8_{set_number}_0/"]
+# lap_list = [0, 0, 0, 0]
+lap_list = [1, 1, 1, 1]
+lap_list = [5] * 4
+# lap_list = np.ones(4)
 
 
 class TestLapData:
@@ -182,11 +185,104 @@ def lateral_deviation():
 
     plt.savefig(f"{base}_Imgs/LateralDeviation_{map_name.upper()}.svg", bbox_inches='tight')
     plt.savefig(f"{base}_Imgs/LateralDeviation_{map_name.upper()}.pdf", bbox_inches='tight')
+    
+    
+def speed_steering_plot():
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
+    
+    fig, axes = plt.subplots(2, 4, figsize=(9, 4), sharex=True, sharey=True)
+        
+    action_steering_list = [d.actions[:, 0] for d in data_list]
+    state_steering_list = [d.states[:, 2] for d in data_list]
+    action_speed_list = [d.actions[:, 1] for d in data_list]
+    state_speed_list = [d.states[:, 3] for d in data_list]
+        
+    for i in range(len(data_list)):
+        axes[0, i].plot(action_steering_list[i], action_speed_list[i], '.', color=color_pallet[i], alpha=0.5)
+        
+        axes[1, i].plot(state_steering_list[i], state_speed_list[i], '.', color=color_pallet[i], alpha=0.5)
+        
+        axes[0, i].set_xlim(-0.45, 0.45)
+        axes[0, i].grid(True)
+        axes[1, i].grid(True)
+        axes[0, i].set_title(names[i])
+        axes[1, i].set_xlabel("Steering Angle ")
+        
+    axes[0, 0].set_ylim(2, 8.5)
+    axes[0, 0].set_ylabel("Action Speed (m/s)")
+    axes[1, 0].set_ylabel("State Speed (m/s)")
+    
+    name = f"{base}_Imgs/SpeedSteering{map_name.upper()}"
+    std_img_saving(name, True)
 
-    # plt.show()
+
+def speed_steering_plot_hist():
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
+    
+    fig, axes = plt.subplots(2, 4, figsize=(9, 4), sharex=True, sharey=True)
+        
+    action_steering_list = [d.actions[:, 0] for d in data_list]
+    state_steering_list = [d.states[:, 2] for d in data_list]
+    action_speed_list = [d.actions[:, 1] for d in data_list]
+    state_speed_list = [d.states[:, 3] for d in data_list]
+        
+    for i in range(len(data_list)):
+        axes[0, i].hist(action_steering_list[i], color=color_pallet[i], alpha=0.5)
+        axes[1, i].hist(state_steering_list[i], color=color_pallet[i], alpha=0.5)
+        
+        
+        axes[0, i].set_xlim(-0.45, 0.45)
+        axes[0, i].grid(True)
+        axes[1, i].grid(True)
+        axes[0, i].set_title(names[i])
+        axes[1, i].set_xlabel("Steering Angle ")
+        
+    # axes[0, 0].set_ylim(2, 8.5)
+    axes[0, 0].set_ylabel("Action Speed (m/s)")
+    axes[1, 0].set_ylabel("State Speed (m/s)")
+    
+    name = f"{base}_Imgs/SpeedSteeringHist{map_name.upper()}"
+    std_img_saving(name, True)
+
+
+def speed_steering_plot_hist2():
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
+    
+    fig, axes = plt.subplots(2, 4, figsize=(9, 4), sharex=False, sharey=False)
+        
+    action_steering_list = [d.actions[:, 0] for d in data_list]
+    state_steering_list = [d.states[:, 2] for d in data_list]
+    action_speed_list = [d.actions[:, 1] for d in data_list]
+    state_speed_list = [d.states[:, 3] for d in data_list]
+        
+    for i in range(len(data_list)):
+        # axes[1, i].hist(action_steering_list[i], color=color_pallet[i], alpha=0.5, bins=10)
+        # axes[0, i].hist(action_speed_list[i], color=color_pallet[i], alpha=0.5)
+        axes[1, i].hist(state_steering_list[i], color=color_pallet[i], alpha=0.5, bins=10)
+        axes[0, i].hist(state_speed_list[i], color=color_pallet[i], alpha=0.5)
+        
+        axes[0, i].set_xlim(2, 8)
+        axes[0, i].set_ylim(0, 100)
+        axes[1, i].set_ylim(0, 150)
+        axes[1, i].set_xlim(-0.45, 0.45)
+        axes[0, i].grid(True)
+        axes[1, i].grid(True)
+        axes[0, i].set_title(names[i])
+        axes[1, i].set_xlabel("Steering Angle ")
+        
+    # axes[0, 0].set_ylim(2, 8.5)
+    axes[0, 0].set_ylabel("Action Speed (m/s)")
+    axes[1, 0].set_ylabel("State Speed (m/s)")
+    
+    name = f"{base}_Imgs/SpeedSteeringHist{map_name.upper()}"
+    std_img_saving(name, True)
+
 
 
 # speed_profile_comparison()
 # speed_profile_deviation()
 # lateral_deviation()
-curvature_profile_comparison()
+# curvature_profile_comparison()
+# speed_steering_plot()
+# speed_steering_plot_hist()
+speed_steering_plot_hist2()

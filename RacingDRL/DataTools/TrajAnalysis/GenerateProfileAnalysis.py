@@ -65,14 +65,17 @@ class AnalyseTestLapData:
         self.testing_velocity_path = "/".join(self.path.split("/")[:-2]) + "/_Imgs/FullTrajectories/"
         self.clipped_trajectories_path = "/".join(self.path.split("/")[:-2]) + "/_Imgs/ClippedTrajectories/"
         self.slip_distributions_path = "/".join(self.path.split("/")[:-2]) + "/_Imgs/SlipDistributions/"
+        self.speed_steering_path = "/".join(self.path.split("/")[:-2]) + "/_Imgs/SpeedSteering/"
         ensure_path_exists(self.testing_velocity_path)
         ensure_path_exists(self.clipped_trajectories_path)
         ensure_path_exists(self.slip_distributions_path)
+        ensure_path_exists(self.speed_steering_path)
 
         for self.lap_n in range(5):
             if not self.load_lap_data(): break # no more laps
-            self.plot_velocity_heat_map()
-            self.slip_angle_distribution()
+            # self.plot_velocity_heat_map()
+            # self.slip_angle_distribution()
+            self.plot_speed_steering()
 
     def load_lap_data(self):
         try:
@@ -157,8 +160,48 @@ class AnalyseTestLapData:
         
         std_img_saving(name, SAVE_PDF)
         
+    # def plot_speed_steering(self):
+    #     speeds = self.states[:, 3]
+    #     steerings = self.states[:, 2]
+    #     # speeds = self.actions[:, 1]
+    #     # steerings = self.actions[:, 0]
         
+    #     plt.figure(1, figsize=(3, 2.2))
+    #     plt.clf()
+    #     plt.plot(steerings, speeds, '.', color=color_pallet[self.vehicle_number], alpha=0.5)
         
+    #     plt.xlabel("Steering Angle (rad)")
+    #     plt.ylabel("Speed (m/s)")
+    #     plt.xlim(-0.45, 0.45)
+    #     plt.ylim(2, 8.5)
+        
+    #     name = self.speed_steering_path + f"{self.vehicle_name}_speed_steering_{self.lap_n}"
+    #     std_img_saving(name, SAVE_PDF)
+        
+    def plot_speed_steering(self):
+        fig, axs = plt.subplots(2, 1, figsize=(3, 4))
+        
+        speeds = self.actions[:, 1]
+        steerings = self.actions[:, 0]
+        axs[0].plot(steerings, speeds, '.', color=color_pallet[self.vehicle_number], alpha=0.5)
+        
+        speeds = self.states[:, 3]
+        steerings = self.states[:, 2]
+        axs[1].plot(steerings, speeds, '.', color=color_pallet[self.vehicle_number], alpha=0.5)
+        
+        axs[1].set_xlabel("Steering Angle (rad)")
+        axs[0].set_ylabel("Action Speed (m/s)")
+        axs[1].set_ylabel("State Speed (m/s)")
+        axs[0].set_xlim(-0.45, 0.45)
+        axs[0].set_ylim(2, 8.5)
+        axs[1].set_xlim(-0.45, 0.45)
+        axs[1].set_ylim(2, 8.5)
+        
+        axs[0].grid(True)
+        axs[1].grid(True)
+        
+        name = self.speed_steering_path + f"{self.vehicle_name}_speed_steering_{self.lap_n}"
+        std_img_saving(name, SAVE_PDF)
         
         
 
@@ -185,7 +228,8 @@ def analyse_folder():
     # path = p + "PurePursuitMaps_1/"
     # path = p + "PlanningMaps_3/"
     # path = p + "EndMaps_5/"
-    path = p + "TrajectoryMaps_5/"
+    # path = p + "TrajectoryMaps_5/"
+    path = p + "LapWise_5/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
