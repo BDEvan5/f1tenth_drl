@@ -57,6 +57,38 @@ def load_data_mean_std(folder, map_name=""):
 
     return means, stds
 
+
+def load_repetition_data(folder, map_name=""):
+    """loads the data for a repetition set
+
+    Args:
+        folder (path): path to a folder
+        map_name (str, optional): describes the specific result. Defaults to "".
+
+    Returns:
+        _type_: _description_
+    """
+    files = glob.glob(folder + f"RepetitionSummary_*{map_name}*.txt")
+    file_name = files[0]
+    print(file_name)
+    
+    times = []
+    successes = []
+    progresses = []
+    repetition_numbers = [f"{z}" for z in range(10)]
+    with open(file_name, 'r') as file:
+        lines = file.readlines()
+        for l, line in enumerate(lines):
+            if l == 0: continue
+            if line[0] == "-": continue
+            digit = line.split(",")[0][0]
+            if line.split(",")[0][0] in repetition_numbers:
+                times.append(float(line.split(",")[1]))
+                successes.append(float(line.split(",")[2]))
+                progresses.append(float(line.split(",")[3]))
+                           
+    return times, successes, progresses
+
 def load_detail_mean_std(folder, map_name=""):
     file = folder + f"DetailSummaryStatistics{map_name.upper()}.txt"
     keys = ["time", "progress", "distance", "avg_speed", "std_speed", "avg_lateral", "std_lateral", "avg_speedD", "std_speedD", "avg_curvature", "std_curvature"]
