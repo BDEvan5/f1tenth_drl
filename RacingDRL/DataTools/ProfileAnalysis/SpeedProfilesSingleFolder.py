@@ -16,9 +16,9 @@ sub_paths = [f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
                 f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
                 f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/", 
                 f"PurePursuit_PP_pathFollower_{map_name}_TAL_8_{set_number}_0/"]
-# lap_list = [0, 0, 0, 0]
+lap_list = [0, 0, 0, 0]
 lap_list = [1, 1, 1, 1]
-lap_list = [5] * 4
+# lap_list = [5] * 4
 # lap_list = np.ones(4)
 
 
@@ -213,6 +213,32 @@ def speed_steering_plot():
     axes[1, 0].set_ylabel("State Speed (m/s)")
     
     name = f"{base}_Imgs/SpeedSteering{map_name.upper()}"
+    std_img_saving(name, True)    
+    
+def speed_steering_action_plot():
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
+    
+    fig, axes = plt.subplots(1, 4, figsize=(6, 1.8), sharex=True, sharey=True)
+        
+    action_steering_list = [d.actions[:, 0] for d in data_list]
+    action_speed_list = [d.actions[:, 1] for d in data_list]
+        
+    for i in range(len(data_list)):
+        axes[i].plot(action_steering_list[i], action_speed_list[i], '.', color=color_pallet[i], alpha=0.5)
+        
+        axes[i].set_xlim(-0.45, 0.45)
+        axes[i].grid(True)
+        axes[i].set_title(names[i], fontsize=10)
+        # axes[i].set_xlabel("Steering Angle", fontsize=10)
+        axes[i].xaxis.set_tick_params(labelsize=8)
+        axes[i].xaxis.set_major_locator(MultipleLocator(0.3))
+        
+    axes[0].yaxis.set_tick_params(labelsize=8)
+    axes[0].set_ylim(2, 8.5)
+    axes[0].set_ylabel("Speed (m/s)", fontsize=10)
+    fig.text(0.53, 0.02, "Steering angle (rad)", fontsize=10, ha='center')
+    
+    name = f"{base}_Imgs/SpeedSteeringActions{map_name.upper()}"
     std_img_saving(name, True)
 
 
@@ -245,7 +271,7 @@ def speed_steering_plot_hist():
     std_img_saving(name, True)
 
 
-def speed_steering_plot_hist2():
+def speed_distributions_old():
     data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     
     fig, axes = plt.subplots(2, 4, figsize=(9, 4), sharex=False, sharey=False)
@@ -279,10 +305,39 @@ def speed_steering_plot_hist2():
 
 
 
+def speed_distributions():
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
+    
+    fig, axes = plt.subplots(1, 4, figsize=(6, 1.7), sharex=False, sharey=True)
+        
+    state_speed_list = [d.states[:, 3] for d in data_list]
+        
+    for i in range(len(data_list)):
+        axes[i].hist(state_speed_list[i], color=color_pallet[i], alpha=0.65)
+        
+        axes[i].set_xlim(2, 8)
+        axes[i].grid(True)
+        axes[i].set_title(names[i], fontsize=10)
+        axes[i].xaxis.set_tick_params(labelsize=8)
+        
+    axes[0].set_ylim(0, 110)
+    # axes[]
+    fig.text(0.54, 0.02, "Vehicle Speed (m/s)", fontsize=10, ha='center')
+    axes[0].set_ylabel("Frequency", fontsize=10)
+    axes[0].yaxis.set_major_locator(MultipleLocator(25))
+    axes[0].yaxis.set_tick_params(labelsize=8)
+    
+    plt.tight_layout()
+    name = f"{base}_Imgs/SpeedDistributions{map_name.upper()}"
+    std_img_saving(name, True)
+
+
+
 # speed_profile_comparison()
 # speed_profile_deviation()
 # lateral_deviation()
 # curvature_profile_comparison()
 # speed_steering_plot()
 # speed_steering_plot_hist()
-speed_steering_plot_hist2()
+speed_distributions()
+# speed_steering_action_plot()
