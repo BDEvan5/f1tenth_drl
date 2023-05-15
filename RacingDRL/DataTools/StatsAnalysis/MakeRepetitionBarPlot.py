@@ -86,7 +86,9 @@ def make_repetition_bar_plot_article():
         if f < 3:
             ts, ss, ps = load_repetition_data(folder, f"{train_map}_TAL_8_5_testMCO")
         else:
-            ts, ss, ps = load_repetition_data(folder, f"{train_map}_test_8_5")
+            ts, ss, ps = load_repetition_data(folder, f"{train_map}_TAL_8_5_testMCO")
+            # ts, ss, ps = load_repetition_data(folder, f"{train_map}_TAL_8_5")
+            # ts, ss, ps = load_repetition_data(folder, f"{train_map}_test_8_5")
             for i in range(2):
                 ts.append(ts[0])
                 ss.append(ss[0])
