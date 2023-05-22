@@ -44,11 +44,18 @@ class AnalyseTestLapData:
         for j, folder in enumerate(vehicle_folders):
             print(f"Vehicle folder being opened: {folder}")
             
-            # self.process_folder(folder)
-            self.process_folder_all_maps(folder)
+            self.process_folder(folder)
+            # self.process_folder_all_maps(folder)
 
     def process_folder(self, folder):
         self.path = folder
+
+        self.vehicle_name = self.path.split("/")[-2]
+        if self.vehicle_name == "_Imgs" or self.vehicle_name == "Imgs": return
+        self.map_name = self.vehicle_name.split("_")[3]
+        self.map_data = MapData(self.map_name)
+        self.std_track = StdTrack(self.map_name)
+        self.racing_track = RacingTrack(self.map_name)
 
         spacing = 16
         with open(self.path + "Statistics.txt", "w") as file:
@@ -59,12 +66,6 @@ class AnalyseTestLapData:
             file.write(f"Time".rjust(spacing))
             file.write(f"Avg. Velocity".rjust(spacing))
             file.write(f" \n")
-
-        self.vehicle_name = self.path.split("/")[-2]
-        self.map_name = self.vehicle_name.split("_")[3]
-        self.map_data = MapData(self.map_name)
-        self.std_track = StdTrack(self.map_name)
-        self.racing_track = RacingTrack(self.map_name)
 
         for self.lap_n in range(100):
             if not self.load_lap_data(): break # no more laps
@@ -190,14 +191,15 @@ def analyse_folder():
     # path = p + "TrajectoryMaps_8/"
     # path = p + "PlanningMaps_8/"
     # path = p + "EndMaps_5/"
-    path = p + "PurePursuitMaps_5/"
+    path = p + "FinalExperiment_1/"
+    # path = p + "PurePursuitMaps_5/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
 
 def analyse_all_data():
     p = "Data/"
-    set_n = 5
+    set_n = 1
     
     TestData = AnalyseTestLapData()
 
@@ -213,3 +215,4 @@ def analyse_all_data():
 if __name__ == '__main__':
     analyse_folder()
     # analyse_all_data()
+# 

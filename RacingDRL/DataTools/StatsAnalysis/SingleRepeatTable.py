@@ -21,10 +21,11 @@ def make_single_repeat_table():
         file.write("\t  \\textbf{Architecture} &".ljust(spacing))
         file.write("\\textbf{Lap time (s)} &".ljust(spacing))
         file.write("\\textbf{Progress (\%)} \\\\ \n".ljust(spacing))
-        file.write("\\textbf{Distance (m)} &".ljust(spacing))
+        # file.write("\\textbf{Distance (m)} &".ljust(spacing))
         file.write("\t  \midrule  \n")
 
-    inds = [1, 2, 3]
+    inds = [1, 2]
+    # inds = [1, 2, 3]
 
     for f, folder in enumerate(folder_list):
         read_file = folder + f"DetailSummaryStatistics{map_name.upper()}.txt"

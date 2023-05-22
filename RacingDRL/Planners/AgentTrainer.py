@@ -3,7 +3,7 @@ from RacingDRL.LearningAlgorithms.create_agent import create_train_agent
 import numpy as np
 from RacingDRL.Planners.Architectures import select_architecture
 from RacingDRL.Utils.TrainHistory import TrainHistory
-from RacingDRL.Planners.RewardSignals import ProgressReward, TALearningReward
+from RacingDRL.Planners.RewardSignals import ProgressReward, TALearningReward, CrossTrackHeadReward
 from RacingDRL.Planners.TrackLine import TrackLine
 
 
@@ -24,6 +24,7 @@ class AgentTrainer:
         self.action = None
         self.std_track = TrackLine(run.map_name, False)
         # self.reward_generator = ProgressReward(self.std_track)
+        # self.reward_generator = CrossTrackHeadReward(self.std_track, conf)
         self.reward_generator = TALearningReward(conf, run)
         self.max_lap_progress = 0
 

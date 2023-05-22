@@ -142,16 +142,17 @@ def speed_profile_deviation():
     
     plt.figure(1, figsize=(6, 1.9))
     ax1 = plt.gca()
-    for n, name in enumerate(names[1:]):
-        ax1.plot(xs, speed_list[n+1] - speed_list[0], color=color_pallet[n], label=name)
+    for n, name in enumerate(names[:-1]):
+        ax1.plot(xs, speed_list[n] - speed_list[-1], color=color_pallet[n], label=name)
 
-    ax1.set_ylabel("Speed \ndifference m/s", fontsize=10)
+    ax1.set_ylabel("Speed \n deviation (m/s)", fontsize=10)
     ax1.set_xlabel("Track progress (%)")
-    ax1.legend(ncol=4, fontsize=9, loc='lower center', bbox_to_anchor=(0.5, 0.96))
+    ax1.legend(ncol=4, fontsize=10, loc='lower center', bbox_to_anchor=(0.5, 0.96))
 
     plt.grid(True)
     plt.tight_layout()
-    plt.xlim(10, 60)
+    # plt.xlim(10, 60)
+    plt.xlim(-2, 80)
     plt.gca().yaxis.set_major_locator(MultipleLocator(2.5))
 
     plt.savefig(f"{base}_Imgs/SpeedDifference_{map_name.upper()}.svg", bbox_inches='tight')
@@ -176,11 +177,12 @@ def lateral_deviation():
 
     ax1.set_ylabel("Lateral \ndeviation (cm)", fontsize=9)
     ax1.set_xlabel("Track progress (%)")
-    ax1.legend(ncol=4, fontsize=9, loc='lower center', bbox_to_anchor=(0.5, 0.96))
+    ax1.legend(ncol=4, fontsize=10, loc='lower center', bbox_to_anchor=(0.5, 0.96))
 
     plt.grid(True)
     plt.tight_layout()
-    plt.xlim(10, 50)
+    plt.xlim(20, 80)
+    # plt.xlim(10, 50)
     plt.gca().yaxis.set_major_locator(MultipleLocator(20))
 
     plt.savefig(f"{base}_Imgs/LateralDeviation_{map_name.upper()}.svg", bbox_inches='tight')
@@ -332,6 +334,45 @@ def speed_distributions():
     std_img_saving(name, True)
 
 
+def path_overlay():
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
+    
+    # plt.figure(1, figsize=(6, 4))
+        
+    xs_list = [d.states[:, 0] for d in data_list]
+    ys_list = [d.states[:, 1] for d in data_list]
+      
+    
+    map_img = MapData(map_name)
+    map_img.plot_map_img()
+    xs, ys = map_img.xy2rc(map_img.t_xs, map_img.t_ys)
+    # plt.plot(xs, ys, '--', color='black', alpha=0.65)
+    
+    for i in range(len(xs_list)-1):
+    # for i in range(len(xs_list)):
+        xs, ys = map_img.xy2rc(xs_list[i], ys_list[i])
+        plt.plot(xs, ys, color=color_pallet[i], alpha=0.65)
+    
+    
+    
+    mco_left_limits()
+    
+    plt.xticks([])
+    plt.yticks([])
+    plt.gca().axis('off')
+        
+    plt.tight_layout()
+    name = f"{base}_Imgs/PathOverlay{map_name.upper()}"
+    std_img_saving(name, True)
+
+    
+def mco_left_limits():
+    plt.xlim(20, 600)
+    plt.ylim(710, 1020)
+
+# def mco_left_limits():
+#     plt.xlim(20, 660)
+#     plt.ylim(710, 1020)
 
 # speed_profile_comparison()
 # speed_profile_deviation()
@@ -339,5 +380,6 @@ def speed_distributions():
 # curvature_profile_comparison()
 # speed_steering_plot()
 # speed_steering_plot_hist()
-speed_distributions()
+# speed_distributions()
 # speed_steering_action_plot()
+path_overlay()

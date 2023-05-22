@@ -19,9 +19,10 @@ from matplotlib.ticker import MultipleLocator
 # SAVE_PDF = False
 SAVE_PDF = True
 
-vehicle_names = ["Classic", "Full Planner", "Trajectory Follower", "End-to-End"]
+vehicle_names = ["Classic", "Full Planning", "Trajectory tracking", "End-to-End"]
 vehicle_data = {"Game": 1, "pathFollower": 0, "TrajectoryFollower": 2, "endToEnd": 3}
-map_list = ["aut", "esp", "gbr", "mco"]
+# map_list = ["aut", "esp", "gbr", "mco"]
+map_list = ["esp"]
 
 def ensure_path_exists(path):
     if not os.path.exists(path):
@@ -41,7 +42,7 @@ class AnalyseTestLapData:
 
     def explore_folder(self, path):
         print(path)
-        vehicle_folders = glob.glob(f"{path}*0/")
+        vehicle_folders = glob.glob(f"{path}*/")
         # vehicle_folders = glob.glob(f"{path}*0/")
         # vehicle_folders = glob.glob(f"{path}*/*0/")
         # print(vehicle_folders)
@@ -51,6 +52,7 @@ class AnalyseTestLapData:
         for j, self.path in enumerate(vehicle_folders):
             print(f"Vehicle folder being opened: {self.path}")
             self.vehicle_name = self.path.split("/")[-2]
+            if self.vehicle_name == "_Imgs" or self.vehicle_name == "Imgs": continue
             print(f"Vehicle name: {self.vehicle_name}")
             self.map_name = self.vehicle_name.split("_")[3]
                 
@@ -62,7 +64,7 @@ class AnalyseTestLapData:
             self.process_folder()
     
     def process_folder(self):
-        self.map_name = self.vehicle_name.split("_")[3]
+        # self.map_name = self.vehicle_name.split("_")[3]
         self.map_data = MapData(self.map_name)
         self.std_track = TrackLine(self.map_name, False)
         self.racing_track = TrackLine(self.map_name, True)
@@ -76,12 +78,12 @@ class AnalyseTestLapData:
         self.slip_distributions_path = "/".join(self.path.split("/")[:-2]) + f"/_Imgs/SlipDistributions{self.map_name.upper()}/"
         ensure_path_exists(self.testing_velocity_path)
         ensure_path_exists(self.clipped_trajectories_path)
-        ensure_path_exists(self.slip_distributions_path)
+        # ensure_path_exists(self.slip_distributions_path)
 
         for self.lap_n in range(5):
             if not self.load_lap_data(): break # no more laps
             self.plot_velocity_heat_map()
-            self.slip_angle_distribution()
+            # self.slip_angle_distribution()
 
     def load_lap_data(self):
         try:
@@ -130,11 +132,17 @@ class AnalyseTestLapData:
         name = self.testing_velocity_path + f"{self.vehicle_name}_velocity_map_{self.lap_n}"
         std_img_saving(name, SAVE_PDF)        
         
+        # esp_right_limits()
+        t = plt.text(895, 475, vehicle_names[self.vehicle_number], size=25, bbox=dict(facecolor="white", edgecolor="white"), horizontalalignment='center')
+        # t = plt.text(760, 275, vehicle_names[self.vehicle_number], size=25, bbox=dict(facecolor="white", edgecolor="white"))
         mco_right_limits()
         name = self.clipped_trajectories_path + f"RIGHT_{self.vehicle_name}_velocity_map_{self.lap_n}"
         std_img_saving(name, SAVE_PDF)
+        t.remove()
         
         mco_left_limits()
+        plt.text(320, 760, vehicle_names[self.vehicle_number], size=26, bbox=dict(facecolor="white", edgecolor="white"),horizontalalignment='center')
+        # esp_left_limits()
         cbar.remove()
         cbar = plt.colorbar(line,fraction=0.046, pad=0.04, shrink=0.6)
         cbar.ax.get_yaxis().set_major_locator(MultipleLocator(2))
@@ -190,10 +198,12 @@ def mco_right_limits():
 def analyse_folder():
 
     p = "Data/"
-    set_n = 5
+    set_n = 1
 
-    # path = p + "PurePursuitMaps_1/"
-    path = p + f"PlanningMaps_{set_n}/"
+    # path = p + f"PurePursuitMaps_{set_n}/"
+    path = p + f"PreTrained_{set_n}/"
+    path = p + f"FinalExperiment_{set_n}/"
+    # path = p + f"PlanningMaps_{set_n}/"
     # path = p + f"EndMaps_{set_n}/"
     # path = p + f"TrajectoryMaps_{set_n}/"
     
@@ -214,6 +224,6 @@ def generate_comparative_analysis():
 
 
 if __name__ == '__main__':
-    # analyse_folder()
-    generate_comparative_analysis()
+    analyse_folder()
+    # generate_comparative_analysis()
     

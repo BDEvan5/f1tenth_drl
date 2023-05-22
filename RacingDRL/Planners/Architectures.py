@@ -25,7 +25,9 @@ class EndArchitecture:
 
         self.action_space = 2
 
-        self.state_space = self.n_beams + 1 
+        self.state_space = self.n_beams *2 + 1 
+        self.n_scans = 2
+        self.scan_buffer = np.zeros((self.n_scans, self.n_beams))
 
     def transform_obs(self, obs):
         """
@@ -40,7 +42,17 @@ class EndArchitecture:
         scan = np.array(obs['scans'][0]) 
         speed = obs['linear_vels_x'][0] / self.max_speed
         scan = np.clip(scan/self.range_finder_scale, 0, 1)
-        nn_obs = np.concatenate((scan, [speed]))
+
+        if self.scan_buffer.all() ==0: # first reading
+            for i in range(self.n_scans):
+                self.scan_buffer[i, :] = scan 
+        else:
+            self.scan_buffer = np.roll(self.scan_buffer, 1, axis=0)
+            self.scan_buffer[0, :] = scan
+
+        dual_scan = np.reshape(self.scan_buffer, (self.n_beams * self.n_scans))
+
+        nn_obs = np.concatenate((dual_scan, [speed]))
 
         return nn_obs
 
@@ -112,7 +124,9 @@ class PlanningArchitecture:
         self.n_wpts = 10 
         self.n_beams = 20
         self.waypoint_scale = 2.5
-        self.state_space = self.n_wpts * 2 + 3 + self.n_beams
+        # self.state_space = self.n_wpts * 2 + 1 + self.n_beams
+        self.state_space = self.n_wpts * 2 + 2 + self.n_beams
+        # self.state_space = self.n_wpts * 2 + 3 + self.n_beams
         self.action_space = 2
 
         self.track = TrackLine(run.map_name, False)
@@ -132,14 +146,16 @@ class PlanningArchitecture:
         relative_pts = relative_pts.flatten()
         
         speed = obs['linear_vels_x'][0] / self.max_speed
-        anglular_vel = obs['ang_vels_z'][0] / np.pi
+        # anglular_vel = obs['ang_vels_z'][0] / np.pi
         steering_angle = obs['steering_deltas'][0] / self.max_steer
         
         scan = np.array(obs['scans'][0]) 
         scan = np.clip(scan/10, 0, 1)
         
-        motion_variables = np.array([speed, anglular_vel, steering_angle])
+        motion_variables = np.array([speed, steering_angle])
+        # motion_variables = np.array([speed, anglular_vel, steering_angle])
         state = np.concatenate((scan, relative_pts.flatten(), motion_variables))
+        # state = np.concatenate((scan, relative_pts.flatten(), [speed]))
         
         return state
     
@@ -159,7 +175,8 @@ class TrajectoryArchitecture:
         self.max_speed = run.max_speed
         self.max_steer = conf.max_steer
         self.n_wpts = run.n_waypoints
-        self.state_space = self.n_wpts * 3 + 3
+        self.state_space = self.n_wpts * 3 + 2
+        # self.state_space = self.n_wpts * 3 + 3
         self.waypoint_scale = 2.5
 
         self.action_space = 2
@@ -170,7 +187,7 @@ class TrajectoryArchitecture:
         idx, dists = self.track.get_trackline_segment(pose)
         
         speed = obs['linear_vels_x'][0] / self.max_speed
-        anglular_vel = obs['ang_vels_z'][0] / np.pi
+        # anglular_vel = obs['ang_vels_z'][0] / np.pi
         steering_angle = obs['steering_deltas'][0] / self.max_steer
         
         upcomings_inds = np.arange(idx+1, idx+self.n_wpts+1)
@@ -188,16 +205,10 @@ class TrajectoryArchitecture:
         # scaled_speeds = (speeds - 1) / (self.max_speed - 1) * 2 - 1
         relative_pts = np.concatenate((relative_pts, scaled_speeds[:, None]), axis=-1)
         
-        # plt.figure()
-        # plt.plot(relative_pts[:, 0], relative_pts[:, 1], 'r.')
-        # plt.plot(upcoming_pts[:, 0], upcoming_pts[:, 1], 'r.')
-        # plt.plot(pose[0], pose[1], 'b.')
-        
-        # plt.show()
-        
         relative_pts = relative_pts.flatten()
-        motion_variables = np.array([speed, anglular_vel, steering_angle])
-        state = np.concatenate((relative_pts, motion_variables))
+        # motion_variables = np.array([speed, anglular_vel, steering_angle])
+        # state = np.concatenate((relative_pts, motion_variables))
+        state = np.concatenate((relative_pts, [speed, steering_angle]))
         
         return state
     

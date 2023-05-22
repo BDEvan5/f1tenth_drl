@@ -42,6 +42,8 @@ class AnalyseTestLapData:
         print(f"{len(vehicle_folders)} folders found")
 
         for j, self.path in enumerate(vehicle_folders):
+            if self.path.split("/")[-2] == "_Imgs":
+                continue
             print(f"Vehicle folder being opened: {self.path}")
             
             self.vehicle_name = self.path.split("/")[-2]
@@ -61,9 +63,11 @@ class AnalyseTestLapData:
             file.write(f"Avg. Velocity".rjust(spacing))
             file.write(f"Std. Velocity".rjust(spacing))
             file.write(f"Avg. LateralD".rjust(spacing))
-            file.write(f"Std. LateralD".rjust(spacing))
+            file.write(f"LateralD Q1".rjust(spacing))
+            file.write(f"LateralD Q3".rjust(spacing))
             file.write(f"Avg. SpeedD".rjust(spacing))
-            file.write(f"Std. SpeedD".rjust(spacing))
+            file.write(f"SpeedD Q1".rjust(spacing))
+            file.write(f"SpeedD Q3".rjust(spacing))
             file.write(f"Avg. Curvature".rjust(spacing))
             file.write(f"Std. Curvature".rjust(spacing))
             
@@ -129,9 +133,11 @@ class AnalyseTestLapData:
 
         hs = np.array(hs)
         avg_race_deviation = np.mean(hs)
-        std_race_deviation = np.std(hs)
+        race_deviation_q1 = np.percentile(hs, 25)
+        race_deviation_q3 = np.percentile(hs, 75)
         avg_speed_deviation = np.mean(speed_deviations)
-        std_speed_deviation = np.std(speed_deviations)
+        speed_deviation_q1 = np.percentile(speed_deviations, 25)
+        speed_deviation_q3 = np.percentile(speed_deviations, 75)
         
         # plt.figure()
         # plt.clf()
@@ -160,9 +166,11 @@ class AnalyseTestLapData:
             file.write(f"{avg_velocity:14.4f},")
             file.write(f"{std_velocity:14.4f},")
             file.write(f"{avg_race_deviation:14.4f},")
-            file.write(f"{std_race_deviation:14.4f},")        
+            file.write(f"{race_deviation_q1:14.4f},")        
+            file.write(f"{race_deviation_q3:14.4f},")        
             file.write(f"{avg_speed_deviation:14.4f},")
-            file.write(f"{std_speed_deviation:14.4f},")    
+            file.write(f"{speed_deviation_q1:14.4f},")    
+            file.write(f"{speed_deviation_q3:14.4f},")    
             file.write(f"{mean_curvature:14.4f},")
             file.write(f"{std_curvature:14.4f},")
 
@@ -241,9 +249,9 @@ def analyse_folder():
     
     # path = p + "TrajectoryMaps_8/"
     # path = p + "PlanningMaps_8/"
-    # path = p + "LapWise_5/"
+    path = p + "LapWise_5/"
     # path = p + "EndMaps_5/"
-    path = p + "PurePursuitMaps_5/"
+    # path = p + "PurePursuitMaps_5/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)

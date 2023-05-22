@@ -221,10 +221,10 @@ def run_comparison_test():
     
      
 if __name__ == "__main__":
-    run_nBeams_test()
+    # run_nBeams_test()
     # run_endStacking_test()
     
-    # run_trajectoryWaypoints_test()
+    run_trajectoryWaypoints_test()
     # run_planningAblation_test()
     
     # run_comparison_test()

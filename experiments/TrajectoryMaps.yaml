@@ -3,8 +3,8 @@ planner_type: "AgentOff"
 
 state_vector: "TrajectoryFollower"
 
-n_repeats: 3
-set_n: 5
+n_repeats: 1
+set_n: 2
 start_n: 0
 
 random_seed: 0
@@ -16,6 +16,7 @@ n_test_laps: 20
 # algorithm: "TD3"
 algorithm: "SAC"
 id_name: "TAL"
+# id_name: "cth"
 # id_name: "train"
 n_waypoints: 20
 trajectory_speeds: True

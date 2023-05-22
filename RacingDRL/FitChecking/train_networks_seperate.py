@@ -225,15 +225,15 @@ def run_endStacking_test():
     set_n = 3
     name = "EndToEnd_stacking"
     folder = f"NetworkFitting/{name}_{set_n}/"
-    name_keys = ["endToEnd_Single", "endToEnd_Double", "endToEnd_Triple", "endToEnd_Speed"]
-    run_experiment(folder, name_keys, name, 5)
+    name_keys = ["endToEnd_Single", "endToEnd_Double", "endToEnd_Triple", "endToEnd_Speed", "endToEnd_DoubleSpeed"]
+    run_experiment(folder, name_keys, name, 3)
     
 def run_planningAblation_test():
     set_n = 3
     name = "fullPlanning_ablation"
     folder = f"NetworkFitting/{name}_{set_n}/"
     name_keys = ["fullPlanning_full", "fullPlanning_rmMotion", "fullPlanning_rmLidar", "fullPlanning_rmWaypoints", "fullPlanning_Motion"]
-    run_experiment(folder, name_keys, name, 1)
+    run_experiment(folder, name_keys, name, 3)
     
         
 def run_comparison_test():

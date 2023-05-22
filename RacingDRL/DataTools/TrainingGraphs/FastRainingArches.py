@@ -9,37 +9,32 @@ from RacingDRL.DataTools.plotting_utils import *
 
 def make_TrainingGraph():
     base_path = "Data/"
-    test_name = "TrajectoryMaps" 
-    architecture = "TrajectoryFollower"
-    # test_name = "PlanningMaps" 
-    # architecture = "Game"
-    # test_name = "EndMaps"
-    # architecture = "endToEnd"
+    test_name = "FinalExperiment" 
+    # test_name = "PreTrained" 
     set_number = 1
     p = base_path + test_name + f"_{set_number}/"
     max_speed = 8
-    # general_id = "TAL"
-    general_id = "cth"
-    # general_id = "train"
-    # general_id = "v6"
+    general_id = "TAL"
+    map_name = "mco"
 
     steps_list = []
     progresses_list = []
     
-    map_names = ['mco']
-    # map_names = ['gbr', "mco"]
-    # map_names = ["aut", "esp"]
-    # map_names = ["aut", "esp", "gbr", "mco"]
+    arch_names = ["endToEnd", "TrajectoryFollower", "Game"]
+    # arch_names = ["Game"]
+    # arch_names = ["Game", "TrajectoryFollower"]
+    labels = ["End-to-End", "Trajectory tracking", "Full planning"]
 
-    n_repeats = 2
-    for i, id_name in enumerate(map_names): 
+    n_repeats = 5
+    for i, architecture in enumerate(arch_names): 
         steps_list.append([])
         progresses_list.append([])
+        # for j in range(2, 3):
         for j in range(n_repeats):
-            path = p + f"AgentOff_SAC_{architecture}_{id_name}_{general_id}_{max_speed}_{set_number}_{j}/"
+            path = p + f"AgentOff_SAC_{architecture}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
             rewards, lengths, progresses, _ = load_csv_data(path)
             steps = np.cumsum(lengths[:-1]) / 1000
-            avg_progress = true_moving_average(progresses[:-1], 20)
+            avg_progress = true_moving_average(progresses[:-1], 30)
             steps_list[i].append(steps)
             progresses_list[i].append(avg_progress)
 
@@ -50,8 +45,8 @@ def make_TrainingGraph():
     # xs = np.linspace(0, 30, 300)
     for i in range(len(steps_list)):
         min, max, mean = convert_to_min_max_avg(steps_list[i], progresses_list[i], xs)
-        plt.plot(xs, mean, '-', color=pp_dark[i], linewidth=2, label=map_names[i])
-        plt.gca().fill_between(xs, min, max, color=pp_dark[i], alpha=0.2)
+        plt.plot(xs, mean, '-', color=color_pallet[i], linewidth=2, label=labels[i])
+        plt.gca().fill_between(xs, min, max, color=color_pallet[i], alpha=0.2)
 
 
     plt.gca().get_yaxis().set_major_locator(MultipleLocator(25))
@@ -66,6 +61,7 @@ def make_TrainingGraph():
 
     name = p + f"{test_name}_TrainingGraph"
     std_img_saving(name)
+    print(f"Finneshed")
 
 
 def make_TrainingGraphReward():
@@ -130,6 +126,6 @@ def make_TrainingGraphReward():
 
 
 make_TrainingGraph()
-make_TrainingGraphReward()
+# make_TrainingGraphReward()
 
 

@@ -98,8 +98,10 @@ def aggregate_runs(path, n=3):
 # aggregate_runs("Data/GameMaps_3/", 3)
 # aggregate_runs("Data/PurePursuitMaps_1/", 1)
 
-set_n = 5
+set_n = 1
 # aggregate_runs(f"Data/TrajectoryMaps_{set_n}/", 3)
 # aggregate_runs(f"Data/EndMaps_{set_n}/", 3)
 # aggregate_runs(f"Data/PlanningMaps_{set_n}/", 3)
-aggregate_runs(f"Data/PurePursuitMaps_{set_n}/", 1)
+# aggregate_runs(f"Data/PurePursuitMaps_{set_n}/", 1)
+
+aggregate_runs(f"Data/FinalExperiment_{set_n}/", 3)

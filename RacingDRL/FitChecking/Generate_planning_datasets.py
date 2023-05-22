@@ -72,9 +72,8 @@ def build_trajectory_waypoints(state, track, n_wpts):
     
 def build_motion_variables(state):
     speed = state[3] / MAX_SPEED
-    anglular_vel = state[5] / PI
     steering_angle = state[2] / MAX_STEER
-    scaled_state = np.array([speed, anglular_vel, steering_angle])
+    scaled_state = np.array([speed, steering_angle])
     scaled_state = np.clip(scaled_state, -1, 1)
     
     return scaled_state

@@ -41,6 +41,15 @@ def generate_double_endToEnd_state(_state, scan, prev_scans, _track, _n_wpts, n_
     scaled_state = np.concatenate((prev_scan[inds], scan[inds])) / 10
     scaled_state = np.clip(scaled_state, -1, 1)
     
+    return scaled_state
+        
+def generate_doubleSpeed_endToEnd_state(state, scan, prev_scans, _track, _n_wpts, n_beams):
+    inds = calculate_inds(n_beams)
+    prev_scan = prev_scans[0]
+    speed = state[3] / 8
+    scaled_state = np.concatenate((prev_scan[inds]/ 10, scan[inds]/ 10, np.array([speed]))) 
+    scaled_state = np.clip(scaled_state, -1, 1)
+    
     return scaled_state    
 
 def generate_tripple_endToEnd_state(_state, scan, prev_scans, _track, _n_wpts, n_beams):
@@ -133,6 +142,7 @@ def build_endToEnd_stacking():
     build_state_data_set(save_folder, "endToEnd_Double", generate_double_endToEnd_state, 20)
     build_state_data_set(save_folder, "endToEnd_Triple", generate_tripple_endToEnd_state, 20)
     build_state_data_set(save_folder, "endToEnd_Speed", generate_speed_endToEnd_state, 20)
+    build_state_data_set(save_folder, "endToEnd_DoubleSpeed", generate_doubleSpeed_endToEnd_state, 20)
     
     
 def build_endToEnd_comparision_set():
@@ -148,8 +158,8 @@ def build_endToEnd_comparision_set():
     build_state_data_set(save_folder, "endToEnd_Single", generate_single_endToEnd_state, 20)
     
 if __name__ == "__main__":
-    build_endToEnd_nBeams()
-    # build_endToEnd_stacking()
+    # build_endToEnd_nBeams()
+    build_endToEnd_stacking()
     
     # build_endToEnd_comparision_set()
 

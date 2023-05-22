@@ -4,8 +4,8 @@ planner_type: "AgentOff"
 state_vector: "Game"
 
 n_repeats: 3
-start_n: 0
-set_n: 5
+start_n: 2
+set_n: 1
 
 random_seed: 0
 max_speed: 8
@@ -14,7 +14,8 @@ training_steps: 60000
 n_test_laps: 20
 # map_name: "esp"
 algorithm: "SAC"
-id_name: "TAL"
+id_name: "cth"
+# id_name: "TAL"
 # id_name: "train"
 
 runs:

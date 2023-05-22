@@ -69,7 +69,12 @@ def load_repetition_data(folder, map_name=""):
         _type_: _description_
     """
     files = glob.glob(folder + f"RepetitionSummary_*{map_name}*.txt")
-    file_name = files[0]
+    try:
+        file_name = files[0]
+    except:
+        name_str = folder + f"RepetitionSummary_*{map_name}*.txt"
+        print(f"None found: {name_str}")
+        return
     print(file_name)
     
     times = []
@@ -194,6 +199,18 @@ plot_red = "#E74C3C"
 plot_blue = "#3498DB"
 
 def plot_error_bars(x_base, mins, maxes, dark_color, w, tails=True):
+    for i in range(len(x_base)):
+        xs = [x_base[i], x_base[i]]
+        ys = [mins[i], maxes[i]]
+        plt.plot(xs, ys, color=dark_color[i], linewidth=2)
+        if tails:
+            xs = [x_base[i]-w, x_base[i]+w]
+            y1 = [mins[i], mins[i]]
+            y2 = [maxes[i], maxes[i]]
+            plt.plot(xs, y1, color=dark_color[i], linewidth=2)
+            plt.plot(xs, y2, color=dark_color[i], linewidth=2)
+
+def plot_error_bars_single_colour(x_base, mins, maxes, dark_color, w, tails=True):
     for i in range(len(x_base)):
         xs = [x_base[i], x_base[i]]
         ys = [mins[i], maxes[i]]

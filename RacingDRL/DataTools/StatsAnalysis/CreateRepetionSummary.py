@@ -92,7 +92,7 @@ def create_repetition_summary(path, n=3):
         vehicle_id = vehicle_name[:-2]
         print(vehicle_id)
         
-        if not vehicle_id in id_list and vehicle_id != "_Im":
+        if not vehicle_id in id_list and vehicle_id != "_Im"  and vehicle_id != "Im":
             id_list.append(vehicle_id)
         
     for i in range(len(id_list)):
@@ -103,7 +103,10 @@ def create_repetition_summary(path, n=3):
 
 
 set_n = 5
-create_repetition_summary(f"Data/TrajectoryMaps_{set_n}/", 3)
-create_repetition_summary(f"Data/EndMaps_{set_n}/", 3)
-create_repetition_summary(f"Data/PlanningMaps_{set_n}/", 3)
-create_repetition_summary(f"Data/PurePursuitMaps_{set_n}/", 1)
+# create_repetition_summary(f"Data/TrajectoryMaps_{set_n}/", 3)
+# create_repetition_summary(f"Data/EndMaps_{set_n}/", 3)
+# create_repetition_summary(f"Data/PlanningMaps_{set_n}/", 3)
+# create_repetition_summary(f"Data/PurePursuitMaps_{set_n}/", 1)
+
+set_n = 1
+create_repetition_summary(f"Data/FinalExperiment_{set_n}/", 5)
