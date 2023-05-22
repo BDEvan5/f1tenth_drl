@@ -215,7 +215,7 @@ def run_comparison_test():
     name = "comparison"
     folder = f"NetworkFitting/{name}_{set_n}/"
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
-    run_experiment(folder, name_keys, name, 3)
+    run_experiment(folder, name_keys, name, 10)
     
     
     
@@ -224,8 +224,8 @@ if __name__ == "__main__":
     # run_nBeams_test()
     # run_endStacking_test()
     
-    run_trajectoryWaypoints_test()
+    # run_trajectoryWaypoints_test()
     # run_planningAblation_test()
     
-    # run_comparison_test()
+    run_comparison_test()
     

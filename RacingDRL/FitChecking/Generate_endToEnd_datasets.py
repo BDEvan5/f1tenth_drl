@@ -154,12 +154,12 @@ def build_endToEnd_comparision_set():
 
     # build_action_data_set(save_folder)
 
-    build_state_data_set(save_folder, "endToEnd", generate_speed_endToEnd_state, 20)
-    build_state_data_set(save_folder, "endToEnd_Single", generate_single_endToEnd_state, 20)
+    build_state_data_set(save_folder, "endToEnd", generate_doubleSpeed_endToEnd_state, 20)
+    # build_state_data_set(save_folder, "endToEnd_Single", generate_single_endToEnd_state, 20)
     
 if __name__ == "__main__":
     # build_endToEnd_nBeams()
-    build_endToEnd_stacking()
+    # build_endToEnd_stacking()
     
-    # build_endToEnd_comparision_set()
+    build_endToEnd_comparision_set()
 
