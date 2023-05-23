@@ -15,6 +15,7 @@ def make_TrainingGraph():
     p = base_path + test_name + f"_{set_number}/"
     max_speed = 8
     general_id = "TAL"
+    # map_name = "gbr"
     map_name = "mco"
 
     steps_list = []
@@ -25,7 +26,7 @@ def make_TrainingGraph():
     # arch_names = ["Game", "TrajectoryFollower"]
     labels = ["End-to-End", "Trajectory tracking", "Full planning"]
 
-    n_repeats = 5
+    n_repeats = 3
     for i, architecture in enumerate(arch_names): 
         steps_list.append([])
         progresses_list.append([])

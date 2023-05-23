@@ -14,7 +14,8 @@ def compare_training():
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
-    map_list = ["mco", "gbr"]
+    map_list = ["mco"]
+    # map_list = ["mco", "gbr"]
     
     max_speed = 8
     general_id = "TAL"

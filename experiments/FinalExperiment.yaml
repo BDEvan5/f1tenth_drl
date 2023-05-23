@@ -1,8 +1,8 @@
 
 planner_type: "AgentOff"
 
-n_repeats: 5
-start_n: 3
+n_repeats: 3
+start_n: 1
 set_n: 1
 
 random_seed: 10
@@ -14,10 +14,11 @@ training_steps: 60000
 n_test_laps: 20
 algorithm: "SAC"
 id_name: "TAL"
-map_name: "mco"
+map_name: "gbr"
+# map_name: "mco"
 
 runs:
-  # - state_vector: "Game"
+  - state_vector: "Game"
   # - state_vector: "endToEnd"
-  - state_vector: "TrajectoryFollower"
+  # - state_vector: "TrajectoryFollower"
 

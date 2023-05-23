@@ -242,7 +242,7 @@ def run_comparison_test():
     folder = f"NetworkFitting/{name}_{set_n}/"
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
     # name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd", "endToEnd_Single"]
-    run_experiment(folder, name_keys, name, 3)
+    run_experiment(folder, name_keys, name, 10)
     
     
     
