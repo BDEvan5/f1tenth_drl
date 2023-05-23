@@ -8,14 +8,12 @@ from RacingDRL.DataTools.plotting_utils import *
 
 
 def compare_training():
-    base_path = "Data/"
-    set_number = 5
-    folder_keys = ["PlanningMaps", "TrajectoryMaps", "EndMaps"]
+    set_number = 1
+    base_path = f"Data/FinalExperiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
-    map_list = ["mco"]
-    # map_list = ["mco", "gbr"]
+    map_list = ["mco", "gbr"]
     
     max_speed = 8
     general_id = "TAL"
@@ -27,12 +25,11 @@ def compare_training():
     for m, map_name in enumerate(map_list):
         steps_list = []
         rewards_list = []
-        for a, architecture in enumerate(folder_keys):
-            p = base_path + architecture + f"_{set_number}/"
+        for a, vehicle_key in enumerate(vehicle_keys):
             steps_list.append([])
             rewards_list.append([])
             for j in range(n_repeats):
-                path = p + f"AgentOff_SAC_{vehicle_keys[a]}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
+                path = base_path + f"AgentOff_SAC_{vehicle_key}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
                 rewards, lengths, progresses, _ = load_csv_data(path)
                 steps = np.cumsum(lengths[:-1]) / 1000
                 avg_reward = true_moving_average(rewards[:-1], 30)
@@ -59,7 +56,7 @@ def compare_training():
     h, l = axs[0].get_legend_handles_labels()
     fig.legend(h, l, loc='lower center', bbox_to_anchor=(0.5, 0.9), ncol=3)
     
-    name = f"Data/Imgs/TrainingRewardComparison_{set_number}"
+    name = f"{base_path}Imgs/TrainingRewardComparison_{set_number}"
     std_img_saving(name)
 
 
