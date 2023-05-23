@@ -110,6 +110,8 @@ class MapData:
         plt.colorbar(line, fraction=0.046, pad=0.04, shrink=0.99)
 
     def plot_map_img(self):
+        if len(self.map_img.shape) > 2:
+            self.map_img = self.map_img.astype(np.uint8)[:, : -1]
         self.map_img[self.map_img == 1] = 180
         self.map_img[self.map_img == 0 ] = 230
         self.map_img[0, 1] = 255
@@ -151,10 +153,12 @@ class MapData:
 
 
 def main():
-    map_name = "esp"
+    map_name = "CornerHall"
+    # map_name = "esp"
 
     map_data = MapData(map_name)
     map_data.plot_map_data()
+    plt.show()
 
 if __name__ == '__main__':
 
