@@ -9,6 +9,7 @@ from matplotlib.ticker import MultipleLocator
 
 from RacingDRL.DataTools.MapData import MapData
 from RacingDRL.DataTools.plotting_utils import *
+plt.rcParams['pdf.use14corefonts'] = True
 
 root = "/home/benjy/sim_ws/src/f1tenth_racing/Data/"
 
@@ -151,21 +152,18 @@ def make_sim2real_steering_overlays():
 
     axes[0].grid(True)
     plt.xlabel("Track progress (%)", fontsize=8)
-    # set ytick font size
     plt.xticks(fontsize=8)
     plt.yticks(fontsize=8)
-    # set ytick font size on axies 0
-    axes[0].tick_params(axis='y', labelsize=8)
-    # axes[0].set_ylabel("Simulation", fontsize=8)
-    # axes[1].set_ylabel("Physical Vehicle", fontsize=8)
+    axes[0].tick_params(labelsize=8)
     axes[0].text(3, 0.3, "Simulation", fontsize=8, horizontalalignment="left", fontdict={'fontweight': 'bold'})
     axes[1].text(3, 0.3, "Physical Vehicle", fontsize=8, horizontalalignment="left", fontdict={'fontweight': 'bold'})
 
-    # axes[0].set_ylabel("Steering Angle (rad)", fontsize=8)
-    # axes[1].set_ylabel("Steering Angle (rad)", fontsize=8)
-    axes[0].get_yaxis().set_major_locator(MultipleLocator(0.2))
-    plt.gca().yaxis.set_major_locator(MultipleLocator(0.2))
-    plt.ylim(-0.45, 0.45)
+    axes[0].set_ylabel("Steering Angle (rad)", fontsize=8)
+    axes[1].set_ylabel("Steering Angle (rad)", fontsize=8)
+    # axes[0].get_yaxis().set_major_locator(MultipleLocator(0.2))
+    # plt.gca().yaxis.set_major_locator(MultipleLocator(0.2))
+    axes[0].set_yticklabels([-0.4, -0.2, 0, 0.2, 0.4])
+    axes[1].set_yticklabels([-0.4, -0.2, 0, 0.2, 0.4])
     axes[0].set_ylim(-0.45, 0.45)
     axes[1].set_ylim(-0.45, 0.45)
     plt.xlim(0, 100)
