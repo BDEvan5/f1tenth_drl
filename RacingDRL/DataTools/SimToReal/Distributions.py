@@ -94,34 +94,37 @@ def make_steering_distributions():
     real_folder = "ResultsJetson24/"
     sim_folder = "ResultsRos24/"
 
-    real_data = [TestLapData(root + real_folder + f"{agent_names[i]}", real_runs[i]) for i in range(4)]
-    sim_data = [TestLapData(root + sim_folder + f"{agent_names[i]}", sim_runs[i]) for i in range(4)]
+    agent_length = 3
+    real_data = [TestLapData(root + real_folder + f"{agent_names[i]}", real_runs[i]) for i in range(agent_length)]
+    sim_data = [TestLapData(root + sim_folder + f"{agent_names[i]}", sim_runs[i]) for i in range(agent_length)]
 
     
-    fig, axes = plt.subplots(2, 4, figsize=(6, 3), sharex=True, sharey=True)
+    fig, axes = plt.subplots(2, agent_length, figsize=(6, 3), sharex=True, sharey=True)
     # fig, axes = plt.subplots(2, 4, figsize=(6, 1.8), sharex=True, sharey=True)
         
     action_steering_real = [d.actions[:, 0] for d in real_data]
     action_steering_sim = [d.actions[:, 0] for d in sim_data]
         
-    for i in range(len(real_data)):
-        axes[0, i].hist(action_steering_sim[i], color=color_pallet[i], alpha=0.65)
-        axes[0, i].set_xlim(-0.45, 0.45)
+    for i in range(agent_length):
+        data = np.abs(action_steering_sim[i])
+        axes[0, i].hist(data, color=color_pallet[i], alpha=0.65)
+        axes[0, i].set_xlim(-0.02, .42)
         axes[0, i].grid(True)
         axes[0, i].set_title(labels[i], fontsize=10)
-        axes[0, i].set_yscale('log')        
+        # axes[0, i].set_yscale('log')        
        
-        axes[1, i].hist(action_steering_real[i], color=color_pallet[i], alpha=0.65)
-        axes[1, i].set_xlim(-0.45, 0.45)
+        data = np.abs(action_steering_real[i])
+        axes[1, i].hist(data, color=color_pallet[i], alpha=0.65)
+        # axes[1, i].set_xlim(-0.45, 0.45)
         axes[1, i].grid(True)
         axes[1, i].xaxis.set_tick_params(labelsize=8)
-        axes[1, i].xaxis.set_major_locator(MultipleLocator(0.3))
-        axes[1, i].set_yscale('log')
+        axes[1, i].xaxis.set_major_locator(MultipleLocator(0.15))
+        # axes[1, i].set_yscale('log')
         
     axes[0,0].yaxis.set_tick_params(labelsize=8)
     axes[0, 0].set_ylabel("Simulation", fontsize=10, fontweight='bold')
     axes[1, 0].set_ylabel("Physical \nvehicle", fontsize=10, fontweight='bold')
-    fig.text(0.53, 0.02, "Steering angle (rad)", fontsize=10, ha='center')
+    fig.text(0.53, 0.02, "Absolute Steering angle (rad)", fontsize=10, ha='center')
     
 
     name = "Sim2Real/Imgs/SteeringDistributions2"
