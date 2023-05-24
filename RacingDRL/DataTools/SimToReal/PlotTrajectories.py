@@ -19,45 +19,21 @@ def ensure_path_exists(path):
     if not os.path.exists(path):
         os.mkdir(path)
 
+def create_test_paths(folder_name, result_name):
+    path = f"Sim2Real/{folder_name}/" 
+    ensure_path_exists(path)
+    path = f"Sim2Real/{folder_name}/{result_name}/" 
+    ensure_path_exists(path)
+
+    return path
 
 
-def plot_paths(folders):
+
+
+def plot_trajectories(folders, folder_name):
     for folder in folders:
-        print(f"Analysing folder: {folder}")
+        path = create_test_paths(folder_name, "Trajectories")
 
-        path = "Sim2Real/" + folder.split("/")[-2] + "/"
-        name = folder.split("/")[-1]
-        print(f"Path: {path} -> {name}")
-
-        map_data = MapData("CornerHall") 
-
-        ensure_path_exists(path)
-
-        with open(folder + f"/{name}_states.csv") as file:
-            state_reader = csv.reader(file, delimiter=',')
-            state_list = []
-            for row in state_reader:
-                state_list.append(row)
-            states = np.array(state_list[1:]).astype(float)
-
-        plt.figure(1, figsize=(5, 5))
-        plt.clf()
-        map_data.plot_map_img()
-        xs, ys = map_data.xy2rc(states[:, 0], states[:, 1])
-        plt.plot(xs, ys, "k")
-
-        
-
-        # plt.grid(True)
-        plt.gca().set_aspect('equal', adjustable='box')
-        plt.savefig(path + name + ".svg")
-
-
-def plot_trajectories(folders):
-    for folder in folders:
-        print(f"Analysing folder: {folder}")
-
-        path = "Sim2Real/Trajectories/" 
         name = folder.split("/")[-1] 
         print(f"Path: {path} -> {name}")
 
@@ -72,7 +48,7 @@ def plot_trajectories(folders):
                 state_list.append(row)
             states = np.array(state_list[1:]).astype(float)
 
-        plt.figure(1, figsize=(5, 5))
+        plt.figure(1)
         plt.clf()
         map_data.plot_map_img()
         xs, ys = map_data.xy2rc(states[:, 0], states[:, 1])
@@ -95,9 +71,46 @@ def plot_trajectories(folders):
 
 
 
+def plot_actions(folders, folder_name):
+    for folder in folders:
+        print(f"Analysing folder: {folder}")
+
+        path = create_test_paths(folder_name, "Actions")
+
+        name = folder.split("/")[-1] 
+        print(f"Path: {path} -> {name}")
+
+        with open(folder + f"/{name}_actions.csv") as file:
+            action_reader = csv.reader(file, delimiter=',')
+            action_list = []
+            for row in action_reader:
+                action_list.append(row)
+            actions = np.array(action_list[1:]).astype(float)
+
+        fig, axes = plt.subplots(2, 1, figsize=(10, 5))
+        
+        axes[0].plot(actions[:, 0], label="Steering")
+        axes[0].grid(True)
+        axes[0].set_ylabel("Steering Angle (rad)")
+        axes[0].set_ylim(-0.5, 0.5)
+
+        axes[1].plot(actions[:, 1], label="Speed")
+        axes[1].grid(True)
+        axes[1].set_xlabel("Time (s)")
+        axes[1].set_ylabel("Speed (m/s)")
+
+
+        plt.savefig(path + folder.split("/")[-2] + "__" + name + ".svg")
+
+
+
 
 
 if __name__ == "__main__":
-    fs = find_folders()
-    plot_trajectories(fs)
+    folder = "ResultsROS"
+    folder = "ResultsJetson24"
+
+    fs = find_folders(folder)
+    plot_trajectories(fs, folder)
+    plot_actions(fs, folder)
 
