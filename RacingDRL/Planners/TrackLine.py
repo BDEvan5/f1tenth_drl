@@ -19,9 +19,6 @@ class TrackLine:
         self.total_s = self.ss[-1]
         self.N = len(self.wpts)
         
-        if expand:
-            self._expand_wpts()
-            
             
         self.diffs = self.wpts[1:,:] - self.wpts[:-1,:]
         self.l2s   = self.diffs[:,0]**2 + self.diffs[:,1]**2
@@ -55,6 +52,37 @@ class TrackLine:
         seg_lengths = np.linalg.norm(diffs, axis=1)
         self.ss = np.insert(np.cumsum(seg_lengths), 0, 0)
 
+    
+    def load_test_centerline(self):
+        filename = 'maps/' + self.map_name + '_centerline.csv'
+        xs, ys, w_rs, w_ls = [0], [0], [], []
+        with open(filename, 'r') as file:
+            csvFile = csv.reader(file)
+
+            for i, lines in enumerate(csvFile):
+                if i ==0 or float(lines[1]) < -17.5:
+                    continue
+                xs.append(float(lines[0]))
+                ys.append(float(lines[1]))
+                w_rs.append(float(lines[2]))
+                w_ls.append(float(lines[3]))
+        self.xs = np.array(xs)[:, None]
+        self.ys = np.array(ys)[:, None]
+        self.centre_length = len(xs)
+
+        self.wpts = np.vstack((xs, ys)).T
+
+        diffs = np.diff(self.wpts, axis=0)
+        seg_lengths = np.linalg.norm(np.diff(self.wpts, axis=0), axis=1)
+        seg_lengths = np.linalg.norm(diffs, axis=1)
+        ss = np.insert(np.cumsum(seg_lengths), 0, 0)
+        self.ss = ss
+        
+        self.total_s = self.ss[-1]
+        self.N = len(self.wpts)
+        
+        self.diffs = self.wpts[1:,:] - self.wpts[:-1,:]
+        self.l2s   = self.diffs[:,0]**2 + self.diffs[:,1]**2
     
     def load_raceline(self):
         track = []
