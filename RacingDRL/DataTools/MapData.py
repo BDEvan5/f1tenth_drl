@@ -111,12 +111,21 @@ class MapData:
 
     def plot_map_img(self):
         if len(self.map_img.shape) > 2:
-            self.map_img = self.map_img.astype(np.uint8)[:, : -1]
+            self.map_img = self.map_img.astype(np.uint8)[:, :, 0]
         self.map_img[self.map_img == 1] = 180
         self.map_img[self.map_img == 0 ] = 230
         self.map_img[0, 1] = 255
         self.map_img[0, 0] = 0
         plt.imshow(self.map_img, origin='lower', cmap='gray')
+
+    def plot_map_img_transpose(self):
+        if len(self.map_img.shape) > 2:
+            self.map_img = self.map_img.astype(np.uint8)[:, :, 0]
+        self.map_img[self.map_img == 1] = 180
+        self.map_img[self.map_img == 0 ] = 230
+        self.map_img[0, 1] = 255
+        self.map_img[0, 0] = 0
+        plt.imshow(self.map_img.T, origin='lower', cmap='gray')
 
     def plot_map_trajectory_data(self):
         plt.figure(figsize=(10, 5))
