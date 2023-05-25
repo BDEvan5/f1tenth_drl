@@ -94,7 +94,6 @@ def make_ee_action_dist():
 
     real_data = [TestLapData(root + real_folder + f"{agent_name}", real_runs[i]) for i in range(len(real_runs))]
 
-    
     fig, axes = plt.subplots(1, len(real_data), figsize=(5, 1.8), sharex=True, sharey=True)
         
     action_steering_list = [d.actions[:, 0] for d in real_data]
