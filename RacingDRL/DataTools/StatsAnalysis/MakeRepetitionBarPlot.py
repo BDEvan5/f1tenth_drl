@@ -38,7 +38,7 @@ def make_repetition_bar_plot():
     data = np.array(data)
     xs = np.arange(4)
     fig, axs = plt.subplots(1, 3, figsize=(10, 4))
-    for i in range(3):
+    for i in range(4):
         plot_data = data[i]
         axs[i].bar(xs, np.mean(plot_data, axis=1), color=color_pallet, alpha=0.25)
         
@@ -133,7 +133,7 @@ def make_repetition_bar_plot_single_folder():
     base_path = f"Data/FinalExperiment_{set_number}/"
 
     folder_labels = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
-    key_list = ['Game', "TrajectoryFollower", "endToEnd"]
+    key_list = ['Game', "TrajectoryFollower", "endToEnd", "pathFollower"]
     
     keys = ["time", "success", "progress"]
     title_keys = ["Lap time (s)", "Success (%)", "Avg. Progress (%)"]
@@ -147,7 +147,7 @@ def make_repetition_bar_plot_single_folder():
             ts, ss, ps = load_repetition_data(base_path, f"{folder}_{train_map}_TAL_8_{set_number}_testMCO")
         else:
             ts, ss, ps = load_repetition_data(base_path, f"{train_map}_TAL_8_{set_number}_testMCO")
-            for i in range(2):
+            for i in range(4):
                 ts.append(ts[0])
                 ss.append(ss[0])
                 ps.append(ps[0])
