@@ -84,6 +84,43 @@ def make_action_distributions():
     std_img_saving(name)
 
 
+
+def make_ee_action_dist():
+    agent_name = "AgentOff_SAC_endToEnd_mco_TAL_8_1_0"
+    # labels = ["End-to-end"]
+    labels = [f"3 m/s", f"4 m/s", f"5 m/s"]
+    real_runs = [0, 1, 2]
+    real_folder = "ResultsJetson24_2/"
+
+    real_data = [TestLapData(root + real_folder + f"{agent_name}", real_runs[i]) for i in range(len(real_runs))]
+
+    
+    fig, axes = plt.subplots(1, len(real_data), figsize=(5, 1.8), sharex=True, sharey=True)
+        
+    action_steering_list = [d.actions[:, 0] for d in real_data]
+    action_speed_list = [d.actions[:, 1] for d in real_data]
+    # action_steering_list = [d.actions[:, 0] for d in sim_data]
+    # action_speed_list = [d.actions[:, 1] for d in sim_data]
+        
+    for i in range(len(real_data)):
+        axes[i].plot(action_steering_list[i], action_speed_list[i], '.', color=color_pallet[2], alpha=0.5)
+        
+        axes[i].set_xlim(-0.45, 0.45)
+        axes[i].grid(True)
+        axes[i].set_title(labels[i], fontsize=10)
+        axes[i].xaxis.set_tick_params(labelsize=8)
+        axes[i].xaxis.set_major_locator(MultipleLocator(0.3))
+        
+    axes[0].yaxis.set_major_locator(MultipleLocator(1.5))
+    axes[0].yaxis.set_tick_params(labelsize=8)
+    axes[0].set_ylim(0.5, 5.5)
+    axes[0].set_ylabel("Speed (m/s)", fontsize=10)
+    fig.text(0.53, 0.02, "Steering angle (rad)", fontsize=10, ha='center')
+    
+
+    name = "Sim2Real/Imgs/EndToEndActionDistribution"
+    std_img_saving(name)
+
 def make_steering_distributions():
     agent_names = ["AgentOff_SAC_Game_mco_TAL_8_1_0", "AgentOff_SAC_TrajectoryFollower_mco_TAL_8_1_0", "AgentOff_SAC_endToEnd_mco_TAL_8_1_0", "PurePursuit"]
     labels = ["Full\nplanning", "Trajectory\ntracking", "End-to-end", "Classic"]
@@ -132,4 +169,5 @@ def make_steering_distributions():
 
 
 # make_action_distributions()
-make_steering_distributions()
+# make_steering_distributions()
+make_ee_action_dist()
