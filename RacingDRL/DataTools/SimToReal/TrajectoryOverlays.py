@@ -92,7 +92,7 @@ def make_end_to_end_trajectory():
     lc.set_array(states[:, 3])
     lc.set_linewidth(3)
     line = plt.gca().add_collection(lc)
-    plt.colorbar(line, fraction=0.046, pad=0.04, shrink=0.4)
+    plt.colorbar(line, fraction=0.046, pad=0.04, shrink=0.48, label="Speed (m/s)")
 
     plt.text(60, 20, "End-to-end", fontsize=20, color='black')
     # plt.text(60, 20, "End-to-end", fontsize=20, color='black', fontweight='bold')
