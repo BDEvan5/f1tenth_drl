@@ -64,7 +64,7 @@ def make_distance_curvature_plot():
     real_folder = "ResultsJetson25/"
     sim_folder = "ResultsRos25/"
 
-    real_data = [PathResults(agent_names[i], real_folder) for i in range(3)]
+    real_data = [PathResults(agent_names[i], real_folder) for i in range(4)]
     sim_data = [PathResults(agent_names[i], sim_folder) for i in range(4)]
 
 
@@ -83,6 +83,7 @@ def make_distance_curvature_plot():
         ee = width / 7
         x_n = (xs[i] - width + ee)* np.ones(len(sim_distances)) + ee * np.arange(len(sim_distances))
         x_p = (xs[i] +ee )*  np.ones(len(sim_distances)) + ee * np.arange(len(sim_distances))
+        print(f"Sim: {np.mean(sim_distances)} -> {sim_distances}")
         a1.bar(x_plot_n, np.mean(sim_distances), color=color_pallet[i], width=width, alpha=0.3, label="Sim")
         a1.bar(x_plot_p, np.mean(real_distances), color=color_pallet[i], width=width, label="Real", hatch='//', alpha=0.5)
         a1.plot(x_n, sim_distances, 'o', color=color_pallet[i])

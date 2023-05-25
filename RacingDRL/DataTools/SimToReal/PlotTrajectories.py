@@ -57,7 +57,7 @@ def plot_trajectories(folders, folder_name):
         points = np.array([xs, ys]).T.reshape(-1, 1, 2)
         segments = np.concatenate([points[:-1], points[1:]], axis=1)
 
-        max_speed = 8
+        max_speed = 6
         norm = plt.Normalize(0, max_speed)
         lc = LineCollection(segments, cmap='jet', norm=norm)
         lc.set_array(vs)
