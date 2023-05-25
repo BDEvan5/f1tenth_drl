@@ -215,6 +215,48 @@ def make_sim2real_speed_overlays():
     name = "Sim2Real/Imgs/SpeedSim2RealOverlays2"
     std_img_saving(name)
 
+def make_fast_action_dists():
+    agent_names = ["AgentOff_SAC_endToEnd_mco_TAL_8_1_0", "PurePursuit"]
+    labels = ["End-to-end", "End-to-end", "Classic", "Classic"]
+    labels = ["End-to-end", "Classic"]
+    real_runs = [2, 2]
+    sim_runs = [1, 1]
+    real_folder = "ResultsJetson24_2/"
+    sim_folder = "ResultsRos25_2/"
+
+    real_data = [TestLapData(root + real_folder + f"{agent_names[i]}", real_runs[i]) for i in range(2)]
+    # sim_data = [TestLapData(root + sim_folder + f"{agent_names[i]}", sim_runs[i]) for i in range(2)]
+    # data = []
+    # data.append(TestLapData(root + sim_folder + f"{agent_names[0]}", sim_runs[0]))
+    # data.append(TestLapData(root + real_folder + f"{agent_names[0]}", real_runs[0]))
+    # data.append(TestLapData(root + real_folder + f"{agent_names[1]}", real_runs[1]))
+    # data.append(TestLapData(root + sim_folder + f"{agent_names[1]}", sim_runs[1]))
+
+    fig, axes = plt.subplots(1, 2, figsize=(4, 1.8), sharex=True, sharey=True)
+    color_inds = [2, 3]
+    # color_inds = [2, 2, 3, 3]
+
+    for i in range(2):        
+        steerings = real_data[i].actions[:, 0]
+        speeds = real_data[i].actions[:, 1]
+        axes[i].plot(steerings, speeds, '.', color=color_pallet[color_inds[i]], alpha=0.5)
+        
+        axes[i].grid(True)
+        axes[i].set_title(labels[i], fontsize=10)
+        axes[i].xaxis.set_tick_params(labelsize=8)
+        axes[i].xaxis.set_major_locator(MultipleLocator(0.3))
+        
+    axes[0].yaxis.set_major_locator(MultipleLocator(1.5))
+    axes[0].yaxis.set_tick_params(labelsize=8)
+    axes[0].set_ylabel("Speed (m/s)", fontsize=8)
+    axes[0].set_xlabel("Steering (rad)", fontsize=8)
+    axes[1].set_xlabel("Steering (rad)", fontsize=8)
+
+    # fig.legend(ncol=4, fontsize=8, loc="lower center", bbox_to_anchor=(0.55, 0.93))
+
+    name = "Sim2Real/Imgs/FastActionDists"
+    std_img_saving(name)
+
 def make_speed_overlays():
     agent_names = ["AgentOff_SAC_Game_mco_TAL_8_1_0", "AgentOff_SAC_TrajectoryFollower_mco_TAL_8_1_0", "AgentOff_SAC_endToEnd_mco_TAL_8_1_0", "PurePursuit"]
     labels = ["Full\n planning", "Trajectory\n tracking", "End-to-end", "Classic"]
@@ -262,6 +304,7 @@ def make_speed_overlays():
 
 # make_steering_overlays()
 # make_sim2real_steering_overlays()
-make_sim2real_speed_overlays()
+# make_sim2real_speed_overlays()
 # make_action_overlays()
 # make_speed_overlays()
+make_fast_action_dists()
