@@ -44,34 +44,7 @@ class AnalyseTestLapData:
         for j, folder in enumerate(vehicle_folders):
             print(f"Vehicle folder being opened: {folder}")
             
-            # self.process_folder(folder)
             self.process_folder_all_maps(folder)
-
-    def process_folder(self, folder):
-        self.path = folder
-
-        self.vehicle_name = self.path.split("/")[-2]
-        if self.vehicle_name == "_Imgs" or self.vehicle_name == "Imgs": return
-        self.map_name = self.vehicle_name.split("_")[3]
-        self.map_data = MapData(self.map_name)
-        self.std_track = StdTrack(self.map_name)
-        self.racing_track = RacingTrack(self.map_name)
-
-        spacing = 16
-        with open(self.path + "Statistics.txt", "w") as file:
-            file.write(f"Name: {self.path}\n")
-            file.write(f"Lap")
-            file.write(f"Total Distance".rjust(spacing))
-            file.write(f"Progress".rjust(spacing))
-            file.write(f"Time".rjust(spacing))
-            file.write(f"Avg. Velocity".rjust(spacing))
-            file.write(f" \n")
-
-        for self.lap_n in range(100):
-            if not self.load_lap_data(): break # no more laps
-            self.calculate_lap_statistics()
-
-        self.generate_summary_stats()
         
     def process_folder_all_maps(self, folder):
         self.path = folder
@@ -109,7 +82,6 @@ class AnalyseTestLapData:
         try:
             data = np.load(self.path + file_name)
         except Exception as e:
-            # print(e)
             print(f"No data for: " + file_name)
             return 0
         self.states = data[:, :7]
@@ -126,9 +98,6 @@ class AnalyseTestLapData:
         if self.map_name == "esp":
             breakpoint
 
-        # if self.map_name == "aut" or self.map_name == "esp":
-        #     time = len(pts) /100
-        # else:
         time = len(pts) /10
         vs = self.states[:, 3]
         avg_velocity = np.mean(vs)
@@ -194,31 +163,14 @@ def generate_folder_statistics(folder):
 def analyse_folder():
     p = "Data/"
     
-    # path = p + "TrajectoryMaps_8/"
-    # path = p + "PlanningMaps_8/"
-    # path = p + "EndMaps_5/"
     path = p + "FinalExperiment_1/"
-    # path = p + "PurePursuitMaps_5/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
 
-def analyse_all_data():
-    p = "Data/"
-    set_n = 1
-    
-    TestData = AnalyseTestLapData()
-
-    path = p + f"PlanningMaps_{set_n}/"
-    TestData.explore_folder(path)
-
-    path = p + f"TrajectoryMaps_{set_n}/"
-    TestData.explore_folder(path)
-
-    path = p + f"EndMaps_{set_n}/"
-    TestData.explore_folder(path)
 
 if __name__ == '__main__':
     analyse_folder()
-    # analyse_all_data()
-# 
+  
+
+  

@@ -2,17 +2,17 @@ from matplotlib import pyplot as plt
 import numpy as np
 from RacingDRL.DataTools.plotting_utils import *
 
+
 def make_single_repeat_table():
     map_name = "mco"
-    base_path = "Data/"
-    set_number = 5
-    folder_keys = ["PlanningMaps", "TrajectoryMaps", "EndMaps"]
+    set_number = 1
+    rep_number = 4
+    base_path = "Data/"+ f"FinalExperiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
-    folder = base_path + f"LapWise_{set_number}/"
     
-    folder_list = [folder + f"AgentOff_SAC_{vehicle_keys[i]}_{map_name}_TAL_8_5_0/" for i in range(3)]
-    folder_list.append(folder + f"PurePursuit_PP_pathFollower_{map_name}_TAL_8_5_0/")
+    folder_list = [base_path + f"AgentOff_SAC_{vehicle_keys[i]}_{map_name}_TAL_8_{set_number}_{rep_number}/" for i in range(3)]
+    folder_list.append(base_path + f"PurePursuit_PP_pathFollower_{map_name}_TAL_8_{set_number}_{rep_number}/")
     
     file_name = base_path + f"Imgs/single_repeat_results_table_{set_number}_{map_name.upper()}.txt"
     spacing = 30

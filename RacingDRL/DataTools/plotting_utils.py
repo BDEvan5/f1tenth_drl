@@ -57,6 +57,25 @@ def load_data_mean_std(folder, map_name=""):
 
     return means, stds
 
+def load_data_mean_std(folder, map_name=""):
+    files = glob.glob(folder + f"Results_*{map_name}*.txt")
+    files.sort()
+    print(files)
+    keys = ["time", "success", "progress"]
+    means, stds = {}, {}
+    for key in keys:
+        means[key] = []
+        stds[key] = []
+    
+    for i in range(len(files)):
+        with open(files[i], 'r') as file:
+            lines = file.readlines()
+            for j in range(len(keys)):
+                means[keys[j]].append(float(lines[1].split(",")[1+j]))
+                stds[keys[j]].append(float(lines[2].split(",")[1+j]))
+
+    return means, stds
+
 
 def load_repetition_data(folder, map_name=""):
     """loads the data for a repetition set
@@ -87,7 +106,7 @@ def load_repetition_data(folder, map_name=""):
             if l == 0: continue
             if line[0] == "-": continue
             digit = line.split(",")[0][0]
-            if line.split(",")[0][0] in repetition_numbers:
+            if digit in repetition_numbers:
                 times.append(float(line.split(",")[1]))
                 successes.append(float(line.split(",")[2]))
                 progresses.append(float(line.split(",")[3]))

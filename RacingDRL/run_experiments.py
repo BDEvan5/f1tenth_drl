@@ -8,10 +8,8 @@ from RacingDRL.Planners.AgentTrainer import AgentTrainer
 from RacingDRL.Planners.AgentTester import AgentTester
 from RacingDRL.Utils.utils import *
 from RacingDRL.Planners.PurePursuit import PurePursuit
-import glob
 import torch
 
-from RacingDRL.DataTools.TrajAnalysis.GenerateTrajectoryAnalysis import analyse_folder
 
 
 RENDER_ENV = False
@@ -96,6 +94,7 @@ def run_testing_batch(experiment, n_sim_steps=10):
     conf = load_conf("config_file")
     
     for i, run_dict in enumerate(run_list):
+        seed_randomness(run_dict)
         print(f"Running experiment: {i}")
         print(f"RunName: {run_dict.run_name}")
 
@@ -122,11 +121,6 @@ def run_general_test_batch(experiment):
             run_simulation_loop_laps(env, planner, run_dict.n_test_laps, 10)
         
 
-def run_pp_tests():
-    experiment = "PurePursuitMaps"
-    run_testing_batch(experiment, n_sim_steps=10)
-     
-      
     
 def main():
     # set_name = "Speeds"
@@ -143,9 +137,9 @@ def main():
     experiment = "FinalExperiment"
     
     # run_training_batch(experiment)
-    # run_testing_batch(experiment)
+    run_testing_batch(experiment)
 
-    run_general_test_batch(experiment)
+    # run_general_test_batch(experiment)
 
     
     

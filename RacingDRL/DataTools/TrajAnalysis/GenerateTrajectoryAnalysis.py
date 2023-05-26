@@ -256,13 +256,7 @@ def analyse_folder():
 
     p = "Data/"
 
-    # path = p + "testPP_1/"
-    # path = p + "testPP_12/"
-    # path = p + "main_8/"
-    # path = p + "TrajectoryMaps_3/"
-    # path = p + "PurePursuitMaps_1/"
-    path = p + "EndMaps_3/"
-    # path = p + "TrajectoryMaps_4/"
+    path = p + "FinalExperiment_1/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)

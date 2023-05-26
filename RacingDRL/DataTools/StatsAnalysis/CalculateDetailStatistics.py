@@ -42,7 +42,7 @@ class AnalyseTestLapData:
         print(f"{len(vehicle_folders)} folders found")
 
         for j, self.path in enumerate(vehicle_folders):
-            if self.path.split("/")[-2] == "_Imgs":
+            if self.path.split("/")[-2] == "Imgs":
                 continue
             print(f"Vehicle folder being opened: {self.path}")
             
@@ -247,30 +247,12 @@ def generate_folder_statistics(folder):
 def analyse_folder():
     p = "Data/"
     
-    # path = p + "TrajectoryMaps_8/"
-    # path = p + "PlanningMaps_8/"
-    path = p + "LapWise_5/"
-    # path = p + "EndMaps_5/"
-    # path = p + "PurePursuitMaps_5/"
+    set_number = 1
+    path = p + f"FinalExperiment_{set_number}/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
 
-def analyse_all_data():
-    p = "Data/"
-    set_n = 5
-    
-    TestData = AnalyseTestLapData()
-
-    path = p + f"PlanningMaps_{set_n}/"
-    TestData.explore_folder(path)
-
-    path = p + f"TrajectoryMaps_{set_n}/"
-    TestData.explore_folder(path)
-
-    path = p + f"EndMaps_{set_n}/"
-    TestData.explore_folder(path)
 
 if __name__ == '__main__':
     analyse_folder()
-    # analyse_all_data()

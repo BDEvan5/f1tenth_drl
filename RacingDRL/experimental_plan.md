@@ -39,6 +39,7 @@ The experiments train agents on the MCO and GBR tracks.
 For the paper, five repeats are performed on the MCO track and 3 repeats on the GBR track. This is changed by commenting/uncommenting the respective lines in the `FinalExperiment.yaml` file.
 - The `run_experiments.py` file can be run to train and test the agents. It will read from the yaml confif file and do the experiments listed in there.
 - When the agents are trained, they will be automatically tested on the training map. They must be manually tested on the other maps using the `run_general_test_batch` function
+- The classical agents must be tested without training them using the `run_testing_batch` function
 
 **Analysing Training Data:**
 
@@ -54,6 +55,19 @@ The two 'fast' scripts are there for debugging purposes.
 ### Analysing Test Data
 
 During testing, the state of the agent and the action selected at each timestep is recorded.
+
+**Statistics:**
+
+The first analysis is to calculate the statistics for the training data.
+
+- `CaclulateMainStatistics.py`: Calculates the success rate, lap time and average progress for each testing run.
+- `CaclulateDetailStatistics.py`: Calculates the time, progress, total distance, average and standard deviation of velocity and curvature, Q1, Q2, Q3 of lateral and speed deviation.
+- `MakeRepetitionSummary.py`: makes a summary of the performance of the repetitions.
+- `MakeRepetitionBarPlot.py`: makes a bar plot of the training repetitions on the MCO map
+- `MakePerformanceTable.py`: makes a table of the lap times and progresses of the last repetition of the agents trained and tested on the MCO track.
+- `DeviationBarPlot.py`: plots the speed and lateral deviations experience by the agents compared to the racing line.
+
+
 
 
 

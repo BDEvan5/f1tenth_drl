@@ -40,7 +40,6 @@ class PurePursuit:
         # self.track_line = TrackLine(run.map_name, run.racing_line, True)
         # self.lookahead = run.lookahead
 
-        # self.lookahead = conf.lookahead 
         self.v_min_plan = conf.v_min_plan
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
@@ -54,8 +53,13 @@ class PurePursuit:
         theta = obs['poses_theta'][0]
         # lookahead = 1.9
         # lookahead = 1.5
-        # lookahead = 0.8 + 0.6* obs['linear_vels_x'][0] /  8
-        lookahead = 1 + 0.6 * obs['linear_vels_x'][0] / 8
+        r_speed = self.track_line.get_raceline_speed(position)
+        # lookahead = 0.4 + 0.18 * r_speed 
+        lookahead = 0.3 + 0.2 * r_speed 
+        # lookahead = 0.3 + 0.17 * obs['linear_vels_x'][0] 
+        # lookahead = 0.3 + 0.19* obs['linear_vels_x'][0] 
+        # lookahead = 0.7 + 1* obs['linear_vels_x'][0] /  8
+        # lookahead = 0.9 + 0.6 * obs['linear_vels_x'][0] / 8
         # lookahead = self.lookahead
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
@@ -73,6 +77,7 @@ class PurePursuit:
         else:
             raise Exception(f"Invalid speed mode: {self.speed_mode}")
             
+        speed = speed * 0.97
         speed = min(speed, self.max_speed) # cap the speed
 
         action = np.array([steering_angle, speed])

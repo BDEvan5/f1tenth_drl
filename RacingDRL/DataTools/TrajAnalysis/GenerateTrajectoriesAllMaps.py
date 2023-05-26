@@ -42,7 +42,8 @@ class AnalyseTestLapData:
 
     def explore_folder(self, path):
         print(path)
-        vehicle_folders = glob.glob(f"{path}*/")
+        # vehicle_folders = glob.glob(f"{path}*/")
+        vehicle_folders = glob.glob(f"{path}Pure*mco*0/")
         # vehicle_folders = glob.glob(f"{path}*0/")
         # vehicle_folders = glob.glob(f"{path}*/*0/")
         # print(vehicle_folders)
@@ -73,9 +74,9 @@ class AnalyseTestLapData:
         self.vehicle_number = vehicle_data[vehicle_make]
 
         ensure_path_exists("/".join(self.path.split("/")[:-2])+  f"/_Imgs/")
-        self.testing_velocity_path = "/".join(self.path.split("/")[:-2]) + f"/_Imgs/FullTrajectories{self.map_name.upper()}/"
-        self.clipped_trajectories_path = "/".join(self.path.split("/")[:-2]) + f"/_Imgs/ClippedTrajectories{self.map_name.upper()}/"
-        self.slip_distributions_path = "/".join(self.path.split("/")[:-2]) + f"/_Imgs/SlipDistributions{self.map_name.upper()}/"
+        self.testing_velocity_path = "/".join(self.path.split("/")[:-2]) + f"/Imgs/FullTrajectories{self.map_name.upper()}/"
+        self.clipped_trajectories_path = "/".join(self.path.split("/")[:-2]) + f"/Imgs/ClippedTrajectories{self.map_name.upper()}/"
+        self.slip_distributions_path = "/".join(self.path.split("/")[:-2]) + f"/Imgs/SlipDistributions{self.map_name.upper()}/"
         ensure_path_exists(self.testing_velocity_path)
         ensure_path_exists(self.clipped_trajectories_path)
         # ensure_path_exists(self.slip_distributions_path)
@@ -200,30 +201,15 @@ def analyse_folder():
     p = "Data/"
     set_n = 1
 
-    # path = p + f"PurePursuitMaps_{set_n}/"
-    path = p + f"PreTrained_{set_n}/"
     path = p + f"FinalExperiment_{set_n}/"
-    # path = p + f"PlanningMaps_{set_n}/"
-    # path = p + f"EndMaps_{set_n}/"
-    # path = p + f"TrajectoryMaps_{set_n}/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)
 
-def generate_comparative_analysis():
-    p = "Data/"
-    # map_name = "MCO"
-    map_name = "GBR"
-    
-    # path = p + f"ComparativeAnalysis_{map_name}/"
-    path = p + f"LapWise_5/"
-    TestData = AnalyseTestLapData()
-    TestData.explore_folder(path)
     
 
 
 
 if __name__ == '__main__':
     analyse_folder()
-    # generate_comparative_analysis()
     

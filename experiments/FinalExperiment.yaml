@@ -1,7 +1,7 @@
 
 planner_type: "AgentOff"
 
-n_repeats: 1
+n_repeats: 5
 start_n: 0
 set_n: 1
 
@@ -14,17 +14,17 @@ training_steps: 60000
 n_test_laps: 20
 algorithm: "SAC"
 id_name: "TAL"
-map_name: "gbr"
-# map_name: "mco"
+# map_name: "gbr"
+map_name: "mco"
 
 runs:
-  - state_vector: "Game"
-  - state_vector: "endToEnd"
-  - state_vector: "TrajectoryFollower"
+  # - state_vector: "Game"
+  # - state_vector: "endToEnd"
+  # - state_vector: "TrajectoryFollower"
 
-  # - planner_type: "PurePursuit"
-  #   algorithm: "PP"
-  #   racing_line: True
-  #   pp_speed_mode: "racing_line"
-  #   state_vector: "pathFollower"
+  - planner_type: "PurePursuit"
+    algorithm: "PP"
+    racing_line: True
+    pp_speed_mode: "racing_line"
+    state_vector: "pathFollower"
 
