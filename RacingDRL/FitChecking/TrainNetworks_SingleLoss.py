@@ -9,8 +9,6 @@ import os
 from matplotlib import pyplot as plt
 
 
-# NN_LAYER_1 = 500
-# NN_LAYER_2 = 500
 NN_LAYER_1 = 100
 NN_LAYER_2 = 100
 
@@ -211,7 +209,7 @@ def run_planningAblation_test():
     
     
 def run_comparison_test():
-    set_n = 3
+    set_n = 1
     name = "comparison"
     folder = f"NetworkFitting/{name}_{set_n}/"
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]

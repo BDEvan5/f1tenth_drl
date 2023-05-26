@@ -2,13 +2,12 @@
 planner_type: "PurePursuit"
 racing_line: True
 pp_speed_mode: "racing_line"
-lookahead: 1.4
+lookahead: 1.6
 # lookahead: 1
-max_speed: 5
-# max_speed: 8
+# max_speed: 5
+max_speed: 8
 
-# set_n: 1
-set_n: 3
+set_n: 1
 random_seed: 0
 n_scans: 2
 n_test_laps: 1

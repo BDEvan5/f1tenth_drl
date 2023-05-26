@@ -474,6 +474,7 @@ class Simulator(object):
             None
         """
         self.num_agents = num_agents
+        self.integrator = integrator
         self.seed = seed
         self.time_step = time_step
         self.ego_idx = ego_idx

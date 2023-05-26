@@ -4,6 +4,7 @@ from argparse import Namespace
 import numpy as np
 
 from RacingDRL.f1tenth_gym import F110Env
+from RacingDRL.f1tenth_gym import RaceCar
 from RacingDRL.Utils.utils import *
 from RacingDRL.FitChecking.PurePursuitDataGen import PurePursuitDataGen
 
@@ -25,7 +26,7 @@ def run_simulation_loop_laps(env, planner, n_laps, n_sim_steps=10):
 
 
 def generate_pp_data():
-    experiment_name = "PurePursuitDataGen"
+    experiment_name = "GenerateDataSet"
     with open(f"experiments/{experiment_name}" + '.yaml') as file:
         experiment_dict = yaml.load(file, Loader=yaml.FullLoader)
     conf = load_conf("config_file")
@@ -42,6 +43,9 @@ def generate_pp_data():
         planner = PurePursuitDataGen(conf, experiment)
         
         env = F110Env(map=experiment.map_list[m], num_agents=1)
+        RaceCar.scan_simulator = None
+        env.sim.agents[0] = RaceCar(env.sim.params, env.sim.seed, num_beams=60, time_step=env.sim.time_step, integrator=env.sim.integrator)
+        env.sim.set_map(env.map_path, env.map_ext)
         run_simulation_loop_laps(env, planner, experiment.n_test_laps)
         
         

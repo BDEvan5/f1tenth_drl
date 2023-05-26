@@ -30,7 +30,6 @@ class PurePursuitDataGen:
         self.track_line = TrackLine(experiment.map_name, experiment.racing_line, False)
         self.lookahead = experiment.lookahead
 
-        # self.lookahead = conf.lookahead 
         self.v_min_plan = conf.v_min_plan
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
@@ -43,7 +42,8 @@ class PurePursuitDataGen:
         position = np.array([obs['poses_x'][0], obs['poses_y'][0]])
         theta = obs['poses_theta'][0]
         
-        lookahead = self.lookahead
+        # lookahead = self.lookahead
+        lookahead = 1 + 0.6 * obs['linear_vels_x'][0] / 8
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
         if obs['linear_vels_x'][0] < self.v_min_plan:
@@ -51,19 +51,11 @@ class PurePursuitDataGen:
 
         speed_raceline, steering_angle = get_actuation(theta, lookahead_point, position, lookahead, self.wheelbase)
         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
-        if self.speed_mode == 'constant':
-            speed = 2
-        # elif self.speed_mode == 'link':
-        #     speed = calculate_speed(steering_angle, 0.8, 7)
-        elif self.speed_mode == 'racing_line':
-            speed = speed_raceline 
-        else:
-            raise Exception(f"Invalid speed mode: {self.speed_mode}")
-            
+
+        speed = speed_raceline 
         speed = min(speed, self.max_speed) # cap the speed
 
         action = np.array([steering_angle, speed])
-        
         self.data_history.add_memory_entry(obs, action)
 
         return action

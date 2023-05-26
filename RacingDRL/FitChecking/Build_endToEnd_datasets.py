@@ -5,8 +5,9 @@ from matplotlib import pyplot as plt
 from RacingDRL.Planners.TrackLine import TrackLine
 
 
-set_n = 3
-load_folder = f"Data/PurePursuitDataGen_{set_n}/"
+set_n = 1
+# load_folder = f"Data/PurePursuitDataGen_{set_n}/"
+load_folder = f"Data/GenerateDataSet_{set_n}/"
 
 
 N_BEAMS = 60

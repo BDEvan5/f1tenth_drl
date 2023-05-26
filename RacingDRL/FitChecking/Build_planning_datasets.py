@@ -5,8 +5,9 @@ from matplotlib import pyplot as plt
 from RacingDRL.Planners.TrackLine import TrackLine
 
 
-set_n = 3
-load_folder = f"Data/PurePursuitDataGen_{set_n}/"
+set_n = 1
+# load_folder = f"Data/PurePursuitDataGen_{set_n}/"
+load_folder = f"Data/GenerateDataSet_{set_n}/"
 
 MAX_SPEED = 8
 PI = np.pi
@@ -204,7 +205,7 @@ def build_comparison_data_set():
     
     
 if __name__ == "__main__":
-    build_trajectoryTrack_nWaypoints()
+    # build_trajectoryTrack_nWaypoints()
     # build_fullPlanning_ablation()
     
-    # build_comparison_data_set()
+    build_comparison_data_set()
