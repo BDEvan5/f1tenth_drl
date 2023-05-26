@@ -65,7 +65,7 @@ def plot_training_testing_loss_comparison():
     save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
 
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
-    label_names = ["Full Planning", "Trajectory Tracking", "End-to-end"]
+    label_names = ["Full planning", "Trajectory tracking", "End-to-end"]
     
     fig, axes = plt.subplots(1, 2, figsize=(5, 2.2))
     
@@ -119,7 +119,7 @@ def plot_training__combined_loss_comparison():
     save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
 
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
-    label_names = ["Full Planning", "Trajectory Tracking", "End-to-end"]
+    label_names = ["Full planning", "Trajectory tracking", "End-to-end"]
     # name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd", "endToEnd_Single"]
     # label_names = ["fullPlanning", "trajectoryTrack", "endToEnd", "endToEnd_Single"]
     

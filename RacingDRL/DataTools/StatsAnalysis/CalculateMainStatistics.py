@@ -44,8 +44,8 @@ class AnalyseTestLapData:
         for j, folder in enumerate(vehicle_folders):
             print(f"Vehicle folder being opened: {folder}")
             
-            self.process_folder(folder)
-            # self.process_folder_all_maps(folder)
+            # self.process_folder(folder)
+            self.process_folder_all_maps(folder)
 
     def process_folder(self, folder):
         self.path = folder
@@ -75,10 +75,16 @@ class AnalyseTestLapData:
         
     def process_folder_all_maps(self, folder):
         self.path = folder
+        self.vehicle_name = self.path.split("/")[-2]
+        if self.vehicle_name == "_Imgs" or self.vehicle_name == "Imgs": return
+        
         map_names = ["aut", "esp", "gbr", "mco"]
         spacing = 16
-        for map_name in map_names:
-            self.map_name = map_name   
+        for self.map_name in map_names:
+
+            self.lap_n = 0
+            if not self.load_lap_data(): continue # no data
+
             with open(self.path + f"Statistics{self.map_name[-3:].upper()}.txt", "w") as file:
                 file.write(f"Name: {self.path}\n")
                 file.write(f"Lap")
@@ -88,7 +94,6 @@ class AnalyseTestLapData:
                 file.write(f"Avg. Velocity".rjust(spacing))
                 file.write(f" \n")
 
-            self.vehicle_name = self.path.split("/")[-2]
             self.map_data = MapData(self.map_name)
             self.std_track = StdTrack(self.map_name)
             self.racing_track = RacingTrack(self.map_name)
@@ -100,11 +105,12 @@ class AnalyseTestLapData:
             self.generate_summary_stats()
 
     def load_lap_data(self):
+        file_name = f"Testing{self.map_name.upper()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy"
         try:
-            data = np.load(self.path + f"Testing{self.map_name.upper()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
+            data = np.load(self.path + file_name)
         except Exception as e:
-            print(e)
-            print(f"No data for: " + f"Lap_{self.lap_n}_history_{self.vehicle_name}_{self.map_name}.npy")
+            # print(e)
+            print(f"No data for: " + file_name)
             return 0
         self.states = data[:, :7]
         self.actions = data[:, 7:]

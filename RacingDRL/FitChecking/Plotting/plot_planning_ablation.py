@@ -207,7 +207,7 @@ def plot_separate_normalised_loss_new():
     plt.grid(True)
         
     plt.ylabel("Normalised Loss")
-    plt.ylim(0.5, 1.7)
+    plt.ylim(0.5, 1.8)
     plt.legend(ncol=3, loc='lower center', bbox_to_anchor=(0.5, 0.95))
     
     plt.gca().yaxis.set_major_locator(MultipleLocator(0.3))

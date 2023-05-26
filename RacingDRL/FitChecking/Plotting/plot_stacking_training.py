@@ -199,7 +199,7 @@ def plot_n_beams_avg_seperate_normalised():
     plt.grid(True)
         
     plt.ylabel("Normalised Loss")
-    plt.ylim(0.4, 1.5)
+    plt.ylim(0.4, 1.55)
     plt.legend(ncol=2, loc='lower center', bbox_to_anchor=(0.5, 0.95))
     
     plt.gca().yaxis.set_major_locator(MultipleLocator(0.3))
