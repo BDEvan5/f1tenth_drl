@@ -8,7 +8,7 @@ from RacingDRL.DataTools.plotting_utils import *
 
 
 
-def compare_training():
+def make_training_laptimes_plot():
     set_number = 1
     base_path = f"Data/FinalExperiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
@@ -66,6 +66,6 @@ def compare_training():
 
 
 
-compare_training()
+make_training_laptimes_plot()
 
 

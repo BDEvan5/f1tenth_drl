@@ -42,7 +42,14 @@ For the paper, five repeats are performed on the MCO track and 3 repeats on the 
 
 **Analysing Training Data:**
 
-Four graphs are used in the 
+Four graphs are used to analyse the training performance:
+1. TrainingReward
+2. TrainingProgress
+3. TrainingCrashes
+4. TrainingLapTimes
+All the files contain a simple script to generate the appropriate graph
+
+The two 'fast' scripts are there for debugging purposes.
 
 ### Analysing Test Data
 
