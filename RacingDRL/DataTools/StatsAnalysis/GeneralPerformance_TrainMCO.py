@@ -5,18 +5,10 @@ from matplotlib.ticker import MultipleLocator
 
         
 def make_laptime_and_success_barplot():
-    base_path = "Data/"
-    set_number = 5
-    test_name = "PlanningMaps" 
-    folder_games = base_path + test_name + f"_{set_number}/"
+    set_number = 1
+    base_path = f"Data/FinalExperiment_{set_number}/"
+    folder_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     
-    test_name = "TrajectoryMaps" 
-    folder_traj = base_path + test_name + f"_{set_number}/"
-    
-    test_name = "EndMaps" 
-    folder_pp = base_path + test_name + f"_{set_number}/"
-    
-    folder_list = [folder_games, folder_traj, folder_pp]
     folder_labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
     xs = np.arange(4)
@@ -43,11 +35,8 @@ def make_laptime_and_success_barplot():
         plt.sca(axs[z])
         # plt.sca(axs[z, m])
         
-        for f, folder in enumerate(folder_list):
-            # mins, maxes, means = load_time_data(folder, f"{train_maps[m]}_train")
-            mins, maxes, means = load_time_data(folder, f"{map_name}_TAL")
-            # xs = brs[f][0:4]
-            # ys = means[key][0:4]
+        for f, folder_key in enumerate(folder_keys):
+            mins, maxes, means = load_time_data(base_path, f"{folder_key}_{map_name}_TAL")
             xs = brs[f][1:4]
             ys = means[key][1:4]
             plt.bar(xs, ys, color=color_pallet[f], width=barWidth, label=folder_labels[f], alpha=0.6)
@@ -69,7 +58,7 @@ def make_laptime_and_success_barplot():
     # handles, labels = axs[0, 0].get_legend_handles_labels()
     # fig.legend(handles, labels, ncol=3, loc="center", bbox_to_anchor=(0.55, -0.01))
         
-    name = f"Data/Imgs/ComparePerformance_train{map_name.upper()}_{set_number}"
+    name = f"{base_path}Imgs/ComparePerformance_train{map_name.upper()}_{set_number}"
     
     std_img_saving(name)
    

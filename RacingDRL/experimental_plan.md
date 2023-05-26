@@ -67,7 +67,24 @@ The first analysis is to calculate the statistics for the training data.
 - `MakePerformanceTable.py`: makes a table of the lap times and progresses of the last repetition of the agents trained and tested on the MCO track.
 - `DeviationBarPlot.py`: plots the speed and lateral deviations experience by the agents compared to the racing line.
 
+**Trajectories:**
 
+The `GenerateTrajectoryImgs.py` file generates images of the trajectories with their speed profiles for the first 5 test laps of each folder.
+The trajectories and clipped versions for use in publication are stored in a folder in the Imgs/ directory.
+
+Additional plotting functions can be added here, such as to view the distribution of slip angles.
+
+
+**Qualitative Analysis:**
+
+The speed profiles, state distributions and deviations can be graphed using the tools in the `ProfileAnalysis/` folder.
+The graphs used in the article of,
+1. Speed profile 
+2. Speed deviation from racing line
+3. Speed distribution through lap
+are made included in the `ArticleProfilePlots.py` file.
+
+Additional plotting resources, such as for the distributions of the actions are int eh `ExtraProfilePlots.py` file.
 
 
 

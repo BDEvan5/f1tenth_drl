@@ -137,9 +137,9 @@ def main():
     experiment = "FinalExperiment"
     
     # run_training_batch(experiment)
-    run_testing_batch(experiment)
+    # run_testing_batch(experiment)
 
-    # run_general_test_batch(experiment)
+    run_general_test_batch(experiment)
 
     
     

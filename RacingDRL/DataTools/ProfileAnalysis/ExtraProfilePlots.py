@@ -7,19 +7,21 @@ from RacingDRL.Planners.TrackLine import TrackLine
 
 from RacingDRL.DataTools.plotting_utils import *
 
-set_number = 5
+
+set_number = 1
 id_name = "TAL"
 map_name = "mco"
-base = f"Data/LapWise_5/"
+rep_number = 4
+base = f"Data/FinalExperiment_{set_number}/"
 names = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
-sub_paths = [f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_0/",
-                f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_0/",
-                f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_0/", 
-                f"PurePursuit_PP_pathFollower_{map_name}_TAL_8_{set_number}_0/"]
-lap_list = [0, 0, 0, 0]
-lap_list = [1, 1, 1, 1]
-# lap_list = [5] * 4
-# lap_list = np.ones(4)
+sub_paths = [f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_{rep_number}/",
+                f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_{rep_number}/",
+                f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_{rep_number}/", 
+                f"PurePursuit_PP_pathFollower_{map_name}_TAL_8_{set_number}_{rep_number}/"]
+
+lap_n = 0
+lap_list = np.ones(4, dtype=int) * lap_n
+
 
 
 class TestLapData:
@@ -81,29 +83,6 @@ class TestLapData:
     
     
 
-def speed_profile_comparison():
-    
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
-    xs_list = [d.generate_state_progress_list() for d in data_list]
-    xs = np.linspace(0, 100, 200)
-    speed_list = [np.interp(xs, xs_list[i], data_list[i].states[:, 3]) for i in range(len(data_list))]
-    
-    plt.figure(1, figsize=(6, 1.9))
-    ax1 = plt.gca()
-    for n, name in enumerate(names):
-        ax1.plot(xs, speed_list[n], color=color_pallet[n], label=name)
-
-    ax1.set_ylabel("Speed m/s")
-    ax1.set_xlabel("Track progress (%)")
-    ax1.legend(ncol=4, fontsize=9, loc='lower center', bbox_to_anchor=(0.5, 0.96))
-
-    plt.grid(True)
-    plt.tight_layout()
-    plt.xlim(10, 60)
-
-    plt.savefig(f"{base}_Imgs/CompareSpeed_{map_name.upper()}.svg", bbox_inches='tight')
-    plt.savefig(f"{base}_Imgs/CompareSpeed_{map_name.upper()}.pdf", bbox_inches='tight')
-
 def curvature_profile_comparison():
     data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     
@@ -130,33 +109,6 @@ def curvature_profile_comparison():
 
     plt.savefig(f"{base}_Imgs/CompareCurvature_{map_name.upper()}.svg", bbox_inches='tight')
     plt.savefig(f"{base}_Imgs/CompareCurvature_{map_name.upper()}.pdf", bbox_inches='tight')
-
-    # plt.show()
-    
-def speed_profile_deviation():
-
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
-    xs_list = [d.generate_state_progress_list() for d in data_list]
-    xs = np.linspace(0, 100, 200)
-    speed_list = [np.interp(xs, xs_list[i], data_list[i].states[:, 3]) for i in range(len(data_list))]
-    
-    plt.figure(1, figsize=(6, 1.9))
-    ax1 = plt.gca()
-    for n, name in enumerate(names[:-1]):
-        ax1.plot(xs, speed_list[n] - speed_list[-1], color=color_pallet[n], label=name)
-
-    ax1.set_ylabel("Speed \n deviation (m/s)", fontsize=10)
-    ax1.set_xlabel("Track progress (%)")
-    ax1.legend(ncol=4, fontsize=10, loc='lower center', bbox_to_anchor=(0.5, 0.96))
-
-    plt.grid(True)
-    plt.tight_layout()
-    # plt.xlim(10, 60)
-    plt.xlim(-2, 80)
-    plt.gca().yaxis.set_major_locator(MultipleLocator(2.5))
-
-    plt.savefig(f"{base}_Imgs/SpeedDifference_{map_name.upper()}.svg", bbox_inches='tight')
-    plt.savefig(f"{base}_Imgs/SpeedDifference_{map_name.upper()}.pdf", bbox_inches='tight')
 
     # plt.show()
     
@@ -273,67 +225,6 @@ def speed_steering_plot_hist():
     std_img_saving(name, True)
 
 
-def speed_distributions_old():
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
-    
-    fig, axes = plt.subplots(2, 4, figsize=(9, 4), sharex=False, sharey=False)
-        
-    action_steering_list = [d.actions[:, 0] for d in data_list]
-    state_steering_list = [d.states[:, 2] for d in data_list]
-    action_speed_list = [d.actions[:, 1] for d in data_list]
-    state_speed_list = [d.states[:, 3] for d in data_list]
-        
-    for i in range(len(data_list)):
-        # axes[1, i].hist(action_steering_list[i], color=color_pallet[i], alpha=0.5, bins=10)
-        # axes[0, i].hist(action_speed_list[i], color=color_pallet[i], alpha=0.5)
-        axes[1, i].hist(state_steering_list[i], color=color_pallet[i], alpha=0.5, bins=10)
-        axes[0, i].hist(state_speed_list[i], color=color_pallet[i], alpha=0.5)
-        
-        axes[0, i].set_xlim(2, 8)
-        axes[0, i].set_ylim(0, 100)
-        axes[1, i].set_ylim(0, 150)
-        axes[1, i].set_xlim(-0.45, 0.45)
-        axes[0, i].grid(True)
-        axes[1, i].grid(True)
-        axes[0, i].set_title(names[i])
-        axes[1, i].set_xlabel("Steering Angle ")
-        
-    # axes[0, 0].set_ylim(2, 8.5)
-    axes[0, 0].set_ylabel("Action Speed (m/s)")
-    axes[1, 0].set_ylabel("State Speed (m/s)")
-    
-    name = f"{base}_Imgs/SpeedSteeringHist{map_name.upper()}"
-    std_img_saving(name, True)
-
-
-
-def speed_distributions():
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
-    
-    fig, axes = plt.subplots(1, 4, figsize=(6, 1.7), sharex=False, sharey=True)
-        
-    state_speed_list = [d.states[:, 3] for d in data_list]
-        
-    for i in range(len(data_list)):
-        axes[i].hist(state_speed_list[i], color=color_pallet[i], alpha=0.65)
-        
-        axes[i].set_xlim(2, 8)
-        axes[i].grid(True)
-        axes[i].set_title(names[i], fontsize=10)
-        axes[i].xaxis.set_tick_params(labelsize=8)
-        
-    axes[0].set_ylim(0, 110)
-    # axes[]
-    fig.text(0.54, 0.02, "Vehicle Speed (m/s)", fontsize=10, ha='center')
-    axes[0].set_ylabel("Frequency", fontsize=10)
-    axes[0].yaxis.set_major_locator(MultipleLocator(25))
-    axes[0].yaxis.set_tick_params(labelsize=8)
-    
-    plt.tight_layout()
-    name = f"{base}_Imgs/SpeedDistributions{map_name.upper()}"
-    std_img_saving(name, True)
-
-
 def path_overlay():
     data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
     
@@ -362,7 +253,7 @@ def path_overlay():
     plt.gca().axis('off')
         
     plt.tight_layout()
-    name = f"{base}_Imgs/PathOverlay{map_name.upper()}"
+    name = f"{base}Imgs/PathOverlay{map_name.upper()}"
     std_img_saving(name, True)
 
     
@@ -370,16 +261,11 @@ def mco_left_limits():
     plt.xlim(20, 600)
     plt.ylim(710, 1020)
 
-# def mco_left_limits():
-#     plt.xlim(20, 660)
-#     plt.ylim(710, 1020)
 
-# speed_profile_comparison()
-# speed_profile_deviation()
+
 # lateral_deviation()
 # curvature_profile_comparison()
 # speed_steering_plot()
 # speed_steering_plot_hist()
-# speed_distributions()
 # speed_steering_action_plot()
 path_overlay()
