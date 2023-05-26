@@ -46,41 +46,46 @@ class TestLapData:
 
 
 
-def make_action_distributions():
-    agent_names = ["AgentOff_SAC_Game_mco_TAL_8_1_0", "AgentOff_SAC_TrajectoryFollower_mco_TAL_8_1_0", "AgentOff_SAC_endToEnd_mco_TAL_8_1_0", "PurePursuit"]
-    labels = ["Full\nplanning", "Trajectory\ntracking", "End-to-end", "Classic"]
-    real_runs = [1, 0, 0, 1]
-    sim_runs = [1, 1, 1, 1]
-    real_folder = "ResultsJetson24/"
-    sim_folder = "ResultsRos24/"
+def make_fast_action_dists():
+    agent_names = ["AgentOff_SAC_endToEnd_mco_TAL_8_1_0", "PurePursuit"]
+    labels = ["End-to-end", "End-to-end", "Classic", "Classic"]
+    labels = ["End-to-end", "Classic"]
+    real_runs = [2, 2]
+    sim_runs = [1, 1]
+    real_folder = "ResultsJetson24_2/"
+    sim_folder = "ResultsRos25_2/"
 
-    real_data = [TestLapData(root + real_folder + f"{agent_names[i]}", real_runs[i]) for i in range(4)]
-    sim_data = [TestLapData(root + sim_folder + f"{agent_names[i]}", sim_runs[i]) for i in range(4)]
+    real_data = [TestLapData(root + real_folder + f"{agent_names[i]}", real_runs[i]) for i in range(2)]
+    # sim_data = [TestLapData(root + sim_folder + f"{agent_names[i]}", sim_runs[i]) for i in range(2)]
+    # data = []
+    # data.append(TestLapData(root + sim_folder + f"{agent_names[0]}", sim_runs[0]))
+    # data.append(TestLapData(root + real_folder + f"{agent_names[0]}", real_runs[0]))
+    # data.append(TestLapData(root + real_folder + f"{agent_names[1]}", real_runs[1]))
+    # data.append(TestLapData(root + sim_folder + f"{agent_names[1]}", sim_runs[1]))
 
-    
-    fig, axes = plt.subplots(1, 4, figsize=(6, 1.8), sharex=True, sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(4, 1.8), sharex=True, sharey=True)
+    color_inds = [2, 3]
+    # color_inds = [2, 2, 3, 3]
+
+    for i in range(2):        
+        steerings = real_data[i].actions[:, 0]
+        speeds = real_data[i].actions[:, 1]
+        axes[i].plot(steerings, speeds, '.', color=color_pallet[color_inds[i]], alpha=0.5)
         
-    action_steering_list = [d.actions[:, 0] for d in real_data]
-    action_speed_list = [d.actions[:, 1] for d in real_data]
-    # action_steering_list = [d.actions[:, 0] for d in sim_data]
-    # action_speed_list = [d.actions[:, 1] for d in sim_data]
-        
-    for i in range(len(real_data)):
-        axes[i].plot(action_steering_list[i], action_speed_list[i], '.', color=color_pallet[i], alpha=0.5)
-        
-        axes[i].set_xlim(-0.45, 0.45)
         axes[i].grid(True)
         axes[i].set_title(labels[i], fontsize=10)
         axes[i].xaxis.set_tick_params(labelsize=8)
         axes[i].xaxis.set_major_locator(MultipleLocator(0.3))
         
+    axes[0].yaxis.set_major_locator(MultipleLocator(1.5))
     axes[0].yaxis.set_tick_params(labelsize=8)
-    axes[0].set_ylim(1, 3.5)
-    axes[0].set_ylabel("Speed (m/s)", fontsize=10)
-    fig.text(0.53, 0.02, "Steering angle (rad)", fontsize=10, ha='center')
-    
+    axes[0].set_ylabel("Speed (m/s)", fontsize=8)
+    axes[0].set_xlabel("Steering (rad)", fontsize=8)
+    axes[1].set_xlabel("Steering (rad)", fontsize=8)
 
-    name = "Sim2Real/Imgs/ActionDistributions2"
+    # fig.legend(ncol=4, fontsize=8, loc="lower center", bbox_to_anchor=(0.55, 0.93))
+
+    name = "Sim2Real/Imgs/FastActionDists"
     std_img_saving(name)
 
 
@@ -120,53 +125,46 @@ def make_ee_action_dist():
     name = "Sim2Real/Imgs/EndToEndActionDistribution"
     std_img_saving(name)
 
-def make_steering_distributions():
+def make_action_distributions():
     agent_names = ["AgentOff_SAC_Game_mco_TAL_8_1_0", "AgentOff_SAC_TrajectoryFollower_mco_TAL_8_1_0", "AgentOff_SAC_endToEnd_mco_TAL_8_1_0", "PurePursuit"]
     labels = ["Full\nplanning", "Trajectory\ntracking", "End-to-end", "Classic"]
-    real_runs = [0, 1, 1, 0]
-    # real_runs = [1, 0, 0, 1]
-    # sim_runs = [1, 1, 1, 1]
-    sim_runs = [0, 0, 0, 0]
+    real_runs = [1, 0, 0, 1]
+    sim_runs = [1, 1, 1, 1]
     real_folder = "ResultsJetson24/"
     sim_folder = "ResultsRos24/"
 
-    agent_length = 3
-    real_data = [TestLapData(root + real_folder + f"{agent_names[i]}", real_runs[i]) for i in range(agent_length)]
-    sim_data = [TestLapData(root + sim_folder + f"{agent_names[i]}", sim_runs[i]) for i in range(agent_length)]
+    real_data = [TestLapData(root + real_folder + f"{agent_names[i]}", real_runs[i]) for i in range(4)]
+    sim_data = [TestLapData(root + sim_folder + f"{agent_names[i]}", sim_runs[i]) for i in range(4)]
 
     
-    fig, axes = plt.subplots(2, agent_length, figsize=(6, 3), sharex=True, sharey=True)
-    # fig, axes = plt.subplots(2, 4, figsize=(6, 1.8), sharex=True, sharey=True)
+    fig, axes = plt.subplots(1, 4, figsize=(6, 1.8), sharex=True, sharey=True)
         
-    action_steering_real = [d.actions[:, 0] for d in real_data]
-    action_steering_sim = [d.actions[:, 0] for d in sim_data]
+    action_steering_list = [d.actions[:, 0] for d in real_data]
+    action_speed_list = [d.actions[:, 1] for d in real_data]
+    # action_steering_list = [d.actions[:, 0] for d in sim_data]
+    # action_speed_list = [d.actions[:, 1] for d in sim_data]
         
-    for i in range(agent_length):
-        data = np.abs(action_steering_sim[i])
-        axes[0, i].hist(data, color=color_pallet[i], alpha=0.65)
-        axes[0, i].set_xlim(-0.02, .42)
-        axes[0, i].grid(True)
-        axes[0, i].set_title(labels[i], fontsize=10)
-        # axes[0, i].set_yscale('log')        
-       
-        data = np.abs(action_steering_real[i])
-        axes[1, i].hist(data, color=color_pallet[i], alpha=0.65)
-        # axes[1, i].set_xlim(-0.45, 0.45)
-        axes[1, i].grid(True)
-        axes[1, i].xaxis.set_tick_params(labelsize=8)
-        axes[1, i].xaxis.set_major_locator(MultipleLocator(0.15))
-        # axes[1, i].set_yscale('log')
+    for i in range(len(real_data)):
+        axes[i].plot(action_steering_list[i], action_speed_list[i], '.', color=color_pallet[i], alpha=0.5)
         
-    axes[0,0].yaxis.set_tick_params(labelsize=8)
-    axes[0, 0].set_ylabel("Simulation", fontsize=10, fontweight='bold')
-    axes[1, 0].set_ylabel("Physical \nvehicle", fontsize=10, fontweight='bold')
-    fig.text(0.53, 0.02, "Absolute Steering angle (rad)", fontsize=10, ha='center')
+        axes[i].set_xlim(-0.45, 0.45)
+        axes[i].grid(True)
+        axes[i].set_title(labels[i], fontsize=10)
+        axes[i].xaxis.set_tick_params(labelsize=8)
+        axes[i].xaxis.set_major_locator(MultipleLocator(0.3))
+        
+    axes[0].yaxis.set_tick_params(labelsize=8)
+    axes[0].set_ylim(1, 3.5)
+    axes[0].set_ylabel("Speed (m/s)", fontsize=10)
+    fig.text(0.53, 0.02, "Steering angle (rad)", fontsize=10, ha='center')
     
 
-    name = "Sim2Real/Imgs/SteeringDistributions2"
+    name = "Sim2Real/Imgs/ActionDistributions2"
     std_img_saving(name)
 
 
-# make_action_distributions()
-# make_steering_distributions()
-make_ee_action_dist()
+# make_fast_action_dists()
+
+# make_ee_action_dist()
+
+make_action_distributions()

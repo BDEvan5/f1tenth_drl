@@ -27,7 +27,7 @@ There are several experiments. For each experiment in the list the use the steps
     - Comparison of full planning, trajectory tracking and end-to-end: graph of training and test losses and table of rescaled values
 
 
-### Deep reinforcement learning experiments
+## Deep reinforcement learning experiments
 
 Agents are trained and tested and the data is analysed.
 The process for performing these experiments is to train and test the agents, analyse the data and then plot the data.
@@ -86,5 +86,20 @@ are made included in the `ArticleProfilePlots.py` file.
 
 Additional plotting resources, such as for the distributions of the actions are int eh `ExtraProfilePlots.py` file.
 
+## Sim-to-real Experiments
+
+Data can be collected on the vehicle and in simulation using the nodes in the [https://github.com/BDEvan5/f1tenth_racing](f1tenth_racing).
+The functions in this repo extract the data from the respective folder and process it into results.
+
+The `VisualiseTestData.py` folder plots the trajectories and the speed and steering actions of all the data runs in a single folder so they can be easily visualised.
+The `ExtraActionDistributions.py` shows the distribution of the actions selected on the pysical vehicle.
+
+Generate article results:
+- `Sim2RealActionComparison.py`: generate the graphs comparing the speed and steering anction comparisions between simulation and the physical vehicle.
+- `Sim2RealSteeringAngleDistributions.py`: makes the plots of the distribution of the steering angles in simulation and reality.
+- `DistanceCurvatureBarplot.py`: makes the plot of the distance and curvatures of five runs in simulation and reality
+- `PathOverlays.py`: overlays the paths selected with a low speed cap on top of each other.
+- `NeatTrajectories.py`: makes neat versions of the trajectories with labels for presentation in articles
+- `FastLaptimePlot.py`: plots the lap times of vehicles with increasing speed caps
 
 

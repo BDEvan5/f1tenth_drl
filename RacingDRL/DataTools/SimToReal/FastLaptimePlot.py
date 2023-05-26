@@ -38,7 +38,7 @@ class SpeedResults:
 
 
 
-def make_distance_curvature_plot():
+def make_fast_laptime_plot():
     agent_names = ["AgentOff_SAC_Game_mco_TAL_8_1_0", "AgentOff_SAC_TrajectoryFollower_mco_TAL_8_1_0", "AgentOff_SAC_endToEnd_mco_TAL_8_1_0", "PurePursuit"]
     labels = ["Full\nplanning", "Trajectory\ntracking", "End-to-end", "Classic"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
@@ -95,5 +95,5 @@ def make_distance_curvature_plot():
 
 
 
-make_distance_curvature_plot()
+make_fast_laptime_plot()
 
