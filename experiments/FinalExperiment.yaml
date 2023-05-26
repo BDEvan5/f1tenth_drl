@@ -1,0 +1,30 @@
+
+planner_type: "AgentOff"
+
+n_repeats: 3
+start_n: 0
+set_n: 1
+
+random_seed: 10
+max_speed: 8
+n_waypoints: 10
+num_beams: 20
+
+training_steps: 60000
+n_test_laps: 20
+algorithm: "SAC"
+id_name: "TAL"
+map_name: "gbr"
+# map_name: "mco"
+
+runs:
+  - state_vector: "Game"
+  - state_vector: "endToEnd"
+  - state_vector: "TrajectoryFollower"
+
+  # - planner_type: "PurePursuit"
+  #   algorithm: "PP"
+  #   racing_line: True
+  #   pp_speed_mode: "racing_line"
+  #   state_vector: "pathFollower"
+

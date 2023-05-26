@@ -372,10 +372,12 @@ class RaceCar(object):
             self.state = self.state + self.time_step*(1/6)*(k1 + 2*k2 + 2*k3 + k4)
         
         elif self.integrator is Integrator.Euler:
+            mu_std = 0.2
+            sample_mu = self.params['mu'] + np.random.randn() * mu_std
             f = vehicle_dynamics_st(
                 self.state,
                 np.array([sv, accl]),
-                self.params['mu'],
+                sample_mu,
                 self.params['C_Sf'],
                 self.params['C_Sr'],
                 self.params['lf'],
@@ -472,6 +474,7 @@ class Simulator(object):
             None
         """
         self.num_agents = num_agents
+        self.integrator = integrator
         self.seed = seed
         self.time_step = time_step
         self.ego_idx = ego_idx
@@ -492,7 +495,6 @@ class Simulator(object):
 
     def set_map(self, map_path, map_ext):
         """
-        Sets the map of the environment and sets the map for scan simulator of each agent
 
         Args:
             map_path (str): path to the map yaml file
@@ -593,6 +595,8 @@ class Simulator(object):
             'linear_vels_x': [],
             'linear_vels_y': [],
             'ang_vels_z': [],
+            'steering_deltas': [],
+            'full_states': [],
             'collisions': self.collisions}
         for i, agent in enumerate(self.agents):
             observations['scans'].append(agent_scans[i])
@@ -601,7 +605,9 @@ class Simulator(object):
             observations['poses_theta'].append(agent.state[4])
             observations['linear_vels_x'].append(agent.state[3])
             observations['linear_vels_y'].append(0.)
+            observations['steering_deltas'].append(agent.state[2])
             observations['ang_vels_z'].append(agent.state[5])
+            observations['full_states'].append(agent.state)
 
         return observations
 

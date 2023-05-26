@@ -10,9 +10,7 @@ l_r: 0.171
 l_f: 0.158
 
 # agent parameters
-n_beams: 20               # number of beams used by agent
-range_finder_scale: 10     # scaling of beams for NN
-h_size: 100               # size of hidden layers in NN
+range_finder_scale: 10
 
 #simulator
 sim_steps: 10              # Number of simulator steps per planning step

@@ -16,12 +16,12 @@ class DoublePolicyNet(nn.Module):
         self.fc2 = nn.Linear(NN_LAYER_1, NN_LAYER_2)
         self.fc_mu = nn.Linear(NN_LAYER_2, act_dim)
 
-
     def forward(self, x):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         mu = torch.tanh(self.fc_mu(x)) 
         return mu
+
 
 LOG_STD_MIN = -20
 LOG_STD_MAX = 2

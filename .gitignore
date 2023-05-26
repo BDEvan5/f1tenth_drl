@@ -129,3 +129,9 @@ dmypy.json
 .pyre/
 
 Data/
+Data__*/
+
+.vscode/
+
+NetworkFitting/
+Sim2Real/

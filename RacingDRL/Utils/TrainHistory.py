@@ -27,8 +27,9 @@ def plot_data(values, moving_avg_period=10, title="Results", figure_n=2):
 
 
 class TrainHistory():
-    def __init__(self, run, conf) -> None:
-        self.path = conf.vehicle_path + run.path +  run.run_name 
+    def __init__(self, path) -> None:
+        self.path = path
+        # self.path = conf.vehicle_path + run.path +  run.run_name 
 
         # training data
         self.ptr = 0
@@ -98,18 +99,19 @@ class TrainHistory():
         plt.ylabel("Average Progress")
         plt.xlabel("Training Steps (x100)")
         plt.ylim([0, 100])
+        plt.grid(True)
         plt.savefig(self.path + "/training_progresses_steps.png")
 
         plt.clf()
         plt.plot(t_steps, self.rewards[0:ptr], '.', color='darkblue', markersize=4)
         plt.plot(t_steps, true_moving_average(self.rewards[0:ptr], 20), linewidth='4', color='r')
-
         plt.xlabel("Training Steps (x100)")
         plt.ylabel("Reward per Episode")
-
         plt.tight_layout()
-        plt.grid()
+        plt.grid(True)
         plt.savefig(self.path + "/training_rewards_steps.png")
+        
+        plt.close(3)
 
         # plt.figure(4)
         # plt.clf()

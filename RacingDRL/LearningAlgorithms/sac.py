@@ -43,7 +43,7 @@ class TrainSAC:
         action, _ =  self.actor(state)
         return action.detach()[0].numpy()
                
-    def train(self, iterations=2):
+    def train(self, iterations=1):
         if self.replay_buffer.size() < BATCH_SIZE: return 
         
         for _ in range(0, iterations):
@@ -97,13 +97,13 @@ class TrainSAC:
         self.alpha_optimizer.step()
                 
     def save(self, filename, directory):
-        torch.save(self.actor, '%s/%s_actor.pth' % (directory, filename))
+        torch.save(self.actor, directory + f'{filename}_actor.pth')
 
     
      
 class TestSAC:
     def __init__(self, filename, directory):
-        self.actor = torch.load('%s/%s_actor.pth' % (directory, filename))
+        self.actor = torch.load(directory + f'{filename}_actor.pth')
 
     def act(self, state):
         state = torch.FloatTensor(state)
