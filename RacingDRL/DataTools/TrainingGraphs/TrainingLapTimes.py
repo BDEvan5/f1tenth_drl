@@ -22,7 +22,8 @@ def make_training_laptimes_plot():
     n_repeats = 5
     n_train_steps = 60
 
-    fig, axs = plt.subplots(1, 1, figsize=(5, 2.1))
+    fig, axs = plt.subplots(1, 1, figsize=(5, 1.7))
+    # fig, axs = plt.subplots(1, 1, figsize=(5, 2.1))
     
     steps_list = []
     lap_time_list = []
@@ -53,6 +54,7 @@ def make_training_laptimes_plot():
     # plt.title(f"{map_name.upper()}", size=10)
     plt.xlim(0, n_train_steps)
     plt.grid(True)
+    plt.gca().yaxis.set_major_locator(MultipleLocator(20))
 
     plt.ylabel("Lap times (s)")
     h, l = plt.gca().get_legend_handles_labels()

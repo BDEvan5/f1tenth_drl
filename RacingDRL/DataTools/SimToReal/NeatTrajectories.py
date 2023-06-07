@@ -44,14 +44,32 @@ def make_agent_trajectory(agent_name, label_name, folder, run_n):
     plt.yticks([])
 
     label_name = label_name.replace("-", "_")
+    label_name = label_name.replace("/", "_")
+    label_name = label_name.replace(" ", "_")
     name = f"Sim2Real/Imgs/Trajectory_{label_name}"
     std_img_saving(name)
 
 
 
 agent_name = "AgentOff_SAC_endToEnd_mco_TAL_8_1_0"
-label = "End-to-end"
+label = "End-to-end - 5 m/s"
 folder = "ResultsJetson24_2/"
 run_n = 2
 make_agent_trajectory(agent_name, label, folder, run_n)
+
+# agent_name = "AgentOff_SAC_Game_mco_TAL_8_1_0"
+# label = "Full planning - 4 m/s"
+# folder = "ResultsJetson24_2/"
+# run_n = 4
+# make_agent_trajectory(agent_name, label, folder, run_n)
+
+
+# agent_name = "AgentOff_SAC_TrajectoryFollower_mco_TAL_8_1_0"
+# label = "Trajectory tracking - 2 m/s"
+# folder = "ResultsJetson23/"
+# run_n = 2
+# make_agent_trajectory(agent_name, label, folder, run_n)
+
+
+
 
