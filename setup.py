@@ -7,7 +7,7 @@ LONG_DESCRIPTION = 'DRL based f110 agents for autonomous racing'
 # Setting up
 setup(
        # the name must match the folder name 'verysimplemodule'
-        name="RacingDRL", 
+        name="FTenthRacingDRL", 
         version=VERSION,
         author="Benjamin Evans",
         author_email="<bdevans@sun.ac.za>",
