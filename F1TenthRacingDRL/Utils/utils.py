@@ -1,7 +1,7 @@
-import os, shutil, yaml
+import os, shutil, yaml, csv
 from argparse import Namespace
 from numba import njit
-  
+import numpy as np
 import cProfile
 import pstats
 import io
@@ -57,14 +57,10 @@ def setup_run_list(experiment_file, new_run=True):
     with open(full_path) as file:
         experiment_dict = yaml.load(file, Loader=yaml.FullLoader)
         
-    # if new_run:   
-    #     test_name = generate_test_name(experiment_file)
-    # else: test_name = latest_test_name(experiment_file)
     set_n = experiment_dict['set_n']
     test_name = experiment_file + f"_{set_n}"
     if not os.path.exists(f"Data/{test_name}"):
         os.mkdir(f"Data/{test_name}")
-
 
     run_list = []
     for rep in range(experiment_dict['start_n'], experiment_dict['n_repeats']):
@@ -111,6 +107,20 @@ def save_csv_array(data, filename):
 def moving_average(data, period):
     return np.convolve(data, np.ones(period), 'same') / period
 
+def true_moving_average(data, period):
+    if len(data) < period:
+        return np.zeros_like(data)
+    ret = np.convolve(data, np.ones(period), 'same') / period
+    # t_end = np.convolve(data, np.ones(period), 'valid') / (period)
+    # t_end = t_end[-1] # last valid value
+    for i in range(period): # start
+        t = np.convolve(data, np.ones(i+2), 'valid') / (i+2)
+        ret[i] = t[0]
+    for i in range(period):
+        length = int(round((i + period)/2))
+        t = np.convolve(data, np.ones(length), 'valid') / length
+        ret[-i-1] = t[-1]
+    return ret
 
 def save_run_config(run_dict, path):
     path = path +  f"/TrainingRunDict_record.yaml"
