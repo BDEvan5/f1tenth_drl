@@ -10,10 +10,10 @@ import glob
 from matplotlib.ticker import PercentFormatter
 from matplotlib.collections import LineCollection
 
-from FTenthRacingDRL.DataTools.MapData import MapData
-from FTenthRacingDRL.Planners.TrackLine import TrackLine 
-from FTenthRacingDRL.Utils.utils import *
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.DataTools.MapData import MapData
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine 
+from F1TenthRacingDRL.Utils.utils import *
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 from matplotlib.ticker import MultipleLocator
 
 # SAVE_PDF = False

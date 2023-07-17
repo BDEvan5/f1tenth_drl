@@ -15,8 +15,8 @@ from numba import njit
 import csv
 import os
 from matplotlib import pyplot as plt
-from FTenthRacingDRL.Planners.TrackLine import TrackLine
-from FTenthRacingDRL.FitChecking.DataStateHistory import DataStateHistory
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine
+from F1TenthRacingDRL.FitChecking.DataStateHistory import DataStateHistory
 
 
 

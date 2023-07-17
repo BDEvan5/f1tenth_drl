@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import csv
 
-from FTenthRacingDRL.DataTools.MapData import MapData
+from F1TenthRacingDRL.DataTools.MapData import MapData
 
 
 def find_folders(path="ResultsJetson23"):

@@ -1,7 +1,7 @@
 import numpy as np
 
-from FTenthRacingDRL.Planners.TrackLine import TrackLine
-from FTenthRacingDRL.Planners.PurePursuit import PurePursuit
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine
+from F1TenthRacingDRL.Planners.PurePursuit import PurePursuit
 
 
 # rewards functions

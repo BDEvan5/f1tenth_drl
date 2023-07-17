@@ -1,6 +1,6 @@
-from FTenthRacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet
-from FTenthRacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
-from FTenthRacingDRL.Utils.utils import soft_update
+from F1TenthRacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet
+from F1TenthRacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
+from F1TenthRacingDRL.Utils.utils import soft_update
 
 import torch.optim as optim
 import numpy as np

@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import csv
 
-from FTenthRacingDRL.DataTools.MapData import MapData
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.DataTools.MapData import MapData
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 root_path = "/home/benjy/sim_ws/src/f1tenth_racing/Data/"
 

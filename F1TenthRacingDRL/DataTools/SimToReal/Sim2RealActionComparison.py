@@ -3,12 +3,12 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
-from FTenthRacingDRL.Planners.TrackLine import TrackLine 
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine 
 import csv
 from matplotlib.ticker import MultipleLocator
 
-from FTenthRacingDRL.DataTools.MapData import MapData
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.DataTools.MapData import MapData
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 plt.rcParams['pdf.use14corefonts'] = True
 
 root = "/home/benjy/sim_ws/src/f1tenth_racing/Data/"

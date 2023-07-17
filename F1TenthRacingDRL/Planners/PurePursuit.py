@@ -11,13 +11,13 @@ Adjustments have been made
 """
 
 import numpy as np
-from FoneTenth.Utils.utils import init_file_struct, calculate_speed
+from F1TenthRacingDRL.Utils.utils import init_file_struct, calculate_speed
 from numba import njit
 import csv
 import os
 from matplotlib import pyplot as plt
-from FTenthRacingDRL.Planners.TrackLine import TrackLine
-from FTenthRacingDRL.Planners.VehicleStateHistory import VehicleStateHistory
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine
+from F1TenthRacingDRL.Planners.VehicleStateHistory import VehicleStateHistory
 
 
 

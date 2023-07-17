@@ -1,10 +1,10 @@
-from FTenthRacingDRL.Utils.utils import init_file_struct, save_run_config
-from FTenthRacingDRL.LearningAlgorithms.create_agent import create_train_agent
+from F1TenthRacingDRL.Utils.utils import init_file_struct, save_run_config
+from F1TenthRacingDRL.LearningAlgorithms.create_agent import create_train_agent
 import numpy as np
-from FTenthRacingDRL.Planners.Architectures import select_architecture
-from FTenthRacingDRL.Utils.TrainHistory import TrainHistory
-from FTenthRacingDRL.Planners.RewardSignals import ProgressReward, TALearningReward, CrossTrackHeadReward
-from FTenthRacingDRL.Planners.TrackLine import TrackLine
+from F1TenthRacingDRL.Planners.Architectures import select_architecture
+from F1TenthRacingDRL.Utils.TrainHistory import TrainHistory
+from F1TenthRacingDRL.Planners.RewardSignals import ProgressReward, TALearningReward, CrossTrackHeadReward
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine
 
 
 

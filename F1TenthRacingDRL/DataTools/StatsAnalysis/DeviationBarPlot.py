@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 def make_deviation_bar_plot():
     map_name = "mco"

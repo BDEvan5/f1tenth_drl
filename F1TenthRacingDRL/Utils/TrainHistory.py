@@ -2,7 +2,7 @@ import os, shutil
 import csv
 import numpy as np
 from matplotlib import pyplot as plt
-from FoneTenth.Utils.utils import *
+from F1TenthRacingDRL.Utils.utils import *
 from matplotlib.ticker import MultipleLocator
 
 

@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from matplotlib.collections import LineCollection
-from FTenthRacingDRL.DataTools.MapData import MapData
-from FTenthRacingDRL.Planners.TrackLine import TrackLine 
+from F1TenthRacingDRL.DataTools.MapData import MapData
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine 
 
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 set_number = 1
 id_name = "TAL"

@@ -2,8 +2,8 @@ import torch
 import torch.optim as optim
 import random
 
-from FTenthRacingDRL.Utils.Networks import QNetworkDQN
-from FTenthRacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
+from F1TenthRacingDRL.Utils.Networks import QNetworkDQN
+from F1TenthRacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
 
 GAMMA = 0.94
 LEARNING_RATE = 0.001

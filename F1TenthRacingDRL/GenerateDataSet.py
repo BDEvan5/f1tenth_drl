@@ -3,10 +3,10 @@ import numpy as np
 from argparse import Namespace
 import numpy as np
 
-from FTenthRacingDRL.f1tenth_gym import F110Env
-from FTenthRacingDRL.f1tenth_gym import RaceCar
-from FTenthRacingDRL.Utils.utils import *
-from FTenthRacingDRL.FitChecking.PurePursuitDataGen import PurePursuitDataGen
+from F1TenthRacingDRL.f1tenth_gym import F110Env
+from F1TenthRacingDRL.f1tenth_gym import RaceCar
+from F1TenthRacingDRL.Utils.utils import *
+from F1TenthRacingDRL.FitChecking.PurePursuitDataGen import PurePursuitDataGen
 
 
 def run_simulation_loop_laps(env, planner, n_laps, n_sim_steps=10):

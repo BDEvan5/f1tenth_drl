@@ -1,5 +1,6 @@
 import os, shutil, yaml
 from argparse import Namespace
+from numba import njit
   
 import cProfile
 import pstats
@@ -83,6 +84,32 @@ def setup_run_list(experiment_file, new_run=True):
             run_list.append(Namespace(**run))
 
     return run_list
+
+
+@njit(cache=True)
+def calculate_speed(delta, f_s=0.8, max_v=7):
+    b = 0.523
+    g = 9.81
+    l_d = 0.329
+
+    if abs(delta) < 0.03:
+        return max_v
+    if abs(delta) > 0.4:
+        return 0
+
+    V = f_s * np.sqrt(b*g*l_d/np.tan(abs(delta)))
+
+    V = min(V, max_v)
+
+    return V
+
+def save_csv_array(data, filename):
+    with open(filename, 'w') as file:
+        writer = csv.writer(file)
+        writer.writerows(data)
+
+def moving_average(data, period):
+    return np.convolve(data, np.ones(period), 'same') / period
 
 
 def save_run_config(run_dict, path):

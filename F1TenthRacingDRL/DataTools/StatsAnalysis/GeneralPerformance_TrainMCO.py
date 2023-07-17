@@ -1,4 +1,4 @@
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.ticker import MultipleLocator

@@ -12,9 +12,9 @@ BATCH_SIZE = 100
 LR = 1e-3
 
    
-from FTenthRacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet, PolicyNetworkSAC
-from FTenthRacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
-from FTenthRacingDRL.Utils.utils import soft_update
+from F1TenthRacingDRL.Utils.Networks import DoublePolicyNet, DoubleQNet, PolicyNetworkSAC
+from F1TenthRacingDRL.Utils.ReplayBuffers import OffPolicyBuffer
+from F1TenthRacingDRL.Utils.utils import soft_update
 
 
 class TrainSAC:

@@ -1,5 +1,5 @@
 import numpy as np
-from FTenthRacingDRL.Planners.TrackLine import TrackLine
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine
 from matplotlib import pyplot as plt
 
 def select_architecture(run, conf):

@@ -2,8 +2,8 @@ import torch
 import torch.optim as optim
 import torch.nn.functional as F
 
-from FTenthRacingDRL.Utils.Networks import SingleActor, SingleVNet
-from FTenthRacingDRL.Utils.ReplayBuffers import OnPolicyBuffer
+from F1TenthRacingDRL.Utils.Networks import SingleActor, SingleVNet
+from F1TenthRacingDRL.Utils.ReplayBuffers import OnPolicyBuffer
 
 
 

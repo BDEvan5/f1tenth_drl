@@ -1,9 +1,9 @@
-from FTenthRacingDRL.Utils.utils import init_file_struct
-from FTenthRacingDRL.LearningAlgorithms.create_agent import create_test_agent
+from F1TenthRacingDRL.Utils.utils import init_file_struct
+from F1TenthRacingDRL.LearningAlgorithms.create_agent import create_test_agent
 import numpy as np
-from FTenthRacingDRL.Planners.Architectures import select_architecture
-from FTenthRacingDRL.Planners.TrackLine import TrackLine
-from FTenthRacingDRL.Planners.VehicleStateHistory import VehicleStateHistory
+from F1TenthRacingDRL.Planners.Architectures import select_architecture
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine
+from F1TenthRacingDRL.Planners.VehicleStateHistory import VehicleStateHistory
 
 
 class AgentTester: 

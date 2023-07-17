@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 from matplotlib.ticker import MultipleLocator, MaxNLocator
 
  

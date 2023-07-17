@@ -3,11 +3,11 @@ from argparse import Namespace
 import os 
 import numpy as np
 
-from FTenthRacingDRL.f1tenth_gym import F110Env
-from FTenthRacingDRL.Planners.AgentTrainer import AgentTrainer
-from FTenthRacingDRL.Planners.AgentTester import AgentTester
-from FTenthRacingDRL.Utils.utils import *
-from FTenthRacingDRL.Planners.PurePursuit import PurePursuit
+from F1TenthRacingDRL.f1tenth_gym import F110Env
+from F1TenthRacingDRL.Planners.AgentTrainer import AgentTrainer
+from F1TenthRacingDRL.Planners.AgentTester import AgentTester
+from F1TenthRacingDRL.Utils.utils import *
+from F1TenthRacingDRL.Planners.PurePursuit import PurePursuit
 import torch
 
 

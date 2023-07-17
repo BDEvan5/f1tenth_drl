@@ -2,7 +2,7 @@ import numpy as np
 import os, glob
 from matplotlib import pyplot as plt
 
-from FTenthRacingDRL.Planners.TrackLine import TrackLine
+from F1TenthRacingDRL.Planners.TrackLine import TrackLine
 
 
 set_n = 1

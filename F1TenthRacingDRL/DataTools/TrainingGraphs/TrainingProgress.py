@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, PercentFormatter
 
-from FTenthRacingDRL.Utils.utils import *
-from FTenthRacingDRL.DataTools.plotting_utils import *
+from F1TenthRacingDRL.Utils.utils import *
+from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 
 def make_training_progress_plot():

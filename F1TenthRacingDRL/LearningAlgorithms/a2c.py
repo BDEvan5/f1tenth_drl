@@ -1,8 +1,8 @@
 import torch
 import torch.optim as optim
 
-from FTenthRacingDRL.Utils.Networks import SingleActor, SingleVNet
-from FTenthRacingDRL.Utils.ReplayBuffers import OnPolicyBuffer
+from F1TenthRacingDRL.Utils.Networks import SingleActor, SingleVNet
+from F1TenthRacingDRL.Utils.ReplayBuffers import OnPolicyBuffer
 
 lr          = 3e-4
 gamma=0.99

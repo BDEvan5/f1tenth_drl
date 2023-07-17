@@ -1,4 +1,4 @@
-# FTenthRacingDRL
+# F1TenthRacingDRL
 A repository to conduct experiments on F1Tenth racing
 
 # How to generate results

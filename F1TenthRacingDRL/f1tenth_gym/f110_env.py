@@ -30,7 +30,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 # base classes
-from FTenthRacingDRL.f1tenth_gym.base_classes import Simulator, Integrator
+from F1TenthRacingDRL.f1tenth_gym.base_classes import Simulator, Integrator
 
 # others
 import numpy as np
@@ -405,7 +405,7 @@ class F110Env(gym.Env):
         
         if F110Env.renderer is None:
             # first call, initialize everything
-            from FTenthRacingDRL.f1tenth_gym.rendering import EnvRenderer
+            from F1TenthRacingDRL.f1tenth_gym.rendering import EnvRenderer
             F110Env.renderer = EnvRenderer(WINDOW_W, WINDOW_H)
             F110Env.renderer.update_map(self.map_name, self.map_ext)
             
