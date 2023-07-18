@@ -148,6 +148,7 @@ def build_endToEnd_stacking():
     
 def build_endToEnd_comparision_set():
     experiment_name = "comparison"
+    # experiment_name = "TuningNN"
     save_folder = f"TuningData/{experiment_name}_{set_n}/"
 
     if not os.path.exists(save_folder):

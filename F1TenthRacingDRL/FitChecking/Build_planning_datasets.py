@@ -203,7 +203,7 @@ def build_comparison_data_set():
     build_state_data_set(save_folder, f"trajectoryTrack", generate_trajectoryTrack_state, 10, True)
     
 def build_network_TuningData_data_set():
-    experiment_name = "TuningDataNN"
+    experiment_name = "TuningNN"
     save_folder = f"TuningData/{experiment_name}_{set_n}/"
 
     if not os.path.exists(save_folder):
@@ -211,7 +211,8 @@ def build_network_TuningData_data_set():
 
     build_action_data_set(save_folder)
 
-    build_state_data_set(save_folder, f"fullPlanning", generate_fullPlanning_state, 10, False)
+    build_state_data_set(save_folder, f"trajectoryTrack", generate_trajectoryTrack_state, 10, True)
+    # build_state_data_set(save_folder, f"fullPlanning", generate_fullPlanning_state, 10, False)
     
     
     
