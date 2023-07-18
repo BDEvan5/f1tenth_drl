@@ -10,7 +10,7 @@ def plot_n_beams_avg():
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = "NetworkFitting/EndToEnd_nBeams_3/LossResults/"
+    path = "TuningData/EndToEnd_nBeams_3/LossResults/"
     with open(path + f"{name}_LossResults.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):
@@ -65,7 +65,7 @@ def plot_n_beams_avg_small():
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = "NetworkFitting/EndToEnd_nBeams_3/LossResults/"
+    path = "TuningData/EndToEnd_nBeams_3/LossResults/"
     with open(path + f"{name}_LossResults.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):

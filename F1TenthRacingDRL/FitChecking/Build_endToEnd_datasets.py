@@ -116,7 +116,7 @@ def build_action_data_set(save_folder):
 
 
 def build_endToEnd_nBeams():
-    save_folder = f"NetworkFitting/EndToEnd_nBeams_{set_n}/"
+    save_folder = f"TuningData/EndToEnd_nBeams_{set_n}/"
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
@@ -132,7 +132,7 @@ def build_endToEnd_nBeams():
     build_state_data_set(save_folder, "endToEnd_60", generate_double_endToEnd_state, 60)
 
 def build_endToEnd_stacking():
-    save_folder = f"NetworkFitting/EndToEnd_stacking_{set_n}/"
+    save_folder = f"TuningData/EndToEnd_stacking_{set_n}/"
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
@@ -148,7 +148,7 @@ def build_endToEnd_stacking():
     
 def build_endToEnd_comparision_set():
     experiment_name = "comparison"
-    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
+    save_folder = f"TuningData/{experiment_name}_{set_n}/"
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)

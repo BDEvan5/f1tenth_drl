@@ -5,7 +5,7 @@ import numpy as np
 def make_scaled_comparison_table():
     set_n = 3
     name = "comparison"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     labels = ["Full planning", "Trajectory tracking", "End-to-End"]
     
     steer_losses_mean, steer_losses_std = [], []

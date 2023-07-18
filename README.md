@@ -14,7 +14,7 @@ There are several experiments. For each experiment in the list the use the steps
 
 
 1. Generate data: 
-    - Use the `NetworkFittingData.yaml` config file to adjust parameters
+    - Use the `TuningDataData.yaml` config file to adjust parameters
     - Run the `GenerateDataSet.py` file to generate the dataset
 2. Create formatted datasets to train networks
     - Use `Build_endToEnd_datasets.py` to create the end-to-end data sets

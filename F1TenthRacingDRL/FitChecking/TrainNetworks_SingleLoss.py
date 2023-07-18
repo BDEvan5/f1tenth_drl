@@ -175,7 +175,7 @@ def run_experiment(folder, name_keys, experiment_name, n_seeds=3):
 def run_nBeams_test():
     set_n = 3
     name = "EndToEnd_nBeams"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_12","endToEnd_15", "endToEnd_20", "endToEnd_30", "endToEnd_60"]
     run_experiment(folder, name_keys, name)
     
@@ -184,7 +184,7 @@ def run_nBeams_test():
 def run_endStacking_test():
     set_n = 3
     name = "EndToEnd_stacking"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["endToEnd_Single", "endToEnd_Double", "endToEnd_Triple", "endToEnd_Speed"]
     run_experiment(folder, name_keys, name)
     
@@ -193,7 +193,7 @@ def run_endStacking_test():
 def run_trajectoryWaypoints_test():
     set_n = 3
     name = "trajectoryTrack_nWaypoints"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     # inds = [0, 1, 2, 5, 10]
     inds = [0, 1, 2, 4, 6, 8, 10, 12, 15, 20]
     name_keys = [f"trajectoryTrack_{i}" for i in inds]
@@ -203,7 +203,7 @@ def run_trajectoryWaypoints_test():
 def run_planningAblation_test():
     set_n = 3
     name = "fullPlanning_ablation"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["fullPlanning_full", "fullPlanning_rmMotion", "fullPlanning_rmLidar", "fullPlanning_rmWaypoints", "fullPlanning_Motion"]
     run_experiment(folder, name_keys, name)
     
@@ -211,8 +211,17 @@ def run_planningAblation_test():
 def run_comparison_test():
     set_n = 1
     name = "comparison"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
+    run_experiment(folder, name_keys, name, 10)
+    
+    
+        
+def run_TuningNN_test():
+    set_n = 1
+    name = "TuningNN"
+    folder = f"TuningData/{name}_{set_n}/"
+    name_keys = ["fullPlanning"]
     run_experiment(folder, name_keys, name, 10)
     
     
@@ -225,5 +234,6 @@ if __name__ == "__main__":
     # run_trajectoryWaypoints_test()
     # run_planningAblation_test()
     
-    run_comparison_test()
+    # run_comparison_test()
+    run_TuningNN_test()
     

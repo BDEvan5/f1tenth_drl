@@ -7,12 +7,12 @@ from matplotlib.ticker import MultipleLocator
 
 
 
-def tuning_loss_graphs():
+def TuningData_loss_graphs():
     name = "EndToEnd_nBeams"
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = "NetworkFitting/EndToEnd_nBeams_3/LossResults/"
+    path = "TuningData/EndToEnd_nBeams_3/LossResults/"
     with open(path + f"{name}_LossResults.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):
@@ -60,7 +60,7 @@ def tuning_loss_graphs():
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = f"NetworkFitting/{name}_{set_n}/LossResults/"
+    path = f"TuningData/{name}_{set_n}/LossResults/"
     with open(path + f"{name}_LossResults.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):
@@ -98,7 +98,7 @@ def tuning_loss_graphs():
     h, l = axes[0].get_legend_handles_labels()
     fig.legend(h, l, ncol=2, loc='lower center', bbox_to_anchor=(0.5, 0.92))
     
-    name = f"NetworkFitting/TuningGraph"
+    name = f"TuningData/TuningDataGraph"
     std_img_saving(name)
 
-tuning_loss_graphs()
+TuningData_loss_graphs()

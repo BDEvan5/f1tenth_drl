@@ -164,7 +164,7 @@ def build_action_data_set(save_folder):
 
 def build_trajectoryTrack_nWaypoints():
     experiment_name = "trajectoryTrack_nWaypoints"
-    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
+    save_folder = f"TuningData/{experiment_name}_{set_n}/"
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
@@ -177,7 +177,7 @@ def build_trajectoryTrack_nWaypoints():
 
 def build_fullPlanning_ablation():
     experiment_name = "fullPlanning_ablation"
-    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
+    save_folder = f"TuningData/{experiment_name}_{set_n}/"
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
@@ -192,7 +192,7 @@ def build_fullPlanning_ablation():
 
 def build_comparison_data_set():
     experiment_name = "comparison"
-    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
+    save_folder = f"TuningData/{experiment_name}_{set_n}/"
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
@@ -202,10 +202,22 @@ def build_comparison_data_set():
     build_state_data_set(save_folder, f"fullPlanning", generate_fullPlanning_state, 10, False)
     build_state_data_set(save_folder, f"trajectoryTrack", generate_trajectoryTrack_state, 10, True)
     
+def build_network_TuningData_data_set():
+    experiment_name = "TuningDataNN"
+    save_folder = f"TuningData/{experiment_name}_{set_n}/"
+
+    if not os.path.exists(save_folder):
+        os.mkdir(save_folder)
+
+    build_action_data_set(save_folder)
+
+    build_state_data_set(save_folder, f"fullPlanning", generate_fullPlanning_state, 10, False)
+    
     
     
 if __name__ == "__main__":
     # build_trajectoryTrack_nWaypoints()
     # build_fullPlanning_ablation()
     
-    build_comparison_data_set()
+    # build_comparison_data_set()
+    build_network_TuningData_data_set()

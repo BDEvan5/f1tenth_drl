@@ -7,7 +7,7 @@ from matplotlib.ticker import MultipleLocator, MaxNLocator
 def plot_training_testing_loss_comparison():
     experiment_name = "comparison"
     set_n = 1
-    save_folder = f"NetworkFitting/{experiment_name}_{set_n}/"
+    save_folder = f"TuningData/{experiment_name}_{set_n}/"
 
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
     label_names = ["Full planning", "Trajectory tracking", "End-to-end"]

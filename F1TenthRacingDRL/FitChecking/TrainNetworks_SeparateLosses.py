@@ -215,7 +215,7 @@ def run_experiment(folder, name_keys, experiment_name, n_seeds=5):
 def run_nBeams_test():
     set_n = 3
     name = "EndToEnd_nBeams"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_12","endToEnd_15", "endToEnd_20", "endToEnd_30", "endToEnd_60"]
     run_experiment(folder, name_keys, name)
     
@@ -224,14 +224,14 @@ def run_nBeams_test():
 def run_endStacking_test():
     set_n = 3
     name = "EndToEnd_stacking"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["endToEnd_Single", "endToEnd_Double", "endToEnd_Triple", "endToEnd_Speed", "endToEnd_DoubleSpeed"]
     run_experiment(folder, name_keys, name, 3)
     
 def run_planningAblation_test():
     set_n = 3
     name = "fullPlanning_ablation"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["fullPlanning_full", "fullPlanning_rmMotion", "fullPlanning_rmLidar", "fullPlanning_rmWaypoints", "fullPlanning_Motion"]
     run_experiment(folder, name_keys, name, 3)
     
@@ -239,7 +239,7 @@ def run_planningAblation_test():
 def run_comparison_test():
     set_n = 3
     name = "comparison"
-    folder = f"NetworkFitting/{name}_{set_n}/"
+    folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd"]
     # name_keys = ["fullPlanning", "trajectoryTrack", "endToEnd", "endToEnd_Single"]
     run_experiment(folder, name_keys, name, 10)

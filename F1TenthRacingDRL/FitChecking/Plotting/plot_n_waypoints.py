@@ -10,7 +10,7 @@ def plot_n_waypoints_avg():
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = f"NetworkFitting/{name}_{set_n}/LossResults/"
+    path = f"TuningData/{name}_{set_n}/LossResults/"
     with open(path + f"{name}_LossResults.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):

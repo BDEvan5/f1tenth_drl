@@ -12,7 +12,7 @@ def plot_n_beams_avg_seperate_normalised():
     speed_loss_mean, speed_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = f"NetworkFitting/{name}_3/LossResultsSeperate/"
+    path = f"TuningData/{name}_3/LossResultsSeperate/"
     with open(path + f"{name}_LossResultsSeperate.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):
