@@ -217,8 +217,8 @@ def build_network_TuningData_data_set():
     
     
 if __name__ == "__main__":
-    # build_trajectoryTrack_nWaypoints()
+    build_trajectoryTrack_nWaypoints()
     # build_fullPlanning_ablation()
     
     # build_comparison_data_set()
-    build_network_TuningData_data_set()
+    # build_network_TuningData_data_set()

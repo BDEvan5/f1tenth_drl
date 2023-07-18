@@ -22,10 +22,10 @@ def plot_n_beams_avg():
             test_loss_mean.append(float(l[3]))
             test_loss_std.append(float(l[4]))
             
-    train_loss_mean = np.array(train_loss_mean)
-    train_loss_std = np.array(train_loss_std)
-    test_loss_mean = np.array(test_loss_mean)
-    test_loss_std = np.array(test_loss_std)
+    train_loss_mean = np.array(train_loss_mean) ** 2
+    train_loss_std = np.array(train_loss_std) **2
+    test_loss_mean = np.array(test_loss_mean) ** 2
+    test_loss_std = np.array(test_loss_std) ** 2
             
     print(names)
     name_values = [int(n.split("_")[1]) for n in names]
@@ -34,8 +34,8 @@ def plot_n_beams_avg():
     
     plt.figure(1, figsize=(4,2))
     
-    plt.plot(name_values, train_loss_mean, '.-', color=pp[0], label="Train loss", markersize=10, linewidth=2)
-    plt.plot(name_values, test_loss_mean, '.-', color=pp[1], label="Test loss", markersize=10, linewidth=2)
+    plt.plot(name_values, train_loss_mean, '.-', color=pp[0], label="Training", markersize=10, linewidth=2)
+    plt.plot(name_values, test_loss_mean, '.-', color=pp[1], label="Testing", markersize=10, linewidth=2)
     
     train_pos = train_loss_mean + train_loss_std
     train_neg = train_loss_mean - train_loss_std
@@ -46,7 +46,7 @@ def plot_n_beams_avg():
     plt.fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.3)
     
     plt.xlabel("Number of beams")
-    plt.ylabel("Loss (RMSE)")
+    plt.ylabel("Loss")
     plt.ylim(0.05, 0.14)
     plt.gca().yaxis.set_major_locator(MultipleLocator(0.02))
     # plt.ylim(0.075, 0.14)
@@ -65,7 +65,7 @@ def plot_n_beams_avg_small():
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = "TuningData/EndToEnd_nBeams_3/LossResults/"
+    path = "TuningData/EndToEnd_nBeams_1/LossResults/"
     with open(path + f"{name}_LossResults.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):
@@ -77,10 +77,10 @@ def plot_n_beams_avg_small():
             test_loss_mean.append(float(l[3]))
             test_loss_std.append(float(l[4]))
             
-    train_loss_mean = np.array(train_loss_mean)
-    train_loss_std = np.array(train_loss_std)
-    test_loss_mean = np.array(test_loss_mean)
-    test_loss_std = np.array(test_loss_std)
+    train_loss_mean = np.array(train_loss_mean) 
+    train_loss_std = np.array(train_loss_std) 
+    test_loss_mean = np.array(test_loss_mean) 
+    test_loss_std = np.array(test_loss_std) 
             
     print(names)
     name_values = [int(n.split("_")[1]) for n in names]
@@ -90,8 +90,8 @@ def plot_n_beams_avg_small():
     # plt.figure(1, figsize=(4,2))
     plt.figure(1, figsize=(3,2))
     
-    plt.plot(name_values, train_loss_mean, '.-', color=pp[0], label="Train loss", markersize=10, linewidth=2)
-    plt.plot(name_values, test_loss_mean, '.-', color=pp[1], label="Test loss", markersize=10, linewidth=2)
+    plt.plot(name_values, train_loss_mean, '.-', color=pp[0], label="Training", markersize=10, linewidth=2)
+    plt.plot(name_values, test_loss_mean, '.-', color=pp[1], label="Testing", markersize=10, linewidth=2)
     
     train_pos = train_loss_mean + train_loss_std
     train_neg = train_loss_mean - train_loss_std
@@ -102,8 +102,8 @@ def plot_n_beams_avg_small():
     plt.fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.3)
     
     plt.xlabel("Number of beams")
-    plt.ylabel("Loss (RMSE)")
-    plt.ylim(0.05, 0.14)
+    plt.ylabel("Loss")
+    # plt.ylim(0.05, 0.14)
     plt.gca().yaxis.set_major_locator(MultipleLocator(0.02))
     # plt.ylim(0.075, 0.14)
     plt.legend()

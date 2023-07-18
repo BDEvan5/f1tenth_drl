@@ -123,13 +123,13 @@ def build_endToEnd_nBeams():
 
     build_action_data_set(save_folder)
 
-    build_state_data_set(save_folder, "endToEnd_5", generate_double_endToEnd_state, 5)
-    build_state_data_set(save_folder, "endToEnd_12", generate_double_endToEnd_state, 12)
-    build_state_data_set(save_folder, "endToEnd_10", generate_double_endToEnd_state, 10)
-    build_state_data_set(save_folder, "endToEnd_15", generate_double_endToEnd_state, 15)
-    build_state_data_set(save_folder, "endToEnd_20", generate_double_endToEnd_state, 20)
-    build_state_data_set(save_folder, "endToEnd_30", generate_double_endToEnd_state, 30)
-    build_state_data_set(save_folder, "endToEnd_60", generate_double_endToEnd_state, 60)
+    build_state_data_set(save_folder, "endToEnd_5", generate_doubleSpeed_endToEnd_state, 5)
+    build_state_data_set(save_folder, "endToEnd_12", generate_doubleSpeed_endToEnd_state, 12)
+    build_state_data_set(save_folder, "endToEnd_10", generate_doubleSpeed_endToEnd_state, 10)
+    build_state_data_set(save_folder, "endToEnd_15", generate_doubleSpeed_endToEnd_state, 15)
+    build_state_data_set(save_folder, "endToEnd_20", generate_doubleSpeed_endToEnd_state, 20)
+    build_state_data_set(save_folder, "endToEnd_30", generate_doubleSpeed_endToEnd_state, 30)
+    build_state_data_set(save_folder, "endToEnd_60", generate_doubleSpeed_endToEnd_state, 60)
 
 def build_endToEnd_stacking():
     save_folder = f"TuningData/EndToEnd_stacking_{set_n}/"
@@ -160,8 +160,8 @@ def build_endToEnd_comparision_set():
     # build_state_data_set(save_folder, "endToEnd_Single", generate_single_endToEnd_state, 20)
     
 if __name__ == "__main__":
-    # build_endToEnd_nBeams()
+    build_endToEnd_nBeams()
     # build_endToEnd_stacking()
     
-    build_endToEnd_comparision_set()
+    # build_endToEnd_comparision_set()
 

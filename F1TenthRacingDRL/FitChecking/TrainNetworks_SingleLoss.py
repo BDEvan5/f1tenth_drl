@@ -173,11 +173,11 @@ def run_experiment(folder, name_keys, experiment_name, n_seeds=3):
         
         
 def run_nBeams_test():
-    set_n = 3
+    set_n = 1
     name = "EndToEnd_nBeams"
     folder = f"TuningData/{name}_{set_n}/"
     name_keys = ["endToEnd_5", "endToEnd_10", "endToEnd_12","endToEnd_15", "endToEnd_20", "endToEnd_30", "endToEnd_60"]
-    run_experiment(folder, name_keys, name)
+    run_experiment(folder, name_keys, name, 10)
     
     
             
@@ -191,13 +191,13 @@ def run_endStacking_test():
         
             
 def run_trajectoryWaypoints_test():
-    set_n = 3
+    set_n = 1
     name = "trajectoryTrack_nWaypoints"
     folder = f"TuningData/{name}_{set_n}/"
     # inds = [0, 1, 2, 5, 10]
     inds = [0, 1, 2, 4, 6, 8, 10, 12, 15, 20]
     name_keys = [f"trajectoryTrack_{i}" for i in inds]
-    run_experiment(folder, name_keys, name, 3)
+    run_experiment(folder, name_keys, name, 10)
                
                
 def run_planningAblation_test():
@@ -228,12 +228,12 @@ def run_TuningNN_test():
     
      
 if __name__ == "__main__":
-    # run_nBeams_test()
+    run_nBeams_test()
     # run_endStacking_test()
     
     # run_trajectoryWaypoints_test()
     # run_planningAblation_test()
     
     # run_comparison_test()
-    run_TuningNN_test()
+    # run_TuningNN_test()
     

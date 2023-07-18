@@ -5,14 +5,14 @@ from F1TenthRacingDRL.DataTools.plotting_utils import *
 from matplotlib.ticker import MultipleLocator
 
 
-
+set_n = 1
 
 def TuningData_loss_graphs():
     name = "EndToEnd_nBeams"
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = "TuningData/EndToEnd_nBeams_3/LossResults/"
+    path = f"TuningData/EndToEnd_nBeams_{set_n}/LossResults/"
     with open(path + f"{name}_LossResults.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):
@@ -33,29 +33,22 @@ def TuningData_loss_graphs():
 
     fig, axes = plt.subplots(1, 2, figsize=(5.8,2), sharey=True, sharex=False)
 
-    # plt.figure(1, figsize=(4,2))
-    # plt.figure(1, figsize=(3,2))
-    
-    axes[0].plot(name_values, train_loss_mean, '.-', color=pp[0], label="Train loss", markersize=10, linewidth=2)
-    axes[0].plot(name_values, test_loss_mean, '.-', color=pp[1], label="Test loss", markersize=10, linewidth=2)
+    axes[0].plot(name_values, train_loss_mean, '.-', color=pp[0], label="Training", markersize=10, linewidth=2)
+    axes[0].plot(name_values, test_loss_mean, '.-', color=pp[1], label="Testing", markersize=10, linewidth=2)
     
     train_pos = train_loss_mean + train_loss_std
     train_neg = train_loss_mean - train_loss_std
     test_pos = test_loss_mean + test_loss_std
     test_neg = test_loss_mean - test_loss_std
     
-    axes[0].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.3)
-    axes[0].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.3)
+    axes[0].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.25)
+    axes[0].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.15)
     
     axes[0].set_xlabel("Number of beams")
     axes[0].set_ylabel("Loss")
     axes[0].grid(True)
     axes[0].xaxis.set_major_locator(MultipleLocator(10))
     
-    name = path + f"TrainTestLosses_{name}_small"
-    std_img_saving(name)
-
-    set_n = 3
     name = "trajectoryTrack_nWaypoints"
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
@@ -87,8 +80,8 @@ def TuningData_loss_graphs():
     test_pos = test_loss_mean + test_loss_std
     test_neg = test_loss_mean - test_loss_std
     
-    axes[1].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.3)
-    axes[1].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.3)
+    axes[1].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.25)
+    axes[1].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.15)
     
     axes[1].set_xlabel("Number of waypoints")
     # axes[1].set_ylabel("Loss (RMSE)")

@@ -37,7 +37,7 @@ def plot_n_beams_avg():
     df.columns = ["Neurons", "TrainLoss", "TrainLossStd", "TestLoss", "TestLossStd"]
     df = df.sort_values(by="Neurons")
     
-    plt.figure(1, figsize=(4,2))
+    plt.figure(1, figsize=(5,2))
     
     plt.plot(df["Neurons"], df["TrainLoss"], '.-', color=pp[0], label="Training", markersize=10, linewidth=2)
     plt.plot(df["Neurons"], df["TestLoss"], '.-', color=pp[1], label="Testing", markersize=10, linewidth=2)    
@@ -51,7 +51,7 @@ def plot_n_beams_avg():
     plt.fill_between(df["Neurons"], df["test_low"], df["test_high"], color=pp[1], alpha=0.15)
     
     plt.xlabel("Number of Neurons")
-    plt.ylabel("Loss (RMSE)")
+    plt.ylabel("Loss")
     plt.ylim(0.06, 0.17)
     plt.gca().yaxis.set_major_locator(MultipleLocator(0.02))
     # plt.ylim(0.075, 0.14)
