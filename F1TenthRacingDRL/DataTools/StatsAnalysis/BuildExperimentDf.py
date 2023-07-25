@@ -32,7 +32,15 @@ def build_experiment_df(path):
 
             agent_data = {"Algorithm": algorithm, "Architecture": architecture, "TrainMap": train_map, "TrainID": train_id, "Repetition": repetition}
             agent_data["TestMap"] = test_map.upper()
-            agent_data.update(test_df.mean().to_dict())
+
+            completed_data = test_df[test_df.Progress > 0.98]
+            agent_data["Time"] = completed_data["Time"].mean()
+            agent_data["Distance"] = completed_data["Distance"].mean()
+            agent_data["Progress"] = test_df["Progress"].mean() * 100
+            agent_data["ProgressS"] = test_df["Progress"].std() * 100
+            agent_data["MeanVelocity"] = completed_data["MeanVelocity"].mean()
+
+            agent_data["Success"] = len(completed_data) / len(test_df) * 100
 
             experiment_data.append(agent_data)
 
@@ -52,13 +60,14 @@ def condense_main_experiment_df(path):
         mean_data = data.iloc[0].to_dict()
         mean_data["Time"] = data["Time"].mean()
         mean_data["Distance"] = data["Distance"].mean()
-        mean_data["Progress"] = data["Progress"].mean() * 100
-        mean_data["ProgressS"] = data["Progress"].std() * 100
+        mean_data["Progress"] = data["Progress"].mean() 
+        mean_data["ProgressS"] = data["Progress"].std() 
         mean_data["MeanVelocity"] = data["MeanVelocity"].mean()
+        mean_data["Success"] = data["Success"].mean()
         
         condensed_data.append(mean_data)
 
-    condensed_df = pd.DataFrame(condensed_data)
+    condensed_df = pd.DataFrame(condensed_data).fillna(0)
     condensed_df.to_csv(path + "CondensedExperimentData.csv", index=False)
 
 
@@ -67,7 +76,7 @@ def main():
     set_n = 1
     experiment_path = f"Data/{experiment_name}_{set_n}/"
 
-    # build_experiment_df(experiment_path)
+    build_experiment_df(experiment_path)
     condense_main_experiment_df(experiment_path)
 
 

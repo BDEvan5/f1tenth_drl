@@ -63,6 +63,10 @@ def create_main_agent_df(agent_path, test_laps=20):
 
         progress = std_track.calculate_progress_percent(states[-1, :2])
         if progress < 0.02 or progress > 0.98: # due to occasional calculation errors
+            if total_distance < std_track.total_s * 0.8:
+                print(f"Turned around.....")
+                progress = total_distance / std_track.total_s
+                continue
             progress = 1 # it is finished
 
         agent_data.append({"Lap": i, "TestMap": testing_map, "Distance": total_distance, "Progress": progress, "Time": time, "MeanVelocity": avg_velocity})
