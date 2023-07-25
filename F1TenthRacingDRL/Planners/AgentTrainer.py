@@ -24,8 +24,8 @@ class AgentTrainer:
         self.action = None
         self.std_track = TrackLine(run.map_name, False)
         # self.reward_generator = ProgressReward(self.std_track)
-        # self.reward_generator = CrossTrackHeadReward(self.std_track, conf)
-        self.reward_generator = TALearningReward(conf, run)
+        self.reward_generator = CrossTrackHeadReward(self.std_track, conf)
+        # self.reward_generator = TALearningReward(conf, run)
         self.max_lap_progress = 0
 
         self.architecture = select_architecture(run, conf)
