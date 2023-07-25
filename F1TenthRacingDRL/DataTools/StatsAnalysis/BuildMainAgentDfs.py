@@ -43,6 +43,8 @@ def create_main_agent_df(agent_path, test_laps=20):
     vehicle_name = agent_path.split("/")[-2]
     train_map = vehicle_name.split("_")[3]
 
+    print(f"Vehicle: {vehicle_name}")
+
     agent_data = []
 
     testing_map = train_map # expand this later to use glob to find all valid test maps.
@@ -70,32 +72,23 @@ def create_main_agent_df(agent_path, test_laps=20):
 
 
 
-def explore_experiment_folder(path):
-    vehicle_folders = glob.glob(f"{path}*/")
-    print(f"{len(vehicle_folders)} folders found")
-
-    for j, path in enumerate(vehicle_folders):
-        if path.split("/")[-2] == "Imgs":
-            continue
-
-        print(f"Vehicle folder being opened: {path}")
-        create_main_agent_df(path)
-
-
-
-
-def analyse_folder():
+def main():
     p = "Data/"
     
     set_number = 1
     path = p + f"FinalExperiment_{set_number}/"
 
-    explore_experiment_folder(path)
+    vehicle_folders = glob.glob(f"{path}*/")
+    print(f"{len(vehicle_folders)} folders found")
 
+    for j, path in enumerate(vehicle_folders):
+        if path.split("/")[-2] == "Imgs": continue
+
+        create_main_agent_df(path)
 
 
 if __name__ == '__main__':
-    analyse_folder()
+    main()
 
 
 
