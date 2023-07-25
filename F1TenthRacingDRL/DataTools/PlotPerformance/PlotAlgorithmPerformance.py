@@ -107,6 +107,7 @@ def make_combined_plot():
     x_data = alg_df[alg_df.Architecture == "Game"].Algorithm
 
     for i, a in enumerate(alg_df.Architecture.unique()):
+        # y_data = alg_df[alg_df.Architecture == a].Success
         y_data = alg_df[alg_df.Architecture == a].Progress
         ax1.bar(brs[i], y_data, label=a, width=width, color=color_pallet[i], alpha=0.3)
         for z in range(3):
