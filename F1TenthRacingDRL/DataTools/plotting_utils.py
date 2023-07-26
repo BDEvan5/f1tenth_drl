@@ -10,7 +10,7 @@ def std_img_saving(name, SavePDF=True):
     plt.rcParams['pdf.use14corefonts'] = True
 
     plt.tight_layout()
-    plt.grid(True)
+    # plt.grid(True)
     plt.savefig(name + ".svg", bbox_inches='tight', pad_inches=0)
     if SavePDF:
         plt.savefig(name + ".pdf", bbox_inches='tight', pad_inches=0)

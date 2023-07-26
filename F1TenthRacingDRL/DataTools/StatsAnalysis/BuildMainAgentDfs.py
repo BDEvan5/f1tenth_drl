@@ -47,29 +47,31 @@ def create_main_agent_df(agent_path, test_laps=20):
 
     agent_data = []
 
-    testing_map = train_map # expand this later to use glob to find all valid test maps.
-    std_track = TrackLine(testing_map, False)
+    test_folders = glob.glob(agent_path + "Testing*/")
+    test_maps = [f.split("/")[-2][-3:] for f in test_folders]
+    for testing_map in test_maps:
+        std_track = TrackLine(testing_map.lower(), False)
 
-    for i in range(test_laps):
-        states, actions = load_agent_test_data(agent_path + f"Testing{testing_map.upper()}/", vehicle_name, i)
+        for i in range(test_laps):
+            states, actions = load_agent_test_data(agent_path + f"Testing{testing_map.upper()}/", vehicle_name, i)
 
-        if states is None: break
+            if states is None: break
 
-        time = len(states) /10
-        ss = np.linalg.norm(np.diff(states[:, 0:2], axis=0), axis=1)
-        total_distance = np.sum(ss)
+            time = len(states) /10
+            ss = np.linalg.norm(np.diff(states[:, 0:2], axis=0), axis=1)
+            total_distance = np.sum(ss)
 
-        avg_velocity = np.mean(states[:, 3])
+            avg_velocity = np.mean(states[:, 3])
 
-        progress = std_track.calculate_progress_percent(states[-1, :2])
-        if progress < 0.02 or progress > 0.98: # due to occasional calculation errors
-            if total_distance < std_track.total_s * 0.8:
-                print(f"Turned around.....")
-                progress = total_distance / std_track.total_s
-                continue
-            progress = 1 # it is finished
+            progress = std_track.calculate_progress_percent(states[-1, :2])
+            if progress < 0.02 or progress > 0.98: # due to occasional calculation errors
+                if total_distance < std_track.total_s * 0.8:
+                    print(f"Turned around.....")
+                    progress = total_distance / std_track.total_s
+                    continue
+                progress = 1 # it is finished
 
-        agent_data.append({"Lap": i, "TestMap": testing_map, "Distance": total_distance, "Progress": progress, "Time": time, "MeanVelocity": avg_velocity})
+            agent_data.append({"Lap": i, "TestMap": testing_map, "Distance": total_distance, "Progress": progress, "Time": time, "MeanVelocity": avg_velocity})
 
     agent_df = pd.DataFrame(agent_data)
     agent_df.to_csv(agent_path + "MainAgentData.csv", index=False)

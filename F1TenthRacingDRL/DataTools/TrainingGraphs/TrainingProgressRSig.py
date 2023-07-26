@@ -14,7 +14,8 @@ def make_training_progress_plot():
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
     map_name = "gbr"
-    reward_list = ["TAL", "Progress"]
+    # reward_list = ["TAL", "Progress", "Cth"]
+    reward_list = ["Cth", "TAL"]
     
     alg = "SAC"
     max_speed = 8
@@ -50,7 +51,7 @@ def make_training_progress_plot():
         # axs[0].get_yaxis().set_major_locator(MultipleLocator(25))
 
         plt.xlabel("Training Steps (x1000)")
-        plt.title(f"{reward_signal}", size=10)
+        plt.title(f"{reward_signal.upper()}", size=10)
         plt.ylim(0, 100)
         plt.grid(True)
 
@@ -58,7 +59,7 @@ def make_training_progress_plot():
     h, l = axs[0].get_legend_handles_labels()
     fig.legend(h, l, loc='lower center', bbox_to_anchor=(0.5, 0.9), ncol=3)
     
-    name = base_path +  f"Imgs/TrainingProgressComparison_RewardSignals_{set_number}"
+    name = base_path +  f"Imgs/TrainingProgress_RewardSignals_{set_number}"
     std_img_saving(name)
 
 

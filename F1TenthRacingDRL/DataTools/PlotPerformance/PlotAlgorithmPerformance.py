@@ -98,7 +98,7 @@ def make_combined_plot():
     br3 = xs + width
     brs = [br1, br2, br3]
 
-    fig = plt.figure(figsize=(5.8, 2.2), constrained_layout=True)
+    fig = plt.figure(figsize=(5.5, 2.), constrained_layout=True)
     gs = matplotlib.gridspec.GridSpec(1, 2, figure=fig)
 
     ax1 = plt.subplot(gs[0])
@@ -111,10 +111,11 @@ def make_combined_plot():
         y_data = alg_df[alg_df.Architecture == a].Progress
         ax1.bar(brs[i], y_data, label=a, width=width, color=color_pallet[i], alpha=0.3)
         for z in range(3):
+            # y_data_a = a_df[(a_df.Architecture == a) & (a_df.Repetition == z)].Success 
             y_data_a = a_df[(a_df.Architecture == a) & (a_df.Repetition == z)].Progress 
             ax1.plot(brs[i]-0.05 + 0.05*z, y_data_a, 'o', color=color_pallet[i], linewidth=2, markersize=5)
     ax1.set_xticks(xs, x_data)
-    ax1.set_ylabel("Success rate (%)")
+    ax1.set_ylabel("Completion rate (%)")
 
     for i, a in enumerate(alg_df.Architecture.unique()):
         y_data = alg_df[alg_df.Architecture == a].Time
@@ -129,10 +130,16 @@ def make_combined_plot():
     ax1.grid(True, axis='y')
     ax2.grid(True, axis='y')
     h, l = plt.gca().get_legend_handles_labels()
-    fig.legend(h, ["Full planning", "Trajectory tracking", "End-to-end"], ncol=3, bbox_to_anchor=(0.5, 0.95), loc='lower center')
+    leg = fig.legend(h, ["Full planning", "Trajectory tracking", "End-to-end"], ncol=3, bbox_to_anchor=(0.5, 0.95), loc='lower center')
+
+    leg.legend_handles[0]._alpha = 1
+    leg.legend_handles[1]._alpha = 1
+    leg.legend_handles[2]._alpha = 1
 
     plt.tight_layout()
-    plt.savefig("Data/FinalExperiment_1/Imgs/AlgorithmPerformance.svg", pad_inches=0.0, bbox_inches='tight')
+    # plt.savefig("Data/FinalExperiment_1/Imgs/AlgorithmPerformance.svg", pad_inches=0.0, bbox_inches='tight')
+    name = "Data/FinalExperiment_1/Imgs/AlgorithmPerformance"
+    std_img_saving(name, SavePDF=True)
 
 
 

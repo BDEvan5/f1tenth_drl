@@ -1,8 +1,8 @@
 
 planner_type: "AgentOff"
 
-n_repeats: 3
-start_n: 0
+n_repeats: 5
+start_n: 4
 set_n: 1
 
 random_seed: 10
@@ -12,18 +12,18 @@ num_beams: 20
 
 training_steps: 60000
 n_test_laps: 20
-algorithm: "SAC"
-# algorithm: "TD3"
+# algorithm: "SAC"
+algorithm: "TD3"
 # algorithm: "DDPG"
-# id_name: "TAL"
-id_name: "Cth"
+id_name: "TAL"
+# id_name: "Cth"
 # id_name: "Progress"
-map_name: "gbr"
-# map_name: "mco"
+# map_name: "gbr"
+map_name: "mco"
 
 runs:
-  - state_vector: "Game"
-  - state_vector: "endToEnd"
+  # - state_vector: "Game"
+  # - state_vector: "endToEnd"
   - state_vector: "TrajectoryFollower"
 
   # - planner_type: "PurePursuit"

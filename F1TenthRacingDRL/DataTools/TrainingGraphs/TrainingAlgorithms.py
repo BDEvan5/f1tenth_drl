@@ -14,30 +14,34 @@ def make_training_progress_plot():
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
     map_name = "gbr"
-    alg_list = ["DDPG", "SAC", "TD3"]
+    alg_list = ["SAC", "TD3", "DDPG"]
     
     max_speed = 8
     general_id = "TAL"
     n_repeats = 3
     n_train_steps = 60
 
-    fig, axs = plt.subplots(1, 3, figsize=(7, 2.1))
+    fig, axs = plt.subplots(2, 3, figsize=(7, 3.5))
     
     for m, alg in enumerate(alg_list):
         steps_list = []
         progresses_list = []
+        rewards_list = []
         for a, vehicle_key in enumerate(vehicle_keys):
             steps_list.append([])
             progresses_list.append([])
+            rewards_list.append([])
             for j in range(n_repeats):
                 path = base_path + f"AgentOff_{alg}_{vehicle_key}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
                 rewards, lengths, progresses, _ = load_csv_data(path)
                 steps = np.cumsum(lengths[:-1]) / 1000
                 avg_progress = true_moving_average(progresses[:-1], 30)
+                avg_rewards = true_moving_average(rewards[:-1], 30)
                 steps_list[a].append(steps)
                 progresses_list[a].append(avg_progress)
+                rewards_list[a].append(avg_rewards)
 
-        plt.sca(axs[m])
+        plt.sca(axs[0, m])
         xs = np.linspace(0, n_train_steps, 300)
         for i in range(len(steps_list)):
             colour_i = i + 0
@@ -45,19 +49,28 @@ def make_training_progress_plot():
             plt.plot(xs, mean, '-', color=color_pallet[colour_i], linewidth=2, label=labels[i])
             plt.gca().fill_between(xs, min, max, color=color_pallet[colour_i], alpha=0.2)
 
-
-        # axs[0].get_yaxis().set_major_locator(MultipleLocator(25))
-
-        plt.xlabel("Training Steps (x1000)")
-        plt.title(f"{alg}", size=10)
         plt.ylim(0, 100)
         plt.grid(True)
 
-    axs[0].set_ylabel("Track Progress %")
-    h, l = axs[0].get_legend_handles_labels()
-    fig.legend(h, l, loc='lower center', bbox_to_anchor=(0.5, 0.9), ncol=3)
+        plt.sca(axs[1, m])
+        xs = np.linspace(0, n_train_steps, 300)
+        for i in range(len(steps_list)):
+            colour_i = i + 0
+            min, max, mean = convert_to_min_max_avg(steps_list[i], rewards_list[i], xs)
+            plt.plot(xs, mean, '-', color=color_pallet[colour_i], linewidth=2, label=labels[i])
+            plt.gca().fill_between(xs, min, max, color=color_pallet[colour_i], alpha=0.2)
+
+
+        plt.xlabel("Training Steps (x1000)")
+        plt.title(f"{alg}", size=10)
+        plt.grid(True)
+
+    axs[0, 0].set_ylabel("Track Progress %")
+    axs[1, 0].set_ylabel("Episode Reward")
+    h, l = axs[0, 0].get_legend_handles_labels()
+    fig.legend(h, l, loc='lower center', bbox_to_anchor=(0.5, 0.95), ncol=3)
     
-    name = base_path +  f"Imgs/TrainingProgress_Algorithms_{set_number}"
+    name = base_path +  f"Imgs/Training_Algorithms_{set_number}"
     std_img_saving(name)
 
 
