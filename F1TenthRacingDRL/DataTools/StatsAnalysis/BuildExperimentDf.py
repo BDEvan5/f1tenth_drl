@@ -45,6 +45,7 @@ def build_experiment_df(path):
             experiment_data.append(agent_data)
 
     experiment_df = pd.DataFrame(experiment_data)
+    experiment_df = experiment_df.sort_values(["Architecture", "Algorithm", "TrainMap", "TrainID", "TestMap", "Repetition"])
     experiment_df.to_csv(path + "ExperimentData.csv", index=False)
 
 def condense_main_experiment_df(path):
@@ -73,7 +74,7 @@ def condense_main_experiment_df(path):
 
 def main():
     experiment_name = "FinalExperiment"
-    set_n = 1
+    set_n = 2
     experiment_path = f"Data/{experiment_name}_{set_n}/"
 
     build_experiment_df(experiment_path)

@@ -1,0 +1,30 @@
+
+planner_type: "PurePursuit"
+
+n_repeats: 1
+start_n: 0
+set_n: 2
+
+random_seed: 10
+max_speed: 8
+n_waypoints: 10
+num_beams: 20
+
+algorithm: "PP"
+racing_line: True
+pp_speed_mode: "racing_line"
+state_vector: "pathFollower"
+
+n_test_laps: 20
+id_name: "TAL"
+
+# map_name: "gbr"
+map_name: "mco"
+# map_name: "esp"
+# map_name: "aut"
+
+runs:
+  - map_name: "mco"
+  - map_name: "esp"
+  - map_name: "aut"
+  - map_name: "gbr"

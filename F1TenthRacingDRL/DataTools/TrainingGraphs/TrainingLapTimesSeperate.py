@@ -39,23 +39,6 @@ def make_training_crashes_plot():
             steps_list[a].append(steps)
             progresses_list[a].append(avg_progress)
             
-            crashes = []
-            for z in range(len(progresses)):
-                if progresses[z] < 99:
-                    crashes.append(steps[z])
-            
-            bin_sz = 4
-            n_bin = int(60 / bin_sz)
-            crash_bins = []
-            xs = np.arange(0, 60, bin_sz) + bin_sz / 2
-            crashes = np.array(crashes)
-            for b in range(n_bin):
-                crashes_to_come = np.sum(crashes > b * bin_sz)
-                crashes_future = np.sum(crashes > (b+1) * bin_sz)
-                n_crash = crashes_to_come - crashes_future
-                crash_bins.append(n_crash)
-                
-            crash_list[a].append(crash_bins)
             
         plt.sca(axs[a])
         mins = np.min(crash_list[a], axis=0)

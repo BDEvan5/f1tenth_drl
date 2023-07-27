@@ -35,9 +35,9 @@ def make_training_progress_plot():
                 path = base_path + f"AgentOff_{alg}_{vehicle_key}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
                 rewards, lengths, progresses, _ = load_csv_data(path)
                 steps = np.cumsum(lengths[:-1]) / 1000
-                avg_progress = true_moving_average(progresses[:-1], 30)
-                avg_rewards = true_moving_average(rewards[:-1], 30)
-                steps_list[a].append(steps)
+                new_steps, avg_progress = true_moving_average_steps(steps, progresses[:-1], 80, 1000)
+                new_steps, avg_rewards = true_moving_average_steps(steps, rewards[:-1], 80, 1000)
+                steps_list[a].append(new_steps)
                 progresses_list[a].append(avg_progress)
                 rewards_list[a].append(avg_rewards)
 
