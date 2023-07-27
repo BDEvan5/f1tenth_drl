@@ -8,21 +8,21 @@ from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 
 def make_training_crashes_plot():
-    set_number = 2
+    set_number = 1
     base_path = f"Data/FinalExperiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
     max_speed = 8
     general_id = "TAL"
-    n_repeats = 5
+    n_repeats = 3
     n_train_steps = 60
     algorithm = "TD3"
 
     fig, axs = plt.subplots(1, 3, figsize=(5, 2.1), sharey=True)
     iteration = 0
-    # map_name = "gbr"
-    map_name = "mco"
+    map_name = "gbr"
+    # map_name = "mco"
     steps_list = []
     progresses_list = []
     crash_list = [] # store the train steps at which crashes took place
