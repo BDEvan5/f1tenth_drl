@@ -8,7 +8,7 @@ from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 
 def make_training_crashes_plot():
-    set_number = 1
+    set_number = 4
     base_path = f"Data/FinalExperiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
@@ -18,11 +18,12 @@ def make_training_crashes_plot():
     n_repeats = 3
     n_train_steps = 60
     algorithm = "TD3"
+    # algorithm = "SAC"
 
     fig, axs = plt.subplots(1, 3, figsize=(5, 2.1), sharey=True)
     iteration = 0
     map_name = "gbr"
-    # map_name = "mco"
+    map_name = "mco"
     steps_list = []
     progresses_list = []
     crash_list = [] # store the train steps at which crashes took place
@@ -73,7 +74,7 @@ def make_training_crashes_plot():
     axs[1].set_xlabel("Training Steps (x1000)")
     axs[0].set_ylabel("# crashes")
     
-    name = f"{base_path}Imgs/TrainingCrashComparison_{set_number}"
+    name = f"{base_path}Imgs/TrainingCrashComparison_{map_name.upper()}_{set_number}"
     std_img_saving(name)
 
 

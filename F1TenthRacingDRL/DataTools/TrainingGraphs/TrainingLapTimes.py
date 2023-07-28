@@ -61,20 +61,15 @@ def make_training_laptimes_plot():
         axs[0, z].grid(True, axis='both')
         axs[1, z].grid(True, axis='both')
         axs[0, z].set_title(labels[z], size=11)
+        axs[0, z].text(48, 86, "SAC", fontdict={'fontsize': 10, 'fontweight':'bold'}, ha='center', bbox=dict(facecolor='white', alpha=0.99, boxstyle='round,pad=0.15', edgecolor='gainsboro'))
+        axs[1, z].text(48, 86, "TD3", fontdict={'fontsize': 10, 'fontweight':'bold'}, ha='center', bbox=dict(facecolor='white', alpha=0.99, boxstyle='round,pad=0.15', edgecolor='gainsboro'))
 
-    # axs[0, 1].set_title("SAC", size=10, fontdict={'fontweight':'bold'})
-    # axs[1, 1].set_title("TD3", size=10, fontdict={'fontweight':'bold'})
-
-    # axs[0, 1].text(30, 85, "SAC", fontdict={'fontsize': 12, 'fontweight':'bold'}, ha='center')
-    # axs[1, 1].text(30, 85, "TD3", fontdict={'fontsize': 12, 'fontweight':'bold'}, ha='center')
-    axs[0, 0].text(45, 82, "SAC", fontdict={'fontsize': 13, 'fontweight':'bold'}, ha='center', bbox=dict(facecolor='white', alpha=0.99, boxstyle='round,pad=0.25', edgecolor='grey'))
-    axs[1, 0].text(45, 82, "TD3", fontdict={'fontsize': 13, 'fontweight':'bold'}, ha='center', bbox=dict(facecolor='white', alpha=0.99, boxstyle='round,pad=0.25', edgecolor='grey'))
 
     axs[1, 1].set_xlabel("Training Steps (x1000)")
     # plt.title(f"{map_name.upper()}", size=10)
     plt.xlim(0, n_train_steps)
     plt.grid(True)
-    # plt.gca().yaxis.set_major_locator(MultipleLocator(30))
+    plt.gca().yaxis.set_major_locator(MultipleLocator(20))
 
     axs[1, 0].set_ylabel("Lap times (s)")
     axs[0, 0].set_ylabel("Lap times (s)")

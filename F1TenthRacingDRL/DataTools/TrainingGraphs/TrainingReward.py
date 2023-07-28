@@ -20,7 +20,8 @@ def make_training_reward_plot():
     max_speed = 8
     general_id = "TAL"
     n_repeats = 3
-    algorithm = "TD3"
+    algorithm = "SAC"
+    # algorithm = "TD3"
     n_train_steps = 60
 
     fig, axs = plt.subplots(1, 2, figsize=(5, 2.1))
