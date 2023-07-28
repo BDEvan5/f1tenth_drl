@@ -1,9 +1,9 @@
 
 planner_type: "AgentOff"
 
-n_repeats: 3
+n_repeats: 1
 start_n: 0
-set_n: 4
+set_n: 1
 
 random_seed: 100
 max_speed: 8
@@ -18,21 +18,21 @@ algorithm: "SAC"
 id_name: "TAL"
 # id_name: "Cth"
 # id_name: "Progress"
-# map_name: "gbr"
-map_name: "mco"
+map_name: "gbr"
+# map_name: "mco"
 # map_name: "esp"
 # map_name: "aut"
 
 note: "Look for answers on MCO map"
 
 runs:
-  - state_vector: "Game"
-  - state_vector: "endToEnd"
-  - state_vector: "TrajectoryFollower"
+  # - state_vector: "Game"
+  # - state_vector: "endToEnd"
+  # - state_vector: "TrajectoryFollower"
 
-  # - planner_type: "PurePursuit"
-  #   algorithm: "PP"
-  #   racing_line: True
-  #   pp_speed_mode: "racing_line"
-  #   state_vector: "pathFollower"
+  - planner_type: "PurePursuit"
+    algorithm: "PP"
+    racing_line: True
+    pp_speed_mode: "racing_line"
+    state_vector: "pathFollower"
 

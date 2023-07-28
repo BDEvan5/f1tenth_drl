@@ -13,7 +13,7 @@ def std_img_saving(name, SavePDF=True):
     # plt.grid(True)
     plt.savefig(name + ".svg", bbox_inches='tight', pad_inches=0)
     if SavePDF:
-        plt.savefig(name + ".pdf", bbox_inches='tight', pad_inches=0)
+        plt.savefig(name + ".pdf", bbox_inches='tight', pad_inches=0.02)
 
 
 

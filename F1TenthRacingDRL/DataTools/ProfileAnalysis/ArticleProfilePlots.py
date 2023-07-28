@@ -9,13 +9,17 @@ from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 set_number = 1
 id_name = "TAL"
-map_name = "mco"
-rep_number = 4
+# id_name = "Cth"
+map_name = "gbr"
+# map_name = "mco"
+# algorithm = "TD3"
+algorithm = "SAC"
+rep_number = 0
 base = f"Data/FinalExperiment_{set_number}/"
 names = ["Full planning", "Trajectory tracking", "End-to-end", "Classic"]
-sub_paths = [f"AgentOff_SAC_Game_{map_name}_TAL_8_{set_number}_{rep_number}/",
-                f"AgentOff_SAC_TrajectoryFollower_{map_name}_TAL_8_{set_number}_{rep_number}/",
-                f"AgentOff_SAC_endToEnd_{map_name}_TAL_8_{set_number}_{rep_number}/", 
+sub_paths = [f"AgentOff_{algorithm}_Game_{map_name}_{id_name}_8_{set_number}_{rep_number}/",
+                f"AgentOff_{algorithm}_TrajectoryFollower_{map_name}_{id_name}_8_{set_number}_{rep_number}/",
+                f"AgentOff_{algorithm}_endToEnd_{map_name}_{id_name}_8_{set_number}_{rep_number}/", 
                 f"PurePursuit_PP_pathFollower_{map_name}_TAL_8_{set_number}_{rep_number}/"]
 
 lap_n = 0
@@ -189,9 +193,40 @@ def speed_distributions():
     std_img_saving(name, True)
 
 
+def slip_distributions():
+    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths)]
+    
+    fig, axes = plt.subplots(1, 4, figsize=(6, 1.7), sharex=True, sharey=True)
+        
+    state_speed_list = [np.abs(d.states[:, 6]) for d in data_list]
+        
+    bins = np.arange(0, 0.5, 0.05)
+    # bins = np.arange(2, 8, 0.5)
+    for i in range(len(data_list)):
+        axes[i].hist(state_speed_list[i], color=color_pallet[i], bins=bins, alpha=0.65, density=True)
+        
+        axes[i].set_xlim(-0.05, 0.5)
+        axes[i].grid(True)
+        axes[i].set_title(names[i], fontsize=10)
+        axes[i].xaxis.set_tick_params(labelsize=8)
+        
+    axes[0].set_ylim(0, 10)
+    fig.text(0.54, 0.02, "Vehicle Speed (m/s)", fontsize=10, ha='center')
+    axes[0].set_ylabel("Density", fontsize=10)
+    # axes[0].yaxis.set_major_locator(MultipleLocator(0.15))
+    axes[0].yaxis.set_tick_params(labelsize=8)
+    
+    plt.tight_layout()
+    name = f"{base}Imgs/SlipDistributions{map_name.upper()}"
+    std_img_saving(name, True)
 
-speed_profile_comparison()
-plt.clf()
-speed_profile_deviation()
-plt.clf()
-speed_distributions()
+
+
+# speed_profile_comparison()
+# plt.clf()
+# speed_profile_deviation()
+# plt.clf()
+# speed_distributions()
+
+
+slip_distributions()
