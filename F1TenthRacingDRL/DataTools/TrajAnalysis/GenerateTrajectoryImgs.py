@@ -44,7 +44,7 @@ class AnalyseTestLapData:
         print(path)
         # vehicle_folders = glob.glob(f"{path}*/")
         # vehicle_folders = glob.glob(f"{path}Pure*mco*0/")
-        vehicle_folders = glob.glob(f"{path}*mco*0/")
+        vehicle_folders = glob.glob(f"{path}*mco*1/")
         # vehicle_folders = glob.glob(f"{path}*0/")
         print(f"{len(vehicle_folders)} folders found")
 
@@ -198,7 +198,7 @@ def mco_right_limits():
 def analyse_folder():
 
     p = "Data/"
-    set_n = 1
+    set_n = 4
 
     path = p + f"FinalExperiment_{set_n}/"
     
