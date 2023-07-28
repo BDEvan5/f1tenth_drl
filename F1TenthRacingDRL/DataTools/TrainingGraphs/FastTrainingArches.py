@@ -11,12 +11,14 @@ def make_TrainingGraph():
     base_path = "Data/"
     test_name = "FinalExperiment" 
     # test_name = "PreTrained" 
-    set_number = 1
+    set_number = 4
     p = base_path + test_name + f"_{set_number}/"
     max_speed = 8
     general_id = "TAL"
     # map_name = "gbr"
     map_name = "mco"
+    algorithm = "TD3"
+    # algorithm = "SAC"
 
     steps_list = []
     progresses_list = []
@@ -32,7 +34,7 @@ def make_TrainingGraph():
         progresses_list.append([])
         # for j in range(2, 3):
         for j in range(n_repeats):
-            path = p + f"AgentOff_SAC_{architecture}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
+            path = p + f"AgentOff_{algorithm}_{architecture}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
             rewards, lengths, progresses, _ = load_csv_data(path)
             steps = np.cumsum(lengths[:-1]) / 1000
             avg_progress = true_moving_average(progresses[:-1], 30)

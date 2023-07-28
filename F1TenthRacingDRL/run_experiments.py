@@ -134,10 +134,10 @@ def main():
     # experiment = "PreTrained"
     experiment = "FinalExperiment"
     
-    run_training_batch(experiment)
+    # run_training_batch(experiment)
     # run_testing_batch(experiment)
 
-    # run_general_test_batch(experiment)
+    run_general_test_batch(experiment)
 
 def run_pp_tests():
     experiment = "ConfigPP"
@@ -146,7 +146,7 @@ def run_pp_tests():
 
     
 if __name__ == "__main__":
-    # main()
-    run_pp_tests()
+    main()
+    # run_pp_tests()
     # run_general_test_batch()
 

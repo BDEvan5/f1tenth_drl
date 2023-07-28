@@ -1,11 +1,11 @@
 
 planner_type: "AgentOff"
 
-n_repeats: 1
+n_repeats: 3
 start_n: 0
-set_n: 2
+set_n: 4
 
-random_seed: 10
+random_seed: 100
 max_speed: 8
 n_waypoints: 10
 num_beams: 20
@@ -23,14 +23,16 @@ map_name: "mco"
 # map_name: "esp"
 # map_name: "aut"
 
-runs:
-  # - state_vector: "Game"
-  # - state_vector: "endToEnd"
-  # - state_vector: "TrajectoryFollower"
+note: "Look for answers on MCO map"
 
-  - planner_type: "PurePursuit"
-    algorithm: "PP"
-    racing_line: True
-    pp_speed_mode: "racing_line"
-    state_vector: "pathFollower"
+runs:
+  - state_vector: "Game"
+  - state_vector: "endToEnd"
+  - state_vector: "TrajectoryFollower"
+
+  # - planner_type: "PurePursuit"
+  #   algorithm: "PP"
+  #   racing_line: True
+  #   pp_speed_mode: "racing_line"
+  #   state_vector: "pathFollower"
 

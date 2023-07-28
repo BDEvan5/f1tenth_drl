@@ -13,11 +13,14 @@ def make_training_reward_plot():
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
-    map_list = ["mco", "gbr"]
+    map_list = ["gbr", "mco"]
+    sets = [1, 4]
+    base_list = [f"Data/FinalExperiment_{sets[0]}/", f"Data/FinalExperiment_{sets[1]}/"]
     
     max_speed = 8
     general_id = "TAL"
     n_repeats = 3
+    algorithm = "TD3"
     n_train_steps = 60
 
     fig, axs = plt.subplots(1, 2, figsize=(5, 2.1))
@@ -29,11 +32,12 @@ def make_training_reward_plot():
             steps_list.append([])
             rewards_list.append([])
             for j in range(n_repeats):
-                path = base_path + f"AgentOff_SAC_{vehicle_key}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
+                path = base_list[m] + f"AgentOff_{algorithm}_{vehicle_key}_{map_name}_{general_id}_{max_speed}_{sets[m]}_{j}/"
                 rewards, lengths, progresses, _ = load_csv_data(path)
                 steps = np.cumsum(lengths[:-1]) / 1000
-                avg_reward = true_moving_average(rewards[:-1], 30)
-                steps_list[a].append(steps)
+                # new_steps, avg_reward = true_moving_average_steps(steps, progresses[:-1], 50, 1000)
+                new_steps, avg_reward = true_moving_average_steps(steps, rewards[:-1], 50, 1000)
+                steps_list[a].append(new_steps)
                 rewards_list[a].append(avg_reward)
 
         plt.sca(axs[m])
@@ -56,7 +60,7 @@ def make_training_reward_plot():
     h, l = axs[0].get_legend_handles_labels()
     fig.legend(h, l, loc='lower center', bbox_to_anchor=(0.5, 0.9), ncol=3)
     
-    name = f"{base_path}Imgs/TrainingRewardComparison_{set_number}"
+    name = f"{base_path}Imgs/TrainingRewardComparisonMaps_{set_number}"
     std_img_saving(name)
 
 
