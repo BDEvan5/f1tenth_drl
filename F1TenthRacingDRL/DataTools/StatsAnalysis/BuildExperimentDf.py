@@ -60,6 +60,7 @@ def condense_main_experiment_df(path):
 
         mean_data = data.iloc[0].to_dict()
         mean_data["Time"] = data["Time"].mean()
+        mean_data["TimeS"] = data["Time"].std()
         mean_data["Distance"] = data["Distance"].mean()
         mean_data["Progress"] = data["Progress"].mean() 
         mean_data["ProgressS"] = data["Progress"].std() 
