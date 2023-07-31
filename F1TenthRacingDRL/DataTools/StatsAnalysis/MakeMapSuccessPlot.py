@@ -85,14 +85,14 @@ def make_combined_plot():
 
     ax1.grid(True, axis="y")
     ax2.grid(True, axis="y")
-    fig.legend(ncol=3, bbox_to_anchor=(0.5, 0.9), loc='lower center')
+    fig.legend(["Full planning", "Trajectory tracking", "End-to-end"], ncol=3, bbox_to_anchor=(0.5, 0.9), loc='lower center')
 
     ax1.yaxis.set_major_locator(plt.MaxNLocator(6))
     ax2.yaxis.set_major_locator(plt.MaxNLocator(6))
     ax2.set_yticklabels([])
-    ax1.set_ylabel("Success Rate (%)")
+    ax1.set_ylabel("Completion \nrate (%)")
 
-    name = "Data/FinalExperiment_1/Imgs/MapTransferSuccess"
+    name = "Data/FinalExperiment_1/Imgs/MapTransferCompletionRate"
     std_img_saving(name)
 
 

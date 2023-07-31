@@ -1,0 +1,38 @@
+
+planner_type: "AgentOff"
+
+n_repeats: 3
+start_n: 0
+set_n: 1
+
+random_seed: 100
+max_speed: 8
+n_waypoints: 10
+num_beams: 20
+
+training_steps: 60000
+n_test_laps: 20
+algorithm: "SAC"
+# algorithm: "TD3"
+# algorithm: "DDPG"
+id_name: "TAL"
+# id_name: "Cth"
+# id_name: "Progress"
+map_name: "gbr"
+# map_name: "mco"
+# map_name: "esp"
+# map_name: "aut"
+
+# note: "Look for answers on MCO map"
+
+runs:
+  - state_vector: "Game"
+  - state_vector: "endToEnd"
+  - state_vector: "TrajectoryFollower"
+
+  # - planner_type: "PurePursuit"
+  #   algorithm: "PP"
+  #   racing_line: True
+  #   pp_speed_mode: "racing_line"
+  #   state_vector: "pathFollower"
+

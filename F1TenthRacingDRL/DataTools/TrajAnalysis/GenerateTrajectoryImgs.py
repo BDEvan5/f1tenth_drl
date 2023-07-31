@@ -44,7 +44,8 @@ class AnalyseTestLapData:
         print(path)
         # vehicle_folders = glob.glob(f"{path}*/")
         # vehicle_folders = glob.glob(f"{path}Pure*mco*0/")
-        vehicle_folders = glob.glob(f"{path}*mco*1/")
+        # vehicle_folders = glob.glob(f"{path}*esp*1/")
+        vehicle_folders = glob.glob(f"{path}*mco*0/")
         # vehicle_folders = glob.glob(f"{path}*0/")
         print(f"{len(vehicle_folders)} folders found")
 
@@ -65,6 +66,7 @@ class AnalyseTestLapData:
     
     def process_folder(self):
         # self.map_name = self.vehicle_name.split("_")[3]
+        self.map_name = "esp"
         self.map_data = MapData(self.map_name)
         self.std_track = TrackLine(self.map_name, False)
         self.racing_track = TrackLine(self.map_name, True)
@@ -87,6 +89,7 @@ class AnalyseTestLapData:
 
     def load_lap_data(self):
         try:
+            # data = np.load(self.path + f"TestingESP/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
             data = np.load(self.path + f"Testing{self.map_name.upper()}/Lap_{self.lap_n}_history_{self.vehicle_name}.npy")
         except Exception as e:
             print(e)
@@ -129,25 +132,28 @@ class AnalyseTestLapData:
         ax.spines['bottom'].set_visible(False)
         ax.spines['left'].set_visible(False)
         
-        name = self.testing_velocity_path + f"{self.vehicle_name}_velocity_map_{self.lap_n}"
+        name = self.testing_velocity_path + f"{self.vehicle_name}_velocity_map_{self.lap_n}_{self.map_name}"
         std_img_saving(name, SAVE_PDF)        
         
-        # esp_right_limits()
-        t = plt.text(895, 475, vehicle_names[self.vehicle_number], size=25, bbox=dict(facecolor="white", edgecolor="white"), horizontalalignment='center')
+        esp_right_limits()
+        # t = plt.text(895, 475, vehicle_names[self.vehicle_number], size=25, bbox=dict(facecolor="white", edgecolor="white"), horizontalalignment='center') # use for MCO
+        t = plt.text(1180, 135, vehicle_names[self.vehicle_number], size=22, bbox=dict(facecolor="white", edgecolor="white"), horizontalalignment='center') # sue for ESP
         # t = plt.text(760, 275, vehicle_names[self.vehicle_number], size=25, bbox=dict(facecolor="white", edgecolor="white"))
-        mco_right_limits()
-        name = self.clipped_trajectories_path + f"RIGHT_{self.vehicle_name}_velocity_map_{self.lap_n}"
+        # mco_right_limits()
+        name = self.clipped_trajectories_path + f"RIGHT_{self.vehicle_name}_velocity_map_{self.lap_n}_{self.map_name}"
         std_img_saving(name, SAVE_PDF)
         t.remove()
         
-        mco_left_limits()
-        plt.text(320, 760, vehicle_names[self.vehicle_number], size=26, bbox=dict(facecolor="white", edgecolor="white"),horizontalalignment='center')
-        # esp_left_limits()
+        esp_left_limits()
+        # mco_left_limits()
+        # plt.text(320, 760, vehicle_names[self.vehicle_number], size=26, bbox=dict(facecolor="white", edgecolor="white"),horizontalalignment='center') # use for MCO
+        plt.text(390, 400, vehicle_names[self.vehicle_number], size=26, bbox=dict(facecolor="white", edgecolor="white"),horizontalalignment='center')  # sue for ESP
         cbar.remove()
         cbar = plt.colorbar(line,fraction=0.046, pad=0.04, shrink=0.6)
         cbar.ax.get_yaxis().set_major_locator(MultipleLocator(2))
         cbar.ax.tick_params(labelsize=25)
-        name = self.clipped_trajectories_path + f"LEFT_{self.vehicle_name}_velocity_map_{self.lap_n}"
+
+        name = self.clipped_trajectories_path + f"LEFT_{self.vehicle_name}_velocity_map_{self.lap_n}_{self.map_name}"
         std_img_saving(name, SAVE_PDF)
 
     def slip_angle_distribution(self):
@@ -184,7 +190,7 @@ def esp_left_limits():
     plt.ylim(50, 520)
 
 def esp_right_limits():
-    plt.xlim(900, 1500)
+    plt.xlim(940, 1490)
     plt.ylim(50, 520)
     
 def mco_left_limits():

@@ -79,7 +79,7 @@ def make_training_crashes_plot():
 
 
 def make_training_crashes_plot_dual():
-    set_number = 4
+    set_number = 1
     base_path = f"Data/FinalExperiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
@@ -93,8 +93,8 @@ def make_training_crashes_plot_dual():
     # algorithm = "SAC"
 
     fig, axs = plt.subplots(2, 3, figsize=(5, 2.8), sharey=True)
-    # map_name = "gbr"
-    map_name = "mco"
+    map_name = "gbr"
+    # map_name = "mco"
     for alg, algorithm in enumerate(algorithm_list):
         steps_list = []
         progresses_list = []

@@ -92,112 +92,6 @@ class TestLapData:
     
     
 
-def speed_profile_comparison():
-    
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths_td3)]
-    xs_list = [d.generate_state_progress_list() for d in data_list]
-    xs = np.linspace(0, 100, 200)
-    speed_list = [np.interp(xs, xs_list[i], data_list[i].states[:, 3]) for i in range(len(data_list))]
-    
-    plt.figure(1, figsize=(6, 1.9))
-    ax1 = plt.gca()
-    for n, name in enumerate(names):
-        ax1.plot(xs, speed_list[n], color=color_pallet[n], label=name)
-
-    ax1.set_ylabel("Speed m/s")
-    ax1.set_xlabel("Track progress (%)")
-    ax1.legend(ncol=4, fontsize=9, loc='lower center', bbox_to_anchor=(0.5, 0.96))
-
-    plt.grid(True)
-    plt.tight_layout()
-    plt.xlim(10, 60)
-
-    plt.savefig(f"{base}Imgs/CompareSpeed_{map_name.upper()}.svg", bbox_inches='tight')
-    plt.savefig(f"{base}Imgs/CompareSpeed_{map_name.upper()}.pdf", bbox_inches='tight')
-
-def curvature_profile_comparison():
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths_td3)]
-    
-    xs = np.linspace(0, 100, 200)
-    curve_list = [d.calculate_curvature(200) for d in data_list]
-
-    plt.figure(1, figsize=(6, 1.9))
-    ax1 = plt.gca()
-    for n, name in enumerate(names):
-        ax1.plot(xs[:-1], np.abs(curve_list[n]), color=color_pallet[n], label=name)
-    
-    ax1.set_ylabel("Curvature (rad/m)")
-    ax1.set_xlabel("Track progress (%)")
-    ax1.legend(ncol=4, fontsize=9, loc='lower center', bbox_to_anchor=(0.5, 0.96))
-
-    plt.grid(True)
-    plt.tight_layout()
-    plt.xlim(10, 60)
-    plt.xlim(30, 60)
-    plt.gca().yaxis.set_major_locator(MultipleLocator(1.5))
-    y_lim = 4
-    plt.ylim(0, y_lim)
-    # plt.ylim(-y_lim, y_lim)
-
-    plt.savefig(f"{base}Imgs/CompareCurvature_{map_name.upper()}.svg", bbox_inches='tight')
-    plt.savefig(f"{base}Imgs/CompareCurvature_{map_name.upper()}.pdf", bbox_inches='tight')
-
-    # plt.show()
-    
-def speed_profile_deviation():
-
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths_td3)]
-    xs_list = [d.generate_state_progress_list() for d in data_list]
-    xs = np.linspace(0, 100, 200)
-    speed_list = [np.interp(xs, xs_list[i], data_list[i].states[:, 3]) for i in range(len(data_list))]
-    
-    plt.figure(1, figsize=(6, 1.9))
-    ax1 = plt.gca()
-    for n, name in enumerate(names[:-1]):
-        ax1.plot(xs, speed_list[n] - speed_list[-1], color=color_pallet[n], label=name)
-
-    ax1.set_ylabel("Speed \n deviation (m/s)", fontsize=10)
-    ax1.set_xlabel("Track progress (%)")
-    ax1.legend(ncol=4, fontsize=10, loc='lower center', bbox_to_anchor=(0.5, 0.96))
-
-    plt.grid(True)
-    plt.tight_layout()
-    plt.xlim(10, 60)
-    # plt.xlim(-2, 80)
-    plt.gca().yaxis.set_major_locator(MultipleLocator(2.5))
-
-    plt.savefig(f"{base}Imgs/SpeedDifference_{map_name.upper()}.svg", bbox_inches='tight')
-    plt.savefig(f"{base}Imgs/SpeedDifference_{map_name.upper()}.pdf", bbox_inches='tight')
-
-    # plt.show()
-    
-
-
-def speed_distributions():
-    data_list = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths_td3)]
-    
-    fig, axes = plt.subplots(1, 4, figsize=(6, 1.7), sharex=False, sharey=True)
-        
-    state_speed_list = [d.states[:, 3] for d in data_list]
-        
-    bins = np.arange(2, 8, 0.5)
-    for i in range(len(data_list)):
-        axes[i].hist(state_speed_list[i], color=color_pallet[i], alpha=0.65, bins=bins, density=True)
-        
-        axes[i].set_xlim(2, 8)
-        axes[i].grid(True)
-        axes[i].set_title(names[i], fontsize=10)
-        axes[i].xaxis.set_tick_params(labelsize=8)
-        
-    # axes[0].set_ylim(0, 110)
-    fig.text(0.54, 0.02, "Vehicle Speed (m/s)", fontsize=10, ha='center')
-    axes[0].set_ylabel("Density", fontsize=10)
-    axes[0].yaxis.set_major_locator(MultipleLocator(0.15))
-    axes[0].yaxis.set_tick_params(labelsize=8)
-    
-    plt.tight_layout()
-    name = f"{base}Imgs/SpeedDistributions{map_name.upper()}"
-    std_img_saving(name, True)
 
 def speed_distributions_algs():
     data_list_t = [TestLapData(base + p, lap_list[i]) for i, p in enumerate(sub_paths_td3)]
@@ -223,7 +117,7 @@ def speed_distributions_algs():
         axes[1, i].xaxis.set_tick_params(labelsize=8)
 
         if i < 3:
-            y_val = 0.37
+            y_val = 0.45
             x_val = 5.8
             axes[0, i].text(x_val, y_val, "TD3", fontdict={'fontsize': 10, 'fontweight':'bold'}, bbox=dict(facecolor='white', alpha=0.99, boxstyle='round,pad=0.15', edgecolor='gainsboro'))
             axes[1, i].text(x_val, y_val, "SAC", fontdict={'fontsize': 10, 'fontweight':'bold'}, bbox=dict(facecolor='white', alpha=0.99, boxstyle='round,pad=0.15', edgecolor='gainsboro'))

@@ -28,7 +28,7 @@ def make_training_laptimes_plot():
 
     # fig, axs = plt.subplots(1, 1, figsize=(5, 1.7))
     # fig, axs = plt.subplots(1, 1, figsize=(5, 2.1))
-    fig, axs = plt.subplots(2, 3, figsize=(5.3, 3.), sharey=True, sharex=True)
+    fig, axs = plt.subplots(2, 3, figsize=(5.3, 2.8), sharey=True, sharex=True)
     
     for a_n, algorithm in enumerate(algorithm_list):
         steps_list = []
@@ -77,7 +77,7 @@ def make_training_laptimes_plot():
     # fig.legend(h, l, loc='lower center', bbox_to_anchor=(0.5, 0.9), ncol=3)
     # fig.legend(h[:3], l[:3], loc='lower center', bbox_to_anchor=(0.5, 0.9), ncol=3)
     
-    name = f"{base_path}Imgs/TrainingLapTimesArchitectures_{set_number}"
+    name = f"{base_path}Imgs/TrainingLapTimesAlgorithms_{set_number}"
     std_img_saving(name)
 
 
