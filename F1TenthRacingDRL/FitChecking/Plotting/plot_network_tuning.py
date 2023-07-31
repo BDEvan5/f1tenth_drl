@@ -47,8 +47,8 @@ def plot_n_beams_avg():
     df["test_low"] = df["TestLoss"] - df["TestLossStd"]
     df["test_high"] = df["TestLoss"] + df["TestLossStd"]
     
-    plt.fill_between(df["Neurons"], df["train_low"], df["train_high"], color=pp[0], alpha=0.25)
-    plt.fill_between(df["Neurons"], df["test_low"], df["test_high"], color=pp[1], alpha=0.15)
+    # plt.fill_between(df["Neurons"], df["train_low"], df["train_high"], color=pp[0], alpha=0.25)
+    # plt.fill_between(df["Neurons"], df["test_low"], df["test_high"], color=pp[1], alpha=0.15)
     
     plt.xlabel("Number of Neurons")
     plt.ylabel("Loss")
@@ -103,8 +103,8 @@ def plot_n_beams_avg_small():
     test_pos = test_loss_mean + test_loss_std
     test_neg = test_loss_mean - test_loss_std
     
-    plt.fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.3)
-    plt.fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.3)
+    # plt.fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.3)
+    # plt.fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.3)
     
     plt.xlabel("Number of beams")
     plt.ylabel("Loss (RMSE)")

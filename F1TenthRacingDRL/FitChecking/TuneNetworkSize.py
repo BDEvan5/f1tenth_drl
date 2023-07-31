@@ -166,7 +166,8 @@ def tune_neural_network_size(n_seeds=10):
     #     f.write(f"TrainLoss mean, TrainLoss std ,   TestLoss mean, TestLoss std \n")
         
     # network_sizes = np.array([20, 50, 80, 100, 150, 200, 250, 300])
-    network_sizes = np.array([10, 15, 30])
+    # network_sizes = np.array([10, 15, 30])
+    network_sizes = np.array([10, 15])
     seeds = np.arange(n_seeds)
     for network_sz in network_sizes:
         train_losses, test_losses = run_seeded_test(folder, name_key, seeds, network_sz)
@@ -174,9 +175,13 @@ def tune_neural_network_size(n_seeds=10):
         np.save(f"{save_path}{experiment_name}_{network_sz}_train_losses.npy", train_losses)
         np.save(f"{save_path}{experiment_name}_{network_sz}_test_losses.npy", test_losses)
         
-        with open(f"{save_path}{experiment_name}_LossResults.txt", "a") as f:
+        # with open(f"{save_path}{experiment_name}_LossResults.txt", "a") as f:
+        #     f.write(f"{network_sz},".ljust(spacing))
+        #     f.write(f"{np.mean(train_losses[:, -1]):.5f},     {np.std(train_losses[:, -1]):.5f},       {np.mean(test_losses[:, -1]):.5f},       {np.std(test_losses[:, -1]):.5f} \n")
+        
+        with open(f"{save_path}{experiment_name}_LossResults_q.txt", "a") as f:
             f.write(f"{network_sz},".ljust(spacing))
-            f.write(f"{np.mean(train_losses[:, -1]):.5f},     {np.std(train_losses[:, -1]):.5f},       {np.mean(test_losses[:, -1]):.5f},       {np.std(test_losses[:, -1]):.5f} \n")
+            f.write(f"{np.mean(train_losses[:, -1]):.5f},     {np.percentile(train_losses[:, -1], 25):.5f},         {np.percentile(train_losses[:, -1], 75):.5f},       {np.mean(test_losses[:, -1]):.5f},       {np.percentile(test_losses[:, -1], 25):.5f},         {np.percentile(test_losses[:, -1], 75):.5f} \n")
         
         
         

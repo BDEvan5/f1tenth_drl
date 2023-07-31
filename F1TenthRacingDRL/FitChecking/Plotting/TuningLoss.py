@@ -41,8 +41,8 @@ def TuningData_loss_graphs():
     test_pos = test_loss_mean + test_loss_std
     test_neg = test_loss_mean - test_loss_std
     
-    axes[0].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.25)
-    axes[0].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.15)
+    # axes[0].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.25)
+    # axes[0].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.15)
     
     axes[0].set_xlabel("Number of beams")
     axes[0].set_ylabel("Loss")
@@ -80,8 +80,8 @@ def TuningData_loss_graphs():
     test_pos = test_loss_mean + test_loss_std
     test_neg = test_loss_mean - test_loss_std
     
-    axes[1].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.25)
-    axes[1].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.15)
+    # axes[1].fill_between(name_values, train_pos, train_neg, color=pp[0], alpha=0.25)
+    # axes[1].fill_between(name_values, test_pos, test_neg, color=pp[1], alpha=0.15)
     
     axes[1].set_xlabel("Number of waypoints")
     # axes[1].set_ylabel("Loss (RMSE)")
