@@ -106,7 +106,39 @@ def plot_actions(folders, folder_name):
         plt.savefig(path + folder.split("/")[-2] + "__" + name + ".svg")
 
 
+def calculate_states(folders, folder_name):
+    for folder in folders:
+        path = create_test_paths(folder_name, "Trajectories")
 
+        name = folder.split("/")[-1]
+        number = name.split("_")[-1] 
+        vehicle = folder.split("/")[-2]
+        print(f"Path: {vehicle} -> {name} -> {number}")
+
+        map_data = MapData("CornerHall") 
+
+        ensure_path_exists(path)
+
+        with open(folder + f"/{name}_states_{number}.csv") as file:
+            state_reader = csv.reader(file, delimiter=',')
+            state_list = []
+            for row in state_reader:
+                state_list.append(row)
+            states = np.array(state_list[1:]).astype(float)
+
+        pts = states[:, 0:2]
+        dists = np.linalg.norm(pts[1:] - pts[:-1], axis=1)
+        distances = np.sum(dists)
+
+        ths = states[:, 2]
+        dts = ths[1:] - ths[:-1]
+        dts = dts[dists > 0.05]
+        dists = dists[dists > 0.05]
+        curvatures = np.abs(dts / dists)
+        total_curvatures = np.sum(curvatures)
+        mean_curvatures = np.mean(curvatures)
+
+        print(f"Total distance: {np.sum(distances)}, Total Curvature: {np.sum(total_curvatures)}, Mean Curvature: {np.mean(mean_curvatures)}")
 
 
 if __name__ == "__main__":
@@ -114,9 +146,13 @@ if __name__ == "__main__":
     folder = "ResultsJetson24_2"
     folder = "ResultsJetson25"
     folder = "SimAug_1"
+    folder = "SimAug_1_2"
+    folder = "SimAug_1_4"
+    folder = "SimAug_1_5"
 
 
     fs = find_folders(folder)
     plot_trajectories(fs, folder)
-    plot_actions(fs, folder)
+    # plot_actions(fs, folder)
 
+    calculate_states(fs, folder)

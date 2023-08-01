@@ -53,7 +53,7 @@ class SpeedResults:
                 state_list.append(row)
             states = np.array(state_list[1:]).astype(float)
         self.states.append(states)
-        self.delays.append(delay * 0.04 * 1000)
+        self.delays.append(delay*0.04*1000 )
 
         with open(folder + f"/Run_{run_n}_actions_{run_n}.csv") as file:
             action_reader = csv.reader(file, delimiter=',')
@@ -152,24 +152,24 @@ def make_fast_laptime_plot():
     # real_data[2].load_state_data(sim_folder, 5, 5)
     # real_data[2].load_state_data(sim_folder, 6, 6)
 
-    # real_data[3].load_state_data(sim_folder, 0, 0)
-    # real_data[3].load_state_data(sim_folder, 1, 1)
-    # real_data[3].load_state_data(sim_folder, 2, 2)
-    # real_data[3].load_state_data(sim_folder, 3, 3)
-    # real_data[3].load_state_data(sim_folder, 4, 4)
+    real_data[3].load_state_data(sim_folder, 0, 0)
+    real_data[3].load_state_data(sim_folder, 1, 1)
+    real_data[3].load_state_data(sim_folder, 2, 2)
+    real_data[3].load_state_data(sim_folder, 3, 3)
+    real_data[3].load_state_data(sim_folder, 4, 4)
     # real_data[3].load_state_data(sim_folder, 5, 5)
 
     xs = np.arange(len(labels))
-    width = 0.008 * 1000
-
-    plt.figure(figsize=(6.5, 3.2))
+    # width = 0.2 * 100
+    width = 8
+    fig = plt.figure(figsize=(5.5, 2.))
     ax1 = plt.subplot(1, 2, 1)
     ax2 = plt.subplot(1, 2, 2)
 
 
     # plt.figure(figsize=(4.5, 2))
     for i in range(len(real_data)):
-        real_speeds, real_times = real_data[i].calculate_curvatures_list()
+        real_speeds, real_times = real_data[i].calculate_distance_list()
         # real_speeds, real_times = real_data[i].calculate_curvatures_list()
         # real_speeds, real_times = real_data[i].calculate_distance_list()
         # real_speeds, real_times = real_data[i].get_curvatures()
@@ -182,22 +182,39 @@ def make_fast_laptime_plot():
         # plt.bar(real_speeds + x_off, real_times, color=color_pallet[i], width=width, label="Real", hatch='', alpha=0.5)
 
         ax1.bar(real_speeds + x_off, real_times, color=color_pallet[i], width=width, label="Real", alpha=0.6)
-        real_speeds, real_times = real_data[i].calculate_distance_list()
+
+        real_speeds, real_times = real_data[i].calculate_curvatures_list()
         ax2.bar(real_speeds + x_off, real_times, color=color_pallet[i], width=width, label="Real", alpha=0.6)
 
-    ax2.set_ylim(20, 26)
-    ax1.grid(True)
+    ax1.set_ylabel("Total distance (m)", fontsize=10)
+    # ax1.set_xticks(xs, labels, fontsize=7)
+    ax1.set_ylim(20.5, 23.5)
+    ax1.grid(True, axis='y')
+    # a2.set_ylabel("Curvature (rad/m)")
+    ax1.yaxis.set_tick_params(labelsize=8)
+    ax2.yaxis.set_tick_params(labelsize=8)
+
+    ax1.set_xticks([0, 40, 80, 120, 160])
+    ax2.set_xticks([0, 40, 80, 120, 160])
+
+    ax2.yaxis.set_major_locator(plt.MaxNLocator(6))
+
+    ax2.grid(True, axis='y')
     # plt.ylim(5, 16)
-    plt.grid(True)
-    plt.ylabel("Lap time (s)")
-    plt.xlabel("Delay (ms)")
+    ax1.set_ylabel("Total distance (m)")
+    ax1.set_xlabel("State delay (ms)")
+    ax2.set_xlabel("State delay (ms)")
     # plt.gca().xaxis.set_major_locator(plt.MultipleLocator(1))
-    # plt.gca().yaxis.set_major_locator(plt.MultipleLocator(3))
+    ax2.yaxis.set_major_locator(plt.MultipleLocator(0.1))
+
+    ax2.set_ylabel("Mean \ncurvature (rad/m)", fontsize=10)
+    # ax2.set_xticks(xs, labels, fontsize=7)
 
     # h, l = plt.gca().get_legend_handles_labels()
     # plt.legend(labels, loc="upper right", ncol=2, fontsize=8)
+    fig.legend(labels, loc="lower center", bbox_to_anchor=(0.5, 0.93), ncol=4, fontsize=8)
 
-    name = "Sim2Real/Imgs/DelayPlot"
+    name = "Sim2Real/Imgs/StateDelayPlot"
     std_img_saving(name)
 
 
