@@ -9,7 +9,8 @@ from F1TenthRacingDRL.DataTools.MapData import MapData
 
 
 def find_folders(path="ResultsJetson23"):
-    root_path = "/home/benjy/sim_ws/src/f1tenth_racing/Data/"
+    # root_path = "/home/benjy/sim_ws/src/f1tenth_racing/Data/"
+    root_path = "/home/benjy/sim_ws/src/F1TenthRacingROS/Data/"
     folders = glob.glob(root_path + path + "/*/Run*")
     print(f"Found {len(folders)} folders")
     return folders
@@ -34,14 +35,15 @@ def plot_trajectories(folders, folder_name):
     for folder in folders:
         path = create_test_paths(folder_name, "Trajectories")
 
-        name = folder.split("/")[-1] 
-        print(f"Path: {path} -> {name}")
+        name = folder.split("/")[-1]
+        number = name.split("_")[-1] 
+        print(f"Path: {path} -> {name} -> {number}")
 
         map_data = MapData("CornerHall") 
 
         ensure_path_exists(path)
 
-        with open(folder + f"/{name}_states.csv") as file:
+        with open(folder + f"/{name}_states_{number}.csv") as file:
             state_reader = csv.reader(file, delimiter=',')
             state_list = []
             for row in state_reader:
@@ -111,6 +113,8 @@ if __name__ == "__main__":
     folder = "ResultsROS"
     folder = "ResultsJetson24_2"
     folder = "ResultsJetson25"
+    folder = "SimAug_1"
+
 
     fs = find_folders(folder)
     plot_trajectories(fs, folder)
