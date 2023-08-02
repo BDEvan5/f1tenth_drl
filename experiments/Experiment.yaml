@@ -12,11 +12,11 @@ num_beams: 20
 
 training_steps: 60000
 n_test_laps: 20
-algorithm: "SAC"
+# algorithm: "SAC"
 # algorithm: "TD3"
-# algorithm: "DDPG"
-# id_name: "TAL"
-id_name: "Cth"
+algorithm: "DDPG"
+id_name: "TAL"
+# id_name: "Cth"
 # id_name: "Progress"
 
 map_name: "gbr"
@@ -26,8 +26,8 @@ map_name: "gbr"
 
 runs:
   - state_vector: "Game"
-  - state_vector: "endToEnd"
-  - state_vector: "TrajectoryFollower"
+  # - state_vector: "endToEnd"
+  # - state_vector: "TrajectoryFollower"
 
   # - planner_type: "PurePursuit"
   #   algorithm: "PP"

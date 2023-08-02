@@ -147,12 +147,13 @@ if __name__ == "__main__":
     folder = "ResultsJetson25"
     folder = "SimAug_1"
     folder = "SimAug_1_2"
-    folder = "SimAug_1_4"
-    folder = "SimAug_1_5"
+    folder = "SimAug_1_3"
+    # folder = "SimAug_1_5"
+    folder = "SimAug_2_2"
 
 
     fs = find_folders(folder)
-    plot_trajectories(fs, folder)
     # plot_actions(fs, folder)
 
     calculate_states(fs, folder)
+    # plot_trajectories(fs, folder)
