@@ -34,10 +34,18 @@ A repository to conduct experiments on F1Tenth racing
 
 
 **General Result Generation**
+- After all the results have been generated, run the `DataTools/Statistics/BuildAgentDfs.py` script to read the vehicle data and generate a dataframe for each agent.
+- Then run the `DataTools/Statistics/BuildAgentDfs.py` to generate a summary dataframe that contains the results from each vehicle.
+    - The `ExperimentData.csv` contains all the repetitions from each vehicle.
+    - The `CondensedExperimentData.csv` contains the average across the three repeats run for each experiment.
+- For the reward signal tests, the `BuildExtraAgentDfs.py` script must also be run. It generates more detailed results such as the deviation from the racing line.
+
+
+**Training Graph Results:**
+- 
 
 
 
-**Reward Signal Comparison:**
 
 
 

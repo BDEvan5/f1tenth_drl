@@ -30,9 +30,9 @@ n_test_laps: 20
 # map_name: "gbr"
 
 ## TEST 4
-# algorithm: "TD3"
-# id_name: "TAL"
-# map_name: "gbr"
+algorithm: "TD3"
+id_name: "TAL"
+map_name: "gbr"
 
 ## TEST 5
 # algorithm: "TD3"
