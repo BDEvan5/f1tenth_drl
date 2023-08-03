@@ -22,7 +22,25 @@ A repository to conduct experiments on F1Tenth racing
 
 **Hyperparmeter Tuning:**
 
-- 
+- Neural network tuning
+    - Generate end-to-end data sets using the `Build_endToEnd_datasets.py` file.
+    - Run the `Tuning/TuneNetworkSize.py` file to generate train networks of different sizes.
+    -  Use the `plot_network_tuning.py` script to plot the graph 
+- End-to-end number of beams
+    - Generate end-to-end data sets using the `Build_endToEnd_datasets.py` file.
+    - Generate trajectory tracking data sets using the `Build_planning_datasets.py` file.
+    - Train networks with `Trainnetworks_SingleLoss.py`
+    - Plot results with `TuningLoss.py`
+
+
+**General Result Generation**
+
+
+
+**Reward Signal Comparison:**
+
+
+
 
 
 ## Network Fitting
