@@ -80,7 +80,8 @@ def make_training_crashes_plot():
 
 def make_training_crashes_plot_dual():
     set_number = 1
-    base_path = f"Data/FinalExperiment_{set_number}/"
+    # base_path = f"Data/FinalExperiment_{set_number}/"
+    base_path = f"Data/Experiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     

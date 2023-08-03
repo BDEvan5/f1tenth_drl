@@ -2,7 +2,7 @@
 planner_type: "AgentOff"
 
 n_repeats: 3
-start_n: 0
+start_n: 2
 set_n: 1
 
 random_seed: 100
@@ -20,9 +20,9 @@ n_test_laps: 20
 # map_name: "gbr"
 
 ## TEST 2
-# algorithm: "SAC"
-# id_name: "Cth"
-# map_name: "gbr"
+algorithm: "SAC"
+id_name: "Cth"
+map_name: "gbr"
 
 ## TEST 3
 # algorithm: "DDPG"
@@ -35,16 +35,16 @@ n_test_laps: 20
 # map_name: "gbr"
 
 ## TEST 5
-algorithm: "TD3"
-id_name: "TAL"
-map_name: "mco"
+# algorithm: "TD3"
+# id_name: "TAL"
+# map_name: "mco"
 
 
 
 
 runs:
-  - state_vector: "Game"
-  - state_vector: "endToEnd"
+  # - state_vector: "Game"
+  # - state_vector: "endToEnd"
   - state_vector: "TrajectoryFollower"
 
   # - planner_type: "PurePursuit"

@@ -10,7 +10,8 @@ from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 def make_training_laptimes_plot():
     set_number = 1
-    base_path = f"Data/FinalExperiment_{set_number}/"
+    # base_path = f"Data/FinalExperiment_{set_number}/"
+    base_path = f"Data/Experiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
@@ -68,6 +69,7 @@ def make_training_laptimes_plot():
     axs[1, 1].set_xlabel("Training Steps (x1000)")
     # plt.title(f"{map_name.upper()}", size=10)
     plt.xlim(0, n_train_steps)
+    plt.ylim(30, 100)
     plt.grid(True)
     plt.gca().yaxis.set_major_locator(MultipleLocator(20))
 

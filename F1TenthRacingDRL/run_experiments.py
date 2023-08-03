@@ -123,22 +123,13 @@ def run_general_test_batch(experiment):
 
     
 def main():
-    
-    # experiment = f"End{set_name}"
-    # experiment = f"Trajectory{set_name}"
-    # experiment = f"Planning{set_name}"
-    
-    # experiment = "main"
-    # experiment = "EndSpeeds"
-
-    # experiment = "PreTrained"
-    # experiment = "FinalExperiment"
     experiment = "Experiment"
     
-    # run_training_batch(experiment)
+    run_training_batch(experiment)
+
     # run_testing_batch(experiment)
 
-    run_general_test_batch(experiment)
+    # run_general_test_batch(experiment)
 
 def run_pp_tests():
     experiment = "ConfigPP"

@@ -103,7 +103,8 @@ def main():
     p = "Data/"
     
     set_number = 1
-    path = p + f"FinalExperiment_{set_number}/"
+    # path = p + f"FinalExperiment_{set_number}/"
+    path = p + f"Experiment_{set_number}/"
 
     vehicle_folders = glob.glob(f"{path}*/")
     print(f"{len(vehicle_folders)} folders found")

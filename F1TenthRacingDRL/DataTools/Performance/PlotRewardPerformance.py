@@ -5,17 +5,20 @@ import matplotlib.pyplot as plt
 from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 import matplotlib
+
 def make_combined_plot():
-    a_df = pd.read_csv("Data/FinalExperiment_1/ExperimentData.csv").fillna(0)
-    df = pd.read_csv("Data/FinalExperiment_1/CondensedExperimentData.csv")
+    # path = "Data/FinalExperiment_1/"
+    path = "Data/Experiment_1/"
+    a_df = pd.read_csv(f"{path}ExperimentData.csv").fillna(0)
+    df = pd.read_csv(f"{path}CondensedExperimentData.csv").fillna(0)
 
     a_df = a_df[(a_df.Algorithm == "SAC") & (a_df.TrainMap == "GBR")]
     a_df = a_df.sort_values(["TrainID", "Architecture"])
-    a_df = a_df[a_df.TrainID != "Progress"]
+    # a_df = a_df[a_df.TrainID != "Progress"]
 
     reward_df = df[(df.Algorithm == "SAC") & (df.TrainMap == "GBR")]
     reward_df = reward_df.sort_values(["TrainID", "Architecture"])
-    reward_df = reward_df[reward_df.TrainID != "Progress"]
+    # reward_df = reward_df[reward_df.TrainID != "Progress"]
 
     xs = np.arange(2)
     width = 0.3
@@ -32,13 +35,16 @@ def make_combined_plot():
     ax3 = plt.subplot(gs[2])
 
     x_data = reward_df[reward_df.Architecture == "Game"].TrainID
-
+    print(reward_df)
+    print(a_df)
 
     for i, a in enumerate(reward_df.Architecture.unique()):
         y_data = reward_df[reward_df.Architecture == a].Progress
         ax1.bar(brs[i], y_data, label=a, width=width, color=color_pallet[i], alpha=0.3)
         for z in range(3):
-            y_data_a = a_df[(a_df.Architecture == a) & (a_df.Repetition == z)].Progress 
+            y_data_a = a_df[(a_df.Architecture == a) & (a_df.Repetition == z)].Progress
+            # print(a)
+            print(y_data_a)
             xs_pts = brs[i]-0.05 + 0.05*z
             ax1.plot(xs_pts, y_data_a, 'o', color=color_pallet[i], linewidth=2, markersize=5)
 
@@ -87,7 +93,7 @@ def make_combined_plot():
     # fig.legend(ncol=3, bbox_to_anchor=(0.5, 0.95), loc='lower center')
 
     plt.tight_layout()
-    name = "Data/FinalExperiment_1/Imgs/RewardPerformance"
+    name = f"{path}/Imgs/RewardPerformance"
     std_img_saving(name)
 
 

@@ -9,7 +9,8 @@ from F1TenthRacingDRL.DataTools.plotting_utils import *
 
 def make_training_progress_plot():
     set_number = 1
-    base_path = f"Data/FinalExperiment_{set_number}/"
+    # base_path = f"Data/FinalExperiment_{set_number}/"
+    base_path = f"Data/Experiment_{set_number}/"
     vehicle_keys = ["Game", "TrajectoryFollower", "endToEnd"]
     labels = ["Full planning", "Trajectory tracking", "End-to-end"]
     
@@ -33,7 +34,7 @@ def make_training_progress_plot():
                 path = base_path + f"AgentOff_{alg}_{vehicle_key}_{map_name}_{general_id}_{max_speed}_{set_number}_{j}/"
                 rewards, lengths, progresses, _ = load_csv_data(path)
                 steps = np.cumsum(lengths[:-1]) / 1000
-                new_steps, avg_progress = true_moving_average_steps(steps, progresses[:-1], 80, 1000)
+                new_steps, avg_progress = true_moving_average_steps(steps, progresses[:-1], 60, 1000)
                 steps_list[a].append(new_steps)
                 progresses_list[a].append(avg_progress)
 

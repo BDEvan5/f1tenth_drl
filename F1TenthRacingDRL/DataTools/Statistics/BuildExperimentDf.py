@@ -22,7 +22,16 @@ def build_experiment_df(path):
         try:
             df = pd.read_csv(agent_path + "MainAgentData.csv")
         except Exception as e: 
-            print(f"{e} for {vehicle_name}")
+            print(f"{e} for {vehicle_name} ....")
+            agent_data = {"Algorithm": algorithm, "Architecture": architecture, "TrainMap": train_map, "TrainID": train_id, "Repetition": repetition}
+            agent_data["TestMap"] = test_map.upper()
+            agent_data["Success"] = 0
+            agent_data["Time"] = None
+            agent_data["Distance"] = None
+            agent_data["Progress"] = None
+            agent_data["ProgressS"] = None
+            agent_data["MeanVelocity"] = None
+            experiment_data.append(agent_data)
             continue
 
         for test_map in df.TestMap.unique():

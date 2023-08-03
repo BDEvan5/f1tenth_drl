@@ -82,13 +82,15 @@ def plot_algorithm_performance_times():
 
 import matplotlib
 def make_combined_plot():
-    a_df = pd.read_csv("Data/FinalExperiment_1/ExperimentData.csv").fillna(0)
-    df = pd.read_csv("Data/FinalExperiment_1/CondensedExperimentData.csv")
+    # path = "Data/FinalExperiment_1/"
+    path = "Data/Experiment_1/"
+    a_df = pd.read_csv(f"{path}ExperimentData.csv").fillna(0)
+    df = pd.read_csv(f"{path}CondensedExperimentData.csv")
 
-    a_df = a_df[(a_df.TrainID == "TAL") & (a_df.TrainMap == "GBR")]
+    a_df = a_df[(a_df.TrainID == "TAL") & (a_df.TrainMap == "GBR") & (a_df.TestMap == "GBR")]
     a_df = a_df.sort_values(["Algorithm", "Architecture"])
 
-    alg_df = df[(df.TrainID == "TAL") & (df.TrainMap == "GBR")]
+    alg_df = df[(df.TrainID == "TAL") & (df.TrainMap == "GBR") & (df.TestMap == "GBR")]
     alg_df = alg_df.sort_values(["Algorithm", "Architecture"])
 
     xs = np.arange(3)
@@ -106,7 +108,12 @@ def make_combined_plot():
 
     x_data = alg_df[alg_df.Architecture == "Game"].Algorithm
 
+    # print(a_df)
+    print(alg_df)
+    print(x_data)
+
     for i, a in enumerate(alg_df.Architecture.unique()):
+        print(a)
         # y_data = alg_df[alg_df.Architecture == a].Success
         y_data = alg_df[alg_df.Architecture == a].Progress
         ax1.bar(brs[i], y_data, label=a, width=width, color=color_pallet[i], alpha=0.3)
@@ -138,7 +145,7 @@ def make_combined_plot():
 
     plt.tight_layout()
     # plt.savefig("Data/FinalExperiment_1/Imgs/AlgorithmPerformance.svg", pad_inches=0.0, bbox_inches='tight')
-    name = "Data/FinalExperiment_1/Imgs/AlgorithmPerformance"
+    name = f"{path}Imgs/AlgorithmPerformance"
     std_img_saving(name, SavePDF=True)
 
 
