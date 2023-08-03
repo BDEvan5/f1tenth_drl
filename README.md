@@ -42,25 +42,25 @@ A repository to conduct experiments on F1Tenth racing
 
 
 **Training Graph Results:**
-- Reward signals - average progress and reward comapring TAL and CTH. Use the `` script
-- Algorithms - average progress comparing DDPG, SAC and TD3. Use the `` script
-- Algorithms - lap times using the SAC and TD3 algorithms. Use the `` script
-- Algoirthms - crash frequency using the SAC and TD3 algorithms. Use the `` script
+- Reward signals - average progress and reward comapring TAL and CTH. Use the `TrainingReward_TAL_cth` script
+- Algorithms - average progress comparing DDPG, SAC and TD3. Use the `TrainingProgressAlgs` script
+- Algorithms - lap times using the SAC and TD3 algorithms. Use the `TrainingCrashesAls` script
+- Algoirthms - crash frequency using the SAC and TD3 algorithms. Use the `TrainingLapTimesAlgs` script
 
 **Performance Results** 
-- Average progress, completion rate and lap times for the CTH and TAL rewards. Use the `` script
-- Completion rate and lap times for the DDPG, SAC and TD3 algorithms. Use the `` script
-- Completion rates comparing agents trained on GBR and MCO maps. Use the `` script
-- Lap times for agents trained on MCO and tested on all maps. Use the `` script
+- Average progress, completion rate and lap times for the CTH and TAL rewards. Use the `PlotRewardPerformance` script
+- Completion rate and lap times for the DDPG, SAC and TD3 algorithms. Use the `PlotAlgorithmPerformance` script
+- Completion rates comparing agents trained on GBR and MCO maps. Use the `PlotMapSuccess` script
+- Lap times for agents trained on MCO and tested on all maps. Use the `MakeTimeTableMCO` script
 
 
 **Qualitative Results**
-- Slip angle distribution using the CTH and TAL rewards. Use the `` script
-- Lateral and speed deviation for the CTH and TAL rewards. Use the `` script
-- Density of speed for the TD3 and SAC algorithms. Use the `` script
-- Clipped trajectories for agents trained and tested on MCO
-- Clipped trajectories for agent trained on MCO and tested on ESP
-- Speed graph for agents trained on MCO and tested on MCO maps. Use the `` script
+- Slip angle distribution using the CTH and TAL rewards. Use the `SlipDistributions` script
+- Lateral and speed deviation for the CTH and TAL rewards. Use the `PlotRacelineDeviationReward` script
+- Density of speed for the TD3 and SAC algorithms. Use the `ArticleProfilePlots` script
+- Clipped trajectories for agents trained and tested on MCO. Use `GenerateTrajectoryImgs`
+- Clipped trajectories for agent trained on MCO and tested on ESP. Use `GenerateTrajectoryImgs`
+- Speed graph for agents trained on MCO and tested on MCO maps. Use the `ArticleProfilePlots` script
 
 
 ## Sim-to-real Experiments
