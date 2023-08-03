@@ -12,22 +12,40 @@ num_beams: 20
 
 training_steps: 60000
 n_test_laps: 20
-# algorithm: "SAC"
-# algorithm: "TD3"
-algorithm: "DDPG"
-id_name: "TAL"
-# id_name: "Cth"
-# id_name: "Progress"
 
-map_name: "gbr"
+
+## TEST 1
+# algorithm: "SAC"
+# id_name: "TAL"
+# map_name: "gbr"
+
+## TEST 2
+# algorithm: "SAC"
+# id_name: "Cth"
+# map_name: "gbr"
+
+## TEST 3
+# algorithm: "DDPG"
+# id_name: "TAL"
+# map_name: "gbr"
+
+## TEST 4
+# algorithm: "TD3"
+# id_name: "TAL"
+# map_name: "gbr"
+
+## TEST 5
+# algorithm: "TD3"
+# id_name: "TAL"
 # map_name: "mco"
 
-# note: "Look for answers on MCO map"
+
+
 
 runs:
   - state_vector: "Game"
-  # - state_vector: "endToEnd"
-  # - state_vector: "TrajectoryFollower"
+  - state_vector: "endToEnd"
+  - state_vector: "TrajectoryFollower"
 
   # - planner_type: "PurePursuit"
   #   algorithm: "PP"

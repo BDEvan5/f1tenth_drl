@@ -75,7 +75,8 @@ def condense_main_experiment_df(path):
 
 def main():
     experiment_name = "FinalExperiment"
-    set_n = 4
+    experiment_name = "Experiment"
+    set_n = 1
     experiment_path = f"Data/{experiment_name}_{set_n}/"
 
     build_experiment_df(experiment_path)

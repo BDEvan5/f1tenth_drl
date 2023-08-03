@@ -10,8 +10,8 @@ def plot_n_beams_avg():
     test_loss_mean, test_loss_std = [], []
     train_loss_mean, train_loss_std = [], []
     names = []
-    path = "TuningData/TuningNN_1/LossResultsE/"
-    with open(path + f"{name}_LossResults.txt") as f:
+    path = "TuningData/TuningNN_1/LossResultsT/"
+    with open(path + f"{name}_LossResults_q.txt") as f:
         txt = f.readlines()
         for i, line in enumerate(txt):
             if i == 0: continue
@@ -52,7 +52,7 @@ def plot_n_beams_avg():
     
     plt.xlabel("Number of Neurons")
     plt.ylabel("Loss")
-    plt.ylim(0.06, 0.17)
+    # plt.ylim(0.06, 0.17)
     plt.gca().yaxis.set_major_locator(MultipleLocator(0.02))
     # plt.ylim(0.075, 0.14)
     plt.legend(ncol=2)

@@ -154,10 +154,11 @@ def tune_neural_network_size(n_seeds=10):
     experiment_name = "TuningNN"
     folder = f"TuningData/{experiment_name}_{set_n}/"
     # name_key = "fullPlanning"
-    name_key = "endToEnd"
-    # name_key = "trajectoryTrack"
-    # save_path = folder + "LossResultsT/"
-    save_path = folder + "LossResultsE/"
+    # name_key = "endToEnd"
+    name_key = "trajectoryTrack"
+    save_path = folder + "LossResultsT/"
+    # save_path = folder + "LossResultsF/"
+    # save_path = folder + "LossResultsE/"
 
     if not os.path.exists(save_path): os.mkdir(save_path)
     spacing = 30
@@ -165,9 +166,10 @@ def tune_neural_network_size(n_seeds=10):
     #     f.write(f"Name,".ljust(spacing))
     #     f.write(f"TrainLoss mean, TrainLoss std ,   TestLoss mean, TestLoss std \n")
         
-    # network_sizes = np.array([20, 50, 80, 100, 150, 200, 250, 300])
+    network_sizes = np.array([20, 50, 80, 100, 150, 200, 250, 300])
+    # network_sizes = np.array([10, 15, 20, 50, 80, 100, 150, 200, 250, 300])
     # network_sizes = np.array([10, 15, 30])
-    network_sizes = np.array([10, 15])
+    # network_sizes = np.array([10, 15])
     seeds = np.arange(n_seeds)
     for network_sz in network_sizes:
         train_losses, test_losses = run_seeded_test(folder, name_key, seeds, network_sz)
