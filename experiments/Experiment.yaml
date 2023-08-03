@@ -1,0 +1,56 @@
+
+planner_type: "AgentOff"
+
+n_repeats: 2
+start_n: 1
+set_n: 1
+
+random_seed: 100
+max_speed: 8
+n_waypoints: 10
+num_beams: 20
+
+training_steps: 60000
+n_test_laps: 20
+
+
+## TEST 1
+# algorithm: "SAC"
+# id_name: "TAL"
+# map_name: "gbr"
+
+## TEST 2
+# algorithm: "SAC"
+# id_name: "Cth"
+# map_name: "gbr"
+
+## TEST 3
+# algorithm: "DDPG"
+# id_name: "TAL"
+# map_name: "gbr"
+
+## TEST 4
+random_seed: 10
+algorithm: "TD3"
+id_name: "TAL"
+map_name: "gbr"
+
+## TEST 5
+# algorithm: "TD3"
+# id_name: "TAL"
+# map_name: "mco"
+
+
+
+
+runs:
+  - state_vector: "Game"
+  # - state_vector: "endToEnd"
+  # - state_vector: "TrajectoryFollower"
+
+  # - planner_type: "PurePursuit"
+  #   algorithm: "PP"
+  #   racing_line: True
+  #   pp_speed_mode: "racing_line"
+  #   state_vector: "pathFollower"
+

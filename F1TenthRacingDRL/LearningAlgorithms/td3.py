@@ -10,7 +10,7 @@ from F1TenthRacingDRL.Utils.utils import soft_update
 BATCH_SIZE = 100
 GAMMA = 0.99
 tau = 0.005
-NOISE = 0.2
+# NOISE = 0.2
 NOISE_CLIP = 0.5
 EXPLORE_NOISE = 0.1
 POLICY_FREQUENCY = 2

@@ -10,10 +10,10 @@ def std_img_saving(name, SavePDF=True):
     plt.rcParams['pdf.use14corefonts'] = True
 
     plt.tight_layout()
-    plt.grid(True)
+    # plt.grid(True)
     plt.savefig(name + ".svg", bbox_inches='tight', pad_inches=0)
     if SavePDF:
-        plt.savefig(name + ".pdf", bbox_inches='tight', pad_inches=0)
+        plt.savefig(name + ".pdf", bbox_inches='tight', pad_inches=0.02)
 
 
 
@@ -171,6 +171,24 @@ def true_moving_average(data, period):
         t = np.convolve(data, np.ones(length), 'valid') / length
         ret[-i-1] = t[-1]
     return ret
+
+def true_moving_average_steps(x_data, y_data, period, nxs=1000):
+    x_array = np.linspace(x_data[0], x_data[-1], nxs)
+    y_data = np.interp(x_array, x_data, y_data)
+    if len(y_data) < period:
+        return np.zeros_like(y_data)
+    y_return = np.convolve(y_data, np.ones(period), 'same') / period
+    for i in range(period): # start
+        t = np.convolve(y_data, np.ones(i+2), 'valid') / (i+2)
+        y_return[i] = t[0]
+    for i in range(period):
+        length = int(round((i + period)/2))
+        t = np.convolve(y_data, np.ones(length), 'valid') / length
+        y_return[-i-1] = t[-1]
+    return x_array, y_return
+
+
+
 
 def convert_to_min_max_avg(step_list, progress_list, xs):
     """Returns the 3 lines 

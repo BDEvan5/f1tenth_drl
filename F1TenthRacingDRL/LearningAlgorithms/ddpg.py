@@ -11,7 +11,8 @@ import torch.nn.functional as F
 lr_mu        = 0.0005
 lr_q         = 0.001
 gamma        = 0.99
-BATCH_SIZE   = 32
+# BATCH_SIZE   = 32
+BATCH_SIZE   = 100
 tau          = 0.005 # for target network soft update
 
 
