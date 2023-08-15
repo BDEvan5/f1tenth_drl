@@ -201,7 +201,7 @@ def mco_right_limits():
 def analyse_folder():
 
     p = "Data/"
-    set_n = 2
+    set_n = 3
 
     path = p + f"main_{set_n}/"
     # path = p + f"FinalExperiment_{set_n}/"
