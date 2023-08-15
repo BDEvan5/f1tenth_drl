@@ -26,13 +26,13 @@ def  select_test_agent(conf, run_dict):
     
     return planner
 
-def run_simulation_loop_steps(env, planner, steps):
+def run_simulation_loop_steps(env, planner, steps, steps_per_action=10):
     observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
     
     for i in range(steps):
         action = planner.plan(observation)
         
-        mini_i = 10
+        mini_i = steps_per_action
         while mini_i > 0:
             observation, reward, done, info = env.step(action[None, :])
             mini_i -= 1
@@ -80,11 +80,11 @@ def run_training_batch(experiment):
         planner = AgentTrainer(run_dict, conf)
         
         print("Training")
-        run_simulation_loop_steps(env, planner, run_dict.training_steps)
+        run_simulation_loop_steps(env, planner, run_dict.training_steps, 4)
         
         print("Testing")
         planner = AgentTester(run_dict, conf)
-        run_simulation_loop_laps(env, planner, run_dict.n_test_laps)
+        run_simulation_loop_laps(env, planner, run_dict.n_test_laps, 4)
         env.__del__()
         
     
@@ -123,13 +123,15 @@ def run_general_test_batch(experiment):
 
     
 def main():
-    experiment = "Experiment"
+    # experiment = "Experiment"
+    experiment = "main"
     
-    # run_training_batch(experiment)
+    run_training_batch(experiment)
 
     # run_testing_batch(experiment)
 
-    run_general_test_batch(experiment)
+    # run_general_test_batch(experiment)
+
 
 def run_pp_tests():
     experiment = "ConfigPP"

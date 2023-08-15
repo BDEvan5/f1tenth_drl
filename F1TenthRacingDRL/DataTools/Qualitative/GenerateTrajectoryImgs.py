@@ -42,10 +42,10 @@ class AnalyseTestLapData:
 
     def explore_folder(self, path):
         print(path)
-        # vehicle_folders = glob.glob(f"{path}*/")
+        vehicle_folders = glob.glob(f"{path}*/")
         # vehicle_folders = glob.glob(f"{path}Pure*mco*0/")
         # vehicle_folders = glob.glob(f"{path}*esp*1/")
-        vehicle_folders = glob.glob(f"{path}*mco*0/")
+        # vehicle_folders = glob.glob(f"{path}*mco*0/")
         # vehicle_folders = glob.glob(f"{path}*0/")
         print(f"{len(vehicle_folders)} folders found")
 
@@ -66,7 +66,7 @@ class AnalyseTestLapData:
     
     def process_folder(self):
         # self.map_name = self.vehicle_name.split("_")[3]
-        self.map_name = "esp"
+        self.map_name = "aut"
         self.map_data = MapData(self.map_name)
         self.std_track = TrackLine(self.map_name, False)
         self.racing_track = TrackLine(self.map_name, True)
@@ -126,15 +126,12 @@ class AnalyseTestLapData:
         plt.tight_layout()
         plt.xticks([])
         plt.yticks([])
-        ax = plt.gca()
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.spines['bottom'].set_visible(False)
-        ax.spines['left'].set_visible(False)
+        plt.axis('off')
         
         name = self.testing_velocity_path + f"{self.vehicle_name}_velocity_map_{self.lap_n}_{self.map_name}"
         std_img_saving(name, SAVE_PDF)        
         
+    def save_esp_imgs(self):
         esp_right_limits()
         # t = plt.text(895, 475, vehicle_names[self.vehicle_number], size=25, bbox=dict(facecolor="white", edgecolor="white"), horizontalalignment='center') # use for MCO
         t = plt.text(1180, 135, vehicle_names[self.vehicle_number], size=22, bbox=dict(facecolor="white", edgecolor="white"), horizontalalignment='center') # sue for ESP
@@ -204,9 +201,10 @@ def mco_right_limits():
 def analyse_folder():
 
     p = "Data/"
-    set_n = 4
+    set_n = 2
 
-    path = p + f"FinalExperiment_{set_n}/"
+    path = p + f"main_{set_n}/"
+    # path = p + f"FinalExperiment_{set_n}/"
     
     TestData = AnalyseTestLapData()
     TestData.explore_folder(path)

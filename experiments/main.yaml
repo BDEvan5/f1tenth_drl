@@ -1,40 +1,36 @@
 
-# planner_type: "agent_on"
 planner_type: "AgentOff"
 
-# state_vector: "endToEnd"
-# state_vector: "TrajectoryFollower"
-state_vector: "Game"
+n_repeats: 3
+start_n: 0
+set_n: 2
 
-n_repeats: 1
-set_n: 10
-
-random_seed: 0
+random_seed: 100
 max_speed: 8
-n_scans: 2
+n_waypoints: 10
+num_beams: 20
 
-training_steps: 15000
-n_test_laps: 5
-# map_name: "esp"
+training_steps: 60000
+n_test_laps: 20
 
-# algorithm: "DQN"
-# algorithm: "PPO"
+state_vector: "endToEnd"
 # algorithm: "SAC"
-# algorithm: "TD3"
+algorithm: "TD3"
 
-# map_name: "esp"
-# map_name: "aut"
-algorithm: "SAC"
-id_name: "main"
+
+id_name: "Speed"
+
+
 
 runs:
-  - map_name: "esp"
-  - map_name: "mco"
-  - map_name: "gbr"
+  # - map_name: "mco"
+  # - map_name: "esp"
   - map_name: "aut"
+  # - map_name: "gbr"
 
-  # - algorithm: "SAC"
-  # - algorithm: "TD3"
-  # - algorithm: "DDPG"
-
+  # - planner_type: "PurePursuit"
+  #   algorithm: "PP"
+  #   racing_line: True
+  #   pp_speed_mode: "racing_line"
+  #   state_vector: "pathFollower"
 

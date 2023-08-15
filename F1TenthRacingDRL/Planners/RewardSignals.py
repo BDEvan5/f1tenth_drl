@@ -4,6 +4,20 @@ from F1TenthRacingDRL.Planners.TrackLine import TrackLine
 from F1TenthRacingDRL.Planners.PurePursuit import PurePursuit
 
 
+def select_reward_function(run, conf, std_track):
+    reward = run.run_name.split("_")[4]
+    if reward ==  "TAL":
+        return TALearningReward(conf, run)
+    elif reward == "Progress":
+        return ProgressReward(std_track)
+    elif reward == "Cth":
+        return CrossTrackHeadReward(std_track, conf)
+    elif reward == "Speed":
+        return SpeedReward(std_track, conf)
+    else:
+        raise ValueError(f"Reward function not recognised: {reward}")
+
+
 # rewards functions
 class ProgressReward:
     def __init__(self, track: TrackLine) -> None:
@@ -63,6 +77,33 @@ def robust_angle_difference_rad(x, y):
     """Returns the difference between two angles in RADIANS
     r = x - y"""
     return np.arctan2(np.sin(x-y), np.cos(x-y))
+
+
+class SpeedReward:
+    def __init__(self, track: TrackLine, conf):
+        self.max_v = conf.max_v # used for scaling.
+
+    def __call__(self, observation, prev_obs, pre_action):
+        if observation['lap_counts'][0]:
+            return 1  # complete
+        if observation['collisions'][0]:
+            return -1 # crash
+
+        # theta = observation['poses_theta'][0]
+        speed = observation['linear_vels_x'][0]
+
+        reward = (speed / self.max_v) ** 2
+        reward = reward * 0.5 # scale to a reasonable range.
+
+        return reward
+
+def robust_angle_difference_rad(x, y):
+    """Returns the difference between two angles in RADIANS
+    r = x - y"""
+    return np.arctan2(np.sin(x-y), np.cos(x-y))
+
+
+
 
 
 class TALearningReward:

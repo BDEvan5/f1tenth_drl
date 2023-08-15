@@ -3,19 +3,8 @@ from F1TenthRacingDRL.LearningAlgorithms.create_agent import create_train_agent
 import numpy as np
 from F1TenthRacingDRL.Planners.Architectures import select_architecture
 from F1TenthRacingDRL.Utils.TrainHistory import TrainHistory
-from F1TenthRacingDRL.Planners.RewardSignals import ProgressReward, TALearningReward, CrossTrackHeadReward
+from F1TenthRacingDRL.Planners.RewardSignals import select_reward_function
 from F1TenthRacingDRL.Planners.TrackLine import TrackLine
-
-def select_reward_function(run, conf, std_track):
-    reward = run.run_name.split("_")[4]
-    if reward ==  "TAL":
-        return TALearningReward(conf, run)
-    elif reward == "Progress":
-        return ProgressReward(std_track)
-    elif reward == "Cth":
-        return CrossTrackHeadReward(std_track, conf)
-    else:
-        raise ValueError(f"Reward function not recognised: {reward}")
 
 
 class AgentTrainer: 
