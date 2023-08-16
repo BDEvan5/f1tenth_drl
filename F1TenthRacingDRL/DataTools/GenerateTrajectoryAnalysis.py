@@ -274,11 +274,13 @@ def esp_right_limits():
 def analyse_folder():
     
     TestData = AnalyseTestLapData()
-    # TestData.explore_folder("Data/")
+    TestData.explore_folder("Data/main_2/")
+    # TestData.explore_folder("Data/main_4/")
 
     # TestData.process_folder("Data/LocalPP_2/")
     # TestData.process_folder("Data/LocalRacePP_2/")
-    TestData.process_folder("Data/main_3/PurePursuit_PP_pathFollower_aut_TAL_8_3_0/")
+    # TestData.process_folder("Data/main_4/")
+    # TestData.process_folder("Data/main_3/PurePursuit_PP_pathFollower_aut_TAL_8_3_0/")
     # TestData.process_folder("Data/GlobalPP/")
     # TestData.process_folder("Data/GlobalPP_1/")
     # TestData.process_folder("Data/FollowTheGap_1/")
