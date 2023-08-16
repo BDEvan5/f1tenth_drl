@@ -53,10 +53,10 @@ class PurePursuit:
         theta = obs['poses_theta'][0]
         # lookahead = 1.9
         # lookahead = 1.5
-        r_speed = self.track_line.get_raceline_speed(position)
+        # r_speed = self.track_line.get_raceline_speed(position)
         # lookahead = 0.4 + 0.18 * r_speed 
-        lookahead = 0.3 + 0.15 * r_speed 
-        # lookahead = 0.2 + 0.12 * obs['linear_vels_x'][0] 
+        # lookahead = 0.3 + 0.15 * r_speed 
+        lookahead = 0.4 + 0.16 * obs['linear_vels_x'][0] 
         # lookahead = 0.3 + 0.19* obs['linear_vels_x'][0] 
         # lookahead = 0.7 + 1* obs['linear_vels_x'][0] /  8
         # lookahead = 0.9 + 0.6 * obs['linear_vels_x'][0] / 8

@@ -6,9 +6,9 @@ from matplotlib.collections import LineCollection
 np.printoptions(precision=3, suppress=True)
 
 MAX_KAPPA = 0.8
-VEHICLE_WIDTH = 0.8
+VEHICLE_WIDTH = 1
 RACELINE_STEP = 0.2
-MU = 0.6
+MU = 0.7
 V_MAX = 8
 VEHICLE_MASS = 3.4
 ax_max_machine = np.array([[0, 8.5],[8, 8.5]])

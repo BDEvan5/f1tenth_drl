@@ -126,9 +126,9 @@ def main():
     # experiment = "Experiment"
     experiment = "main"
     
-    # run_training_batch(experiment)
+    run_training_batch(experiment)
 
-    run_testing_batch(experiment, 10)
+    # run_testing_batch(experiment, 10)
 
     # run_general_test_batch(experiment)
 
