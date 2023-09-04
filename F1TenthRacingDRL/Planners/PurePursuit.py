@@ -1,14 +1,3 @@
-"""
-Partial code source: https://github.com/f1tenth/f1tenth_gym
-Example waypoint_follow.py from f1tenth_gym
-Specific function used:
-- nearest_point_on_trajectory_py2
-- first_point_on_trajectory_intersecting_circle
-- get_actuation
-
-Adjustments have been made
-
-"""
 
 import numpy as np
 from F1TenthRacingDRL.Utils.utils import init_file_struct, calculate_speed
@@ -21,7 +10,7 @@ from F1TenthRacingDRL.Planners.VehicleStateHistory import VehicleStateHistory
 
 
 
-class PurePursuit:
+class RacingPurePursuit:
     def __init__(self, conf, run, init=True):
         self.name = run.run_name
         path = os.getcwd() + f"/Data/" + run.path  + self.name + "/"
@@ -34,11 +23,8 @@ class PurePursuit:
         self.run = run
 
         self.racing_line = run.racing_line
-        self.speed_mode = run.pp_speed_mode
-        self.max_speed = run.max_speed
-        self.track_line = TrackLine(run.map_name, run.racing_line, False)
-        # self.track_line = TrackLine(run.map_name, run.racing_line, True)
-        # self.lookahead = run.lookahead
+        self.max_speed = 8
+        self.track_line = TrackLine(run.map_name, True, False)
 
         self.v_min_plan = conf.v_min_plan
         self.wheelbase =  conf.l_f + conf.l_r
@@ -49,39 +35,29 @@ class PurePursuit:
         self.counter = 0
 
     def plan(self, obs):
-        position = np.array([obs['poses_x'][0], obs['poses_y'][0]])
-        theta = obs['poses_theta'][0]
+        position = obs["vehicle_state"][0:2]
+        theta = obs["vehicle_state"][4]
+
         # lookahead = 1.9
         # lookahead = 1.5
         # r_speed = self.track_line.get_raceline_speed(position)
         # lookahead = 0.4 + 0.18 * r_speed 
         # lookahead = 0.3 + 0.15 * r_speed 
-        lookahead = 0.4 + 0.16 * obs['linear_vels_x'][0] 
+        lookahead = 0.4 + 0.16 * obs["vehicle_state"][3]
         # lookahead = 0.3 + 0.19* obs['linear_vels_x'][0] 
         # lookahead = 0.7 + 1* obs['linear_vels_x'][0] /  8
         # lookahead = 0.9 + 0.6 * obs['linear_vels_x'][0] / 8
         # lookahead = self.lookahead
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
-        if obs['linear_vels_x'][0] < self.v_min_plan:
+        if obs["vehicle_state"][3] < self.v_min_plan:
             return np.array([0.0, 4])
 
         speed_raceline, steering_angle = get_actuation(theta, lookahead_point, position, lookahead, self.wheelbase)
         steering_angle = np.clip(steering_angle, -self.max_steer, self.max_steer)
-        if self.speed_mode == 'constant':
-            speed = 2
-        elif self.speed_mode == 'link':
-            speed = calculate_speed(steering_angle, 0.8, 7)
-        elif self.speed_mode == 'racing_line':
-            speed = speed_raceline 
-        else:
-            raise Exception(f"Invalid speed mode: {self.speed_mode}")
             
-        # speed = speed * 0.97
-        speed = min(speed, self.max_speed) # cap the speed
-
+        speed = min(speed_raceline, self.max_speed) # cap the speed
         action = np.array([steering_angle, speed])
-        
         self.vehicle_state_history.add_memory_entry(obs, action)
 
         return action
@@ -89,10 +65,7 @@ class PurePursuit:
     def done_callback(self, final_obs):
         self.vehicle_state_history.add_memory_entry(final_obs, np.array([0, 0]))
         self.vehicle_state_history.save_history()
-        
-        progress = self.track_line.calculate_progress_percent([final_obs['poses_x'][0], final_obs['poses_y'][0]]) * 100
-        
-        print(f"Test lap complete --> Time: {final_obs['lap_times'][0]:.2f}, Colission: {bool(final_obs['collisions'][0])}, Lap p: {progress:.1f}%")
+
 
 
 

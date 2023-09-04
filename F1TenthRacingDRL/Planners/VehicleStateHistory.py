@@ -13,7 +13,7 @@ class VehicleStateHistory:
         self.lap_n = 0
     
     def add_memory_entry(self, obs, action):
-        state = obs['full_states'][0]
+        state = obs['vehicle_state']
 
         self.states.append(state)
         self.actions.append(action)
