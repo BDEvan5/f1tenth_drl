@@ -36,15 +36,17 @@ class F1TenthSim:
             map (str, default='vegas'): name of the map used for the environment. 
             map_ext (str, default='png'): image extension of the map image file. For example 'png', 'pgm'
     """
-    def __init__(self, map_name, seed=12345):
-        self.seed = seed
+    def __init__(self, run_dict, save_history=False):
+        self.seed = run_dict.random_seed
+        self.n_sim_steps = run_dict.n_sim_steps
 
-        self.map_name = "maps/" + map_name
+        self.map_name = "maps/" + run_dict.map_name
         self.map_path = self.map_name + ".yaml"
 
         self.params = {'mu': 1.0489, 'C_Sf': 4.718, 'C_Sr': 5.4562, 'lf': 0.15875, 'lr': 0.17145, 'h': 0.074, 'm': 3.74, 'I': 0.04712, 's_min': -0.4189, 's_max': 0.4189, 'sv_min': -3.2, 'sv_max': 3.2, 'v_switch': 7.319, 'a_max': 9.51, 'v_min':-5.0, 'v_max': 20.0, 'width': 0.31, 'length': 0.58}
 
         self.current_time = 0.0
+        self.current_state = np.zeros((7, ))
 
         num_beams = 20
         fov = 4.7
@@ -55,22 +57,34 @@ class F1TenthSim:
         self.dynamics_simulator = DynamicsSimulator(self.params, self.seed, self.timestep)
         self.scan_rng = np.random.default_rng(seed=self.seed)
 
-        self.center_line = np.loadtxt(self.map_name + "_centerline.csv", delimiter=',')[:, :2]
-        el_lengths = np.linalg.norm(np.diff(self.center_line, axis=0), axis=1)
-        self.s_track = np.insert(np.cumsum(el_lengths), 0, 0)
-        self.tck = interpolate.splprep([self.center_line[:, 0], self.center_line[:, 1]], k=3, s=0)[0]
+        center_line = np.loadtxt(self.map_name + "_centerline.csv", delimiter=',')[:, :2]
+        el_lengths = np.linalg.norm(np.diff(center_line, axis=0), axis=1)
+        old_s_track = np.insert(np.cumsum(el_lengths), 0, 0)
+        self.s_track = np.arange(0, old_s_track[-1], 0.01) # cm level resolution
+        tck = interpolate.splprep([center_line[:, 0], center_line[:, 1]], u=old_s_track, k=3, s=0)[0]
+        self.center_line = np.array(interpolate.splev(self.s_track, tck, ext=3)).T
 
         self.lap_number = -1
+        self.history = None
+        if save_history:
+            self.history = SimulatorHistory(run_dict, "Testing" + run_dict.map_name.upper() + "/")
 
     def step(self, action):
-        vehicle_state = self.dynamics_simulator.update_pose(action[0], action[1])
-        pose = np.append(vehicle_state[0:2], vehicle_state[4])
+        if self.history is not None:
+            self.history.add_memory_entry(self.current_state, action)
 
+        mini_i = self.n_sim_steps
+        while mini_i > 0:
+            vehicle_state = self.dynamics_simulator.update_pose(action[0], action[1])
+            self.current_time = self.current_time + self.timestep
+            mini_i -= 1
+        
+        pose = np.append(vehicle_state[0:2], vehicle_state[4])
         scan = self.scan_simulator.scan(np.append(vehicle_state[0:2], vehicle_state[4]), self.scan_rng)
 
+        self.current_state = vehicle_state
         self.collision = self.check_vehicle_collision(pose)
         self.lap_complete, progress = self.check_lap_complete(pose)
-        self.current_time = self.current_time + self.timestep
 
         # state is [x, y, steer_angle, vel, yaw_angle, yaw_rate, slip_angle]
         observation = {"scan": scan,
@@ -87,20 +101,20 @@ class F1TenthSim:
         elif self.lap_complete:
             print(f"{self.lap_number} LAP COMPLETE: Time: {self.current_time:.2f}, Progress: {(100*progress):.1f}")
 
+
         return observation, done
 
     def check_lap_complete(self, pose):
         dists = np.linalg.norm(pose[:2] - self.center_line[:, :2], axis=1) # last 20 points.
-        t_guess = self.s_track[np.argmin(dists)] / self.s_track[-1]
-        t_point = optimize.fmin(dist_to_p, x0=t_guess, args=(self.tck, pose[:2]), disp=False)[0]
+        progress = self.s_track[np.argmin(dists)] / self.s_track[-1]
         
         done = False
-        if t_point > 0.99 and self.current_time > 5: done = True
+        if progress > 0.99 and self.current_time > 5: done = True
         if self.current_time > 150: 
             print("Time limit reached")
             done = True
 
-        return done, t_point
+        return done, progress
         
 
     def check_vehicle_collision(self, pose):
@@ -147,8 +161,32 @@ class F1TenthSim:
         return obs, done
 
 
-def dist_to_p(t_glob: np.ndarray, path: list, p: np.ndarray):
-    s = interpolate.splev(t_glob, path, ext=3)
-    s = np.concatenate(s)
-    return spatial.distance.euclidean(p, s)
 
+class SimulatorHistory:
+    def __init__(self, run, folder):
+        self.vehicle_name = run.run_name
+        self.path = "Data/" + run.path + run.run_name + "/" + folder
+        if os.path.exists(self.path) == False:
+            os.mkdir(self.path)
+        self.states = []
+        self.actions = []
+    
+        self.lap_n = 0
+    
+    def add_memory_entry(self, state, action):
+        self.states.append(state)
+        self.actions.append(action)
+    
+    def save_history(self):
+        states = np.array(self.states)
+        actions = np.array(self.actions)
+
+        lap_history = np.concatenate((states, actions), axis=1)
+        
+        np.save(self.path + f"Lap_{self.lap_n}_history_{self.vehicle_name}.npy", lap_history)
+
+        self.states = []
+        self.actions = []
+        self.lap_n += 1
+        
+    

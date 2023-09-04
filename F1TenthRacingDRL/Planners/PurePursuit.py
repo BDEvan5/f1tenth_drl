@@ -22,7 +22,6 @@ class RacingPurePursuit:
         self.conf = conf
         self.run = run
 
-        self.racing_line = run.racing_line
         self.max_speed = 8
         self.track_line = TrackLine(run.map_name, True, False)
 
@@ -30,24 +29,13 @@ class RacingPurePursuit:
         self.wheelbase =  conf.l_f + conf.l_r
         self.max_steer = conf.max_steer
         
-        self.vehicle_state_history = VehicleStateHistory(run, f"Testing{run.map_name.upper()}/")
-
         self.counter = 0
 
     def plan(self, obs):
         position = obs["vehicle_state"][0:2]
         theta = obs["vehicle_state"][4]
 
-        # lookahead = 1.9
-        # lookahead = 1.5
-        # r_speed = self.track_line.get_raceline_speed(position)
-        # lookahead = 0.4 + 0.18 * r_speed 
-        # lookahead = 0.3 + 0.15 * r_speed 
         lookahead = 0.4 + 0.16 * obs["vehicle_state"][3]
-        # lookahead = 0.3 + 0.19* obs['linear_vels_x'][0] 
-        # lookahead = 0.7 + 1* obs['linear_vels_x'][0] /  8
-        # lookahead = 0.9 + 0.6 * obs['linear_vels_x'][0] / 8
-        # lookahead = self.lookahead
         lookahead_point = self.track_line.get_lookahead_point(position, lookahead)
 
         if obs["vehicle_state"][3] < self.v_min_plan:
@@ -63,9 +51,7 @@ class RacingPurePursuit:
         return action
 
     def done_callback(self, final_obs):
-        self.vehicle_state_history.add_memory_entry(final_obs, np.array([0, 0]))
-        self.vehicle_state_history.save_history()
-
+        pass
 
 
 
