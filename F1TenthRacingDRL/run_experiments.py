@@ -3,11 +3,11 @@ from argparse import Namespace
 import os 
 import numpy as np
 
-from F1TenthRacingDRL.f1tenth_gym import F110Env
+from F1TenthRacingDRL.f1tenth_sim import F1TenthSim
 from F1TenthRacingDRL.Planners.AgentTrainer import AgentTrainer
 from F1TenthRacingDRL.Planners.AgentTester import AgentTester
 from F1TenthRacingDRL.Utils.utils import *
-from F1TenthRacingDRL.Planners.PurePursuit import PurePursuit
+from F1TenthRacingDRL.Planners.PurePursuit import RacingPurePursuit
 import torch
 
 
@@ -20,43 +20,28 @@ def  select_test_agent(conf, run_dict):
     if run_dict.planner_type == "AgentOff":
         planner = AgentTester(run_dict, conf)
     elif run_dict.planner_type == "PurePursuit":
-        planner = PurePursuit(conf, run_dict, False)
+        planner = RacingPurePursuit(conf, run_dict, False)
     else:
         raise ValueError(f"Planner type not recognised: {run_dict.planner_type}")    
     
     return planner
 
-def run_simulation_loop_steps(env, planner, steps, steps_per_action=10):
-    observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
+def run_simulation_loop_steps(env, planner, steps):
+    observation, done = env.reset(poses=np.array([0, 0, 0]))
     
     for i in range(steps):
         action = planner.plan(observation)
-        
-        mini_i = steps_per_action
-        while mini_i > 0:
-            observation, reward, done, info = env.step(action[None, :])
-            mini_i -= 1
-        
-            if done:
-                planner.done_callback(observation)
-                observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
-                break
+        observation, done = env.step(action)
+        if done:
+            planner.done_callback(observation)
+            observation, done = env.reset(poses=np.array([0, 0, 0]))
                   
-        if RENDER_ENV: env.render('human_fast')
-        
-def run_simulation_loop_laps(env, planner, n_laps, n_sim_steps=10):
+def run_simulation_loop_laps(env, planner, n_laps):
     for lap in range(n_laps):
-        observation, reward, done, info = env.reset(poses=np.array([[0, 0, 0]]))
+        observation, done = env.reset(poses=np.array([0, 0, 0]))
         while not done:
             action = planner.plan(observation)
-            
-            mini_i = n_sim_steps
-            while mini_i > 0 and not done:
-                observation, reward, done, info = env.step(action[None, :])
-                mini_i -= 1
-
-            # if RENDER_ENV: env.render('human')
-            # if RENDER_ENV: env.render('human_fast')
+            observation, done = env.step(action)
     
         planner.done_callback(observation)
     
@@ -76,16 +61,15 @@ def run_training_batch(experiment):
         print(f"Running experiment: {i}")
         print(f"RunName: {run_dict.run_name}")
 
-        env = F110Env(map=run_dict.map_name, num_agents=1)
-        planner = AgentTrainer(run_dict, conf)
+        env = F1TenthSim(run_dict, False)
+        # planner = AgentTrainer(run_dict, conf)
         
-        print("Training")
-        run_simulation_loop_steps(env, planner, run_dict.training_steps, 4)
+        # print("Training")
+        # run_simulation_loop_steps(env, planner, run_dict.training_steps)
         
         print("Testing")
         planner = AgentTester(run_dict, conf)
-        run_simulation_loop_laps(env, planner, run_dict.n_test_laps, 4)
-        env.__del__()
+        run_simulation_loop_laps(env, planner, run_dict.n_test_laps)
         
     
 def run_testing_batch(experiment, n_sim_steps=10):
@@ -139,6 +123,11 @@ def run_pp_tests():
     run_testing_batch(experiment)
 
 
+    # run_pp_tests()
+    # run_general_test_batch()
+
+if __name__ == "__main__":
+    main()
     # run_pp_tests()
     # run_general_test_batch()
 

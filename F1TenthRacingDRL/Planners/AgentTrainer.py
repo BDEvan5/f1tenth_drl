@@ -33,7 +33,8 @@ class AgentTrainer:
         self.t_his = TrainHistory(self.path)
 
     def plan(self, obs):
-        progress = self.std_track.calculate_progress_percent([obs['poses_x'][0], obs['poses_y'][0]]) * 100
+        vehicle_state = obs["vehicle_state"]
+        progress = self.std_track.calculate_progress_percent(vehicle_state[:2]) * 100
         self.max_lap_progress = max(self.max_lap_progress, progress)
         
         nn_state = self.architecture.transform_obs(obs)
@@ -41,7 +42,7 @@ class AgentTrainer:
         self.add_memory_entry(obs, nn_state)
         self.state = obs
             
-        if obs['linear_vels_x'][0] < self.v_min_plan:
+        if vehicle_state[3] < self.v_min_plan:
             self.action = np.array([0, 2])
             return self.action
 
@@ -66,7 +67,8 @@ class AgentTrainer:
         """
         nn_s_prime = self.architecture.transform_obs(s_prime)
         reward = self.reward_generator(s_prime, self.state, self.action)
-        progress = self.std_track.calculate_progress_percent([s_prime['poses_x'][0], s_prime['poses_y'][0]]) * 100
+        state_prime = s_prime['vehicle_state']
+        progress = self.std_track.calculate_progress_percent(state_prime[:2]) * 100
         self.max_lap_progress = max(self.max_lap_progress, progress)
         
         # print(self.t_his.reward_list)

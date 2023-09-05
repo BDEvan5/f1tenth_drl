@@ -1,7 +1,7 @@
 import numpy as np
 
 from F1TenthRacingDRL.Planners.TrackLine import TrackLine
-from F1TenthRacingDRL.Planners.PurePursuit import PurePursuit
+from F1TenthRacingDRL.Planners.PurePursuit import RacingPurePursuit
 
 
 def select_reward_function(run, conf, std_track):
@@ -111,7 +111,7 @@ class TALearningReward:
         run.pp_speed_mode = "racing_line"
         run.racing_line = True
         # self.lookahead = 1.5
-        self.pp = PurePursuit(conf, run, False) 
+        self.pp = RacingPurePursuit(conf, run, False) 
 
         self.beta_c = 0.4
         self.beta_steer_weight = 0.4
@@ -123,9 +123,9 @@ class TALearningReward:
     def __call__(self, observation, prev_obs, action):
         if prev_obs is None: return 0
 
-        if observation['lap_counts'][0]:
+        if observation['lap_complete']:
             return 1  # complete
-        if observation['collisions'][0]:
+        if observation['collision']:
             return -1 # crash
         
         pp_act = self.pp.plan(prev_obs)

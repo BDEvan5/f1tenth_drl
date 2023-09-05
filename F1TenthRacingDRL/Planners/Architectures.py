@@ -16,6 +16,7 @@ def select_architecture(run, conf):
             
     return architecture
 
+
 class EndArchitecture:
     def __init__(self, run, conf):
         self.range_finder_scale = 10
@@ -39,8 +40,8 @@ class EndArchitecture:
         Returns:
             nn_obs: observation vector for neural network
         """
-        scan = np.array(obs['scans'][0]) 
-        speed = obs['linear_vels_x'][0] / self.max_speed
+        scan = np.array(obs['scan']) 
+        speed = obs['vehicle_state'][3] / self.max_speed
         scan = np.clip(scan/self.range_finder_scale, 0, 1)
 
         if self.scan_buffer.all() ==0: # first reading

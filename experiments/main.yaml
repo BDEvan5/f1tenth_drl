@@ -1,9 +1,9 @@
 
 planner_type: "AgentOff"
 
-n_repeats: 3
+n_repeats: 1
 start_n: 0
-set_n: 4
+set_n: 1
 
 random_seed: 100
 max_speed: 8
@@ -20,7 +20,10 @@ algorithm: "TD3"
 
 # id_name: "Speed"
 id_name: "TAL"
-map_name: "aut"
+# map_name: "aut"
+
+n_sim_steps: 10
+
 
 
 

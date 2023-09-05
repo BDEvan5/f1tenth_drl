@@ -16,8 +16,8 @@ class RacingPurePursuit:
         path = os.getcwd() + f"/Data/" + run.path  + self.name + "/"
         if not os.path.exists(path):
             os.mkdir(path)
-        elif init:
-            init_file_struct(path)
+        # elif init:
+        #     init_file_struct(path)
             
         self.conf = conf
         self.run = run
@@ -46,7 +46,6 @@ class RacingPurePursuit:
             
         speed = min(speed_raceline, self.max_speed) # cap the speed
         action = np.array([steering_angle, speed])
-        self.vehicle_state_history.add_memory_entry(obs, action)
 
         return action
 
