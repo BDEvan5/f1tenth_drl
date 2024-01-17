@@ -2,6 +2,52 @@
 
 Deep reinforcement learning experiments for simulated F1Tenth autonomous racing.
 
+1. [Result highlights](#highlights)
+2. [Major results](#major-results)
+3. [Usage](#usage)
+4. [Installation](#installation)
+5. [Citation](#citation)
+
+
+The repository was used in the experiments from the paper, **"Comparing deep reinforcement learning architectures for autonomous racing"**, available [here.](https://www.sciencedirect.com/science/article/pii/S266682702300049X)
+
+## Result highlights:
+- We compare DRL racing architectures using 2 reward signals, 3 algorithms and 4 tracks.
+- Combining LiDAR scans and track centre points leads to robust policies for racing.
+- Trajectory tracking architectures are brittle but can achieve fast lap times.
+- Agents trained in simulation are tested on a physical vehicle at speeds up to 5 m/s.
+- End-to-end architectures achieve the best zero-shot sim-to-real transfer.
+
+We compare the full planning, trajectory tracking and end-to-end architectures as shown below:
+![](images/ArchitectureComparison.jpg)
+
+### Major results
+
+We train agents from each architecture using the DDPG, SAC and TD3 algorithms.
+
+![](images/AlgorithmTraining.jpg)
+
+The TD3 algorithm has the most reliable, highest-performing training.
+
+![](images/ArchitectureResults.jpg)
+
+The full planning architecture has the highest track progress during training and the highest completion rates after training.
+
+![](images/Trajectories.jpg)
+
+
+We then transfered the agents trained with the SAC algorithm to a physical vehicle. 
+<!-- We tested the agents at single speeds and at variable speeds. -->
+
+<!-- ![](images/Sim2Real.jpg) -->
+
+![](images/RealTrajectories.jpg)
+
+The end-to-end agent had the best simulation-to-reality transfer.
+The trajectory tracking and full planning agents exhibited extreme swerving behaviour.
+
+# Usage
+
 
 ## Installation
 
@@ -21,7 +67,6 @@ The codebase is installed as a pip package with the following command:
 pip install -e .
 ```
 
-# How to generate results
 
 ## Generate Result Data
 
@@ -99,5 +144,20 @@ Generate article results:
 - `NeatTrajectories.py`: makes neat versions of the trajectories with labels for presentation in articles
 - `FastLaptimePlot.py`: plots the lap times of vehicles with increasing speed caps
 
+
+## Citation
+
+If you found this repository useful, please consider citing our work,
+```latex
+@article{evans2023comparing,
+    title={Comparing deep reinforcement learning architectures for autonomous racing},
+    author={Evans, Benjamin David and Jordaan, Hendrik Willem and Engelbrecht, Herman Arnold},
+    journal={Machine Learning with Applications},
+    volume={14},
+    pages={100496},
+    year={2023},
+    publisher={Elsevier}
+}
+```
 
 
