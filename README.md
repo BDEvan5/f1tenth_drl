@@ -1,5 +1,25 @@
-# F1TenthRacingDRL
-A repository to conduct experiments on F1Tenth racing
+# f1tenth_drl
+
+Deep reinforcement learning experiments for simulated F1Tenth autonomous racing.
+
+
+## Installation
+
+We recommend managing dependencies using a virtual environment, which can be installed with the following commands,
+```
+python3.9 -m venv venv
+source venv/bin/activate
+```
+
+Install dependencies using the requirements.txt file:
+
+```
+pip install -r requirements.txt
+```
+The codebase is installed as a pip package with the following command:
+```
+pip install -e .
+```
 
 # How to generate results
 

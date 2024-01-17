@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 
 VERSION = '0.0.1' 
-DESCRIPTION = 'My F110 learning results'
+DESCRIPTION = 'My F1Tenth drl agents'
 LONG_DESCRIPTION = 'DRL based f110 agents for autonomous racing'
 
 # Setting up
 setup(
        # the name must match the folder name 'verysimplemodule'
-        name="F1TenthRacingDRL", 
+        name="f1tenth_drl", 
         version=VERSION,
         author="Benjamin Evans",
         author_email="<bdevans@sun.ac.za>",

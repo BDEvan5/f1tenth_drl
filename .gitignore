@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 Data/
+!Data/.gitkeep
 Data__*/
 
 .vscode/
